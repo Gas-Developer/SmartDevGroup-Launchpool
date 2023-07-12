@@ -216,14 +216,14 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		);
 
 		_setNewStakingLenght(startLP, endLP);
-		
+
 	}
 
 	function _setNewStakingLenght(uint256 _start, uint256 _end) internal launchpoolNotStarted {
 
 		stakingLength = _end - _start;
 
-        emit newLaunchpoolPeriod(
+		emit newLaunchpoolPeriod(
 			_start,
 			_end
 		);
