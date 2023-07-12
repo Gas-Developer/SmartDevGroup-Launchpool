@@ -33,7 +33,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		uint256 end
 	);
 
-
+	// DATA STRUCTURES & VARIABLES
 	uint256 public totalTokenToDistribute; // contatore Token ancora da distribuire
 	string nameTokenToDistribute; // nome Token ERC-20 da distribuire
 	string symbolTokenToDistribute; // symbolo Token ERC-20 da distribuire
@@ -66,7 +66,12 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	}
 
 	modifier launchpoolNotEnded() {
-		require(block.timestamp < endLP, "Launchpool is ended");
+		require(block.timestamp <= endLP, "Launchpool is ended");
+		_;
+	}
+
+	modifier launchpoolEnded() {
+		require(block.timestamp > endLP, "Launchpool is not ended");
 		_;
 	}
 

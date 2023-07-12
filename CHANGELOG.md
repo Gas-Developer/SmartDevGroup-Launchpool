@@ -17,6 +17,10 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.14] - 12-07-2023
+### Added
+	- [launchpool.sol]
+		- modifier launchpoolEnded()
 # [0.0.13] - 11-07-2023
 ### Added
 	- [launchpool.sol]
