@@ -33,6 +33,14 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		uint256 end
 	);
 
+	event newStartSetted(
+		uint256 start
+	);
+
+	event newEndSetted(
+		uint256 end
+	);
+
 	// DATA STRUCTURES & VARIABLES
 	uint256 public totalTokenToDistribute; // contatore Token ancora da distribuire
 	string nameTokenToDistribute; // nome Token ERC-20 da distribuire
@@ -74,8 +82,6 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		require(block.timestamp > endLP, "Launchpool is not ended");
 		_;
 	}
-
-
 
 	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
 		require(_startLP > 0, "StartLP must be greater than zero");
@@ -190,6 +196,10 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 		startLP = _newStartLP;
 
+		emit newStartSetted(
+			startLP
+		);
+
 		_setNewStakingLenght(startLP, endLP);
 
 	}
@@ -200,6 +210,10 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		require(_newEndLP > startLP , "New EndLP must be greater than startLP");
 
 		endLP = _newEndLP;
+
+		emit newEndSetted(
+			endLP
+		);
 
 		_setNewStakingLenght(startLP, endLP);
 		

@@ -17,6 +17,10 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.0.15] - 12-07-2023
+### Added
+	- [launchpool.sol]
+		- events newStartSetted & newEndSetted
 # [0.0.14] - 12-07-2023
 ### Added
 	- [launchpool.sol]
