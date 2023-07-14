@@ -32,35 +32,33 @@ contract Launchpad is Ownable, ReentrancyGuard {
 		uint256 start,
 		uint256 end
 	);
-
 	event newStartSetted(
 		uint256 start
 	);
-
 	event newEndSetted(
 		uint256 end
 	);
 
 	// DATA STRUCTURES & VARIABLES
-	uint256 public totalTokenToDistribute; // contatore Token ancora da distribuire
-	string nameTokenToDistribute; // nome Token ERC-20 da distribuire
-	string symbolTokenToDistribute; // symbolo Token ERC-20 da distribuire
-	uint256 decimalsTokenToDistribute; // decimali Token ERC-20 da distribuire
-	uint256 public stakingLength; // lunghezza in secondi del periodo di staking
-	uint256 public startLP; // timestamp inizio launchpool
-	uint256 public endLP; // timestamp inizio launchpool
-	uint256 public TotalPower = 0; // ad ogni commit TotalPower = TotalPower + orderPower;
+	uint256 public totalTokenToDistribute;			// contatore Token ancora da distribuire
+	string nameTokenToDistribute;					// nome Token ERC-20 da distribuire
+	string symbolTokenToDistribute;					// symbolo Token ERC-20 da distribuire
+	uint256 decimalsTokenToDistribute;				// decimali Token ERC-20 da distribuire
+	uint256 public stakingLength;					// lunghezza in secondi del periodo di staking
+	uint256 public startLP;							// timestamp inizio launchpool
+	uint256 public endLP;							// timestamp inizio launchpool
+	uint256 public TotalPower = 0;					// ad ogni commit TotalPower = TotalPower + orderPower;
 
-	mapping(address => uint256[]) public orderIDs; // associa ogni ordine di staking all'address che lo ha effettuato
+	mapping(address => uint256[]) public orderIDs;	// associa ogni ordine di staking all'address che lo ha effettuato
 
 	struct Order {
-		uint256 stakedAmount; // quantità di coin/token staked
-		uint256 orderTime; // timestamp
-		uint256 power; // power = tokenQuantity * ( orderTime - startLP)
-		bool isClaimed; // true se è già stato fatto il claim di questo ordine
+		uint256 stakedAmount;						// quantità di coin/token staked
+		uint256 orderTime;							// timestamp
+		uint256 power;								// power = tokenQuantity * ( orderTime - startLP)
+		bool isClaimed;								// true se è già stato fatto il claim di questo ordine
 	}
 
-	Order[] public orders; // array dinamico di tutti gli ordini effettuati
+	Order[] public orders;							// array dinamico di tutti gli ordini effettuati
 
 	// MODIFIERS
 	modifier launchpoolNotStarted() {
@@ -84,15 +82,14 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	}
 
 	constructor(ERC20 _token, uint256 _startLP, uint256 _endLP) {
-		require(_startLP > 0, "StartLP must be greater than zero");
-		require(_endLP > 0, "EndLP must be greater than zero");
+		require(_startLP > block.timestamp, "StartLP must be greater than zero");
 		require(_startLP < _endLP, "StartLP must be less than EndLP");
 
 		token = _token;
 
 		startLP = _startLP;
 		endLP = _endLP;
-		stakingLength = endLP - startLP;
+		_setNewStakingLenght(startLP, endLP);
 
 		nameTokenToDistribute = _token.name();
 		symbolTokenToDistribute = _token.symbol();
@@ -108,35 +105,35 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	}
 
 	function depositTokenToDistribute(uint256 _amount) external onlyOwner launchpoolNotStarted {
-		require(_amount > 0, "Cannot deposit 0 tokens"); // Controllo che non si stia cercando di depositare 0 token
+		require(_amount > 0, "Cannot deposit 0 tokens"); 					// Controllo che non si stia cercando di depositare 0 token
 		require(
 			token.balanceOf(msg.sender) >= _amount,
 			"Not enough tokens to deposit"
-		); // Controllo che il mittente abbia abbastanza token per depositare
-		uint256 allowance = token.allowance(msg.sender, address(this)); // Leggo quanti token ho il permesso di movimentare
-		require(allowance >= _amount, "Check the token allowance"); // Controllo che il mittente abbia dato la allow per almeno la quantità di token indicata in amount
+		); 																	// Controllo che il mittente abbia abbastanza token per depositare
+		uint256 allowance = token.allowance(msg.sender, address(this));		// Leggo quanti token ho il permesso di movimentare
+		require(allowance >= _amount, "Check the token allowance");			// Controllo che il mittente abbia dato la allow per almeno la quantità di token indicata in amount
 
-		token.transferFrom(msg.sender, address(this), _amount); // Trasferisco i token dal mittente al contratto
+		token.transferFrom(msg.sender, address(this), _amount); 			// Trasferisco i token dal mittente al contratto
 
-		totalTokenToDistribute = totalTokenToDistribute + _amount; // Aggiungo i token al totale dei token da distribuire
+		totalTokenToDistribute = totalTokenToDistribute + _amount; 			// Aggiungo i token al totale dei token da distribuire
 
 		emit tokenToDistributeDeposit(_amount, totalTokenToDistribute);
 	}
 
 	function stake() public payable launchpoolStarted launchpoolNotEnded {
 
-		require(msg.value > 0, "Cannot stake 0 MATIC"); // Controllo che non si stia cercando di depositare 0 MATIC
-		require(totalTokenToDistribute > 0, "No tokens to distribute"); // Controllo che ci siano ancora token da distribuire
+		require(msg.value > 0, "Cannot stake 0 MATIC"); 					// Controllo che non si stia cercando di depositare 0 MATIC
+		require(totalTokenToDistribute > 0, "No tokens to distribute");		// Controllo che ci siano ancora token da distribuire
 
-		uint256 orderID = orders.length; // Assegno l'ID dell'ordine
+		uint256 orderID = orders.length; 									// Assegno l'ID dell'ordine
 		console.log("orderID: ", orderID);
 
 		// Creo l'order
-		Order memory senderOrder; // Creo un nuovo ordine
-		senderOrder.stakedAmount = uint256(msg.value); // Assegno la quantità di MATIC staked
-		senderOrder.orderTime = block.timestamp; // Assegno il timestamp dell'ordine
+		Order memory senderOrder;											// Creo un nuovo ordine
+		senderOrder.stakedAmount = uint256(msg.value);						// Assegno la quantità di MATIC staked
+		senderOrder.orderTime = block.timestamp;							// Assegno il timestamp dell'ordine
 		senderOrder.power = senderOrder.stakedAmount * (endLP - senderOrder.orderTime); // Calcolo il power dell'ordine
-		senderOrder.isClaimed = false; // Assegno il valore false al claim
+		senderOrder.isClaimed = false;										// Assegno il valore false al claim
 
 		// Inserisco l'order nella lista degli order
 		orders.push(senderOrder); // Aggiungo l'ordine all'array degli ordini
@@ -166,15 +163,11 @@ contract Launchpad is Ownable, ReentrancyGuard {
 	// GETTERs & SETTERs
 	function getMyOrders() public view returns (uint256[] memory)
 	{
-		return orderIDs[msg.sender];
+		return getUserOrders(msg.sender);
 	}
 
 	function getMyTotalStaked() public view returns (uint256) {
-		uint256 totalStaked = 0;
-		for (uint256 i = 0; i < orderIDs[msg.sender].length; i++) {
-			totalStaked = totalStaked + orders[orderIDs[msg.sender][i]].stakedAmount;
-		}
-		return totalStaked;
+		return getUserTotalStaked(msg.sender);
 	}
 	function getUserOrders(address _user) public view returns (uint256[] memory)
 	{
@@ -219,7 +212,7 @@ contract Launchpad is Ownable, ReentrancyGuard {
 
 	}
 
-	function _setNewStakingLenght(uint256 _start, uint256 _end) internal launchpoolNotStarted {
+	function _setNewStakingLenght(uint256 _start, uint256 _end) internal {
 
 		stakingLength = _end - _start;
 
