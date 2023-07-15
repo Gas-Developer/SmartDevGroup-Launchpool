@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import { tokenTestSol } from "../typechain-types/contracts";
 import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
-describe("Launchpool Owner", function () {
+describe.only("Launchpool Owner", function () {
 
     async function initTokenAndLaunchpoolFixture() {
 
@@ -32,19 +32,6 @@ describe("Launchpool Owner", function () {
 
             expect((await token.balanceOf(owner.address))).equal(1000000000000000000000n)
 	    })
-
-        it("Check allowance", async function () {
-            
-            const { token, launchpool, launchpoolAddress } = await loadFixture(initTokenAndLaunchpoolFixture);
-
-			const allowance = await token.increaseAllowance(launchpoolAddress, 100)
-			if(allowance){
-			const depositTokenToDistribute = await  launchpool.depositTokenToDistribute(100);
-				return depositTokenToDistribute 
-			}else {
-				await expect(launchpool.depositTokenToDistribute(100)).to.be.revertedWith("revert because allowance not present or not sufficient")
-			} 
-        })
         
         it("Change of launchpool period", async function () {
 
@@ -98,6 +85,19 @@ describe("Launchpool Owner", function () {
             //Can't stake if the launchpool is finished
             await expect(launchpool.stake({ value: 100 })).to.be.revertedWith("Launchpool is ended");
             
+        })
+
+        it("Check allowance", async function () {
+            
+            const { token, launchpool, launchpoolAddress } = await loadFixture(initTokenAndLaunchpoolFixture);
+
+			const allowance = await token.increaseAllowance(launchpoolAddress, 100)
+			if(allowance){
+			const depositTokenToDistribute = await  launchpool.depositTokenToDistribute(100);
+				return depositTokenToDistribute 
+			}else {
+				await expect(launchpool.depositTokenToDistribute(100)).to.be.revertedWith("revert because allowance not present or not sufficient")
+			} 
         })
 
   });
