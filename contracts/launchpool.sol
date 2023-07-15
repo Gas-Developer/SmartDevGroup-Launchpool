@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Launchpad is Ownable, ReentrancyGuard {
+contract Launchpool is Ownable, ReentrancyGuard {
 	ERC20 public token;
 
 	// EVENTS
