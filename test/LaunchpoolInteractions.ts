@@ -20,11 +20,12 @@ describe.only("Launchpool Interactions", function () {
         const launchpool = await Launchpool.deploy(tokenAddress, Math.round(today.valueOf() / 1000), Math.round(todayPlusOneWeek.valueOf() / 1000));
         const launchpoolAddress = await launchpool.getAddress();
 
-        const allowance = await token.increaseAllowance(launchpoolAddress, 10000);
-        const depositTokenToDistribute = await  launchpool.depositTokenToDistribute(10000);
+        await token.increaseAllowance(launchpoolAddress, 10000);
+        await  launchpool.depositTokenToDistribute(10000);
 
         //Launchpool needs to start
         const HOUR_IN_SECONDS = 3600;
+        
         const nowPlusNineHours = (await time.latest()) + (9 * HOUR_IN_SECONDS);
         await time.increaseTo(nowPlusNineHours); 
 
@@ -55,6 +56,40 @@ describe.only("Launchpool Interactions", function () {
     });
 
     describe("Launchpool Interactions claim", function () {
+
+    }); 
+
+    describe("Launchpool Interactions unstake", function () {
+
+        it("Unstake with different address ", async function () {
+
+            const { launchpool, owner, otherAccount } = await loadFixture(initTokenAndLaunchpoolFixture);
+
+            await launchpool.stake({ value: 1000 });
+
+            await launchpool.connect(otherAccount).stake({ value: 100 });
+
+            await launchpool.stake({ value: 500 });
+
+            await launchpool.connect(otherAccount).stake({ value: 50 });
+
+            await launchpool.stake({ value: 1000 });
+
+            //Launchpool needs to finish
+            const DAY_IN_SECONDS = 86400;
+        
+            const nowPlusNineDays = (await time.latest()) + (9 * DAY_IN_SECONDS);
+
+            await time.increaseTo(nowPlusNineDays);
+            
+            await expect(launchpool.unstake()).to.changeEtherBalances(
+                [owner, launchpool], [2500, -2500]);  
+
+            expect(await launchpool.getMyTotalStaked()).equal(0);
+
+            expect(await launchpool.connect(otherAccount).getMyTotalStaked()).equal(150);
+
+        })        
 
     }); 
 
