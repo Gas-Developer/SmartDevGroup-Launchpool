@@ -27,7 +27,7 @@ const config: HardhatUserConfig = {
     //   url: "http://127.0.0.1:8545"
     // },
        polygon_mumbai: {
-       url: process.env.URL_ALCHEMY_MUMBAI,
+       url: process.env.URL_ALCHEMY_MUMBAI ?? "",
        accounts: [process.env.PRIVATE_KEY ?? ""]
      },
      sepolia: {
