@@ -21,23 +21,33 @@ contract Launchpool is Ownable, ReentrancyGuard {
 		uint256 totalTokenToDistribute,
 		uint256 stackingLength
 	);
+
 	event tokenToDistributeDeposit(
 		uint256 amount,
 		uint256 totalTokenToDistribute
 	);
+
 	event newStakeOrder(
 		address indexed sender,
 		uint256 amount,
 		uint256 power,
 		uint256 totalPower
 	);
+
+	event unstakeOrder(
+		address indexed sender,
+		uint256 amountUnstaked
+	);
+
 	event newLaunchpoolPeriod(
 		uint256 start,
 		uint256 end
 	);
+
 	event newStartSetted(
 		uint256 start
 	);
+
 	event newEndSetted(
 		uint256 end
 	);
@@ -63,7 +73,8 @@ contract Launchpool is Ownable, ReentrancyGuard {
 		uint256 stakedAmount;						// quantità di coin/token staked
 		uint256 orderTime;							// timestamp
 		uint256 power;								// power = tokenQuantity * ( orderTime - startLP)
-		bool isClaimed;								// true se è già stato fatto il claim di questo ordine
+		bool claimed;								// true se è già stato fatto il claim di questo ordine
+		bool unstaked;								// true se è stato fatto l'unstake per quella quantità di quell'ordine
 	}
 
 	Order[] public orders;							// array dinamico di tutti gli ordini effettuati
@@ -141,7 +152,8 @@ contract Launchpool is Ownable, ReentrancyGuard {
 		senderOrder.stakedAmount = uint256(msg.value);						// Assegno la quantità di MATIC staked
 		senderOrder.orderTime = block.timestamp;							// Assegno il timestamp dell'ordine
 		senderOrder.power = senderOrder.stakedAmount * (endLP - senderOrder.orderTime); // Calcolo il power dell'ordine
-		senderOrder.isClaimed = false;										// Assegno il valore false al claim
+		senderOrder.claimed = false;
+		senderOrder.unstaked = false;											// Assegno il valore false al claim
 
 		// Inserisco l'order nella lista degli order
 		orders.push(senderOrder); 											// Aggiungo l'ordine all'array degli ordini
@@ -178,13 +190,13 @@ contract Launchpool is Ownable, ReentrancyGuard {
 			uint256 currentOrderID = orderIDs[msg.sender][i];												// Recupero l'ID dell'ordine che sto processando dal mapping orderIDs
 			Order memory currentOrder = orders[currentOrderID];												// Recupero l'ordine che sto processando dall'array orders
 
-			if (currentOrder.isClaimed) {
+			if (currentOrder.claimed) {
 				continue;																					// Se l'ordine è già stato claimato passo al prossimo
 			}
 
 			// Se l'ordine non è stato già riscosso (Claimed), per prima cosa lo imposto a riscosso isClaimed = true (check, effect, interaction)
 			// naturalmente setto isClaimed sull'array globale degli orders e non su currentOrder che è una copia locale dell'ordine
-			orders[currentOrderID].isClaimed = true;
+			orders[currentOrderID].claimed = true;
 
 			totalPowerToClaim = totalPowerToClaim.add(currentOrder.power);									// Aggiungo il power dell'ordine corrente al totale del power dell'utente
 		}
@@ -219,6 +231,35 @@ contract Launchpool is Ownable, ReentrancyGuard {
 	}
 
 
+	function unstake() public launchpoolEnded nonReentrant{
+
+		address userAddress = msg.sender;
+
+		uint256 myTotalStaked = 0;
+
+ 		//Loop for every order
+		for (uint256 i = 0; i < orderIDs[userAddress].length; i++) {
+
+			uint256 currentOrderId = orderIDs[userAddress][i];
+			Order memory order = orders[currentOrderId];
+
+			if(order.unstaked == false) {
+				orders[currentOrderId].unstaked = true;
+				myTotalStaked = myTotalStaked + order.stakedAmount;
+			} 
+
+		} 
+
+        // Send the value staked to the user
+        (bool sent, ) = userAddress.call{value: myTotalStaked}("");
+        require(sent, "Failed to send Matic");
+
+		emit unstakeOrder(
+			userAddress,
+			myTotalStaked
+		);
+
+	}
 
 	// GETTERs & SETTERs
 	function getMyOrders() public view returns (uint256[] memory)
@@ -237,7 +278,14 @@ contract Launchpool is Ownable, ReentrancyGuard {
 	function getUserTotalStaked(address _user) public view returns (uint256) {
 		uint256 totalStaked = 0;
 		for (uint256 i = 0; i < orderIDs[_user].length; i++) {
-			totalStaked = totalStaked + orders[orderIDs[_user][i]].stakedAmount;
+			
+			uint256 currentOrderId = orderIDs[_user][i];
+			Order memory order = orders[currentOrderId];
+
+			if(order.unstaked == false) {
+				totalStaked = totalStaked + order.stakedAmount;
+			}
+
 		}
 		return totalStaked;
 	}
@@ -292,7 +340,7 @@ contract Launchpool is Ownable, ReentrancyGuard {
 	}
 
 	function isClaimed(uint256 _orderID) public view returns (bool) {
-		return orders[_orderID].isClaimed;
+		return orders[_orderID].claimed;
 	}
 
 
