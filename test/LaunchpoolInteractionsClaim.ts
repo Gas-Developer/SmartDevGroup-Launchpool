@@ -44,7 +44,7 @@ describe.only("Launchpool Interactions with Claims", function () {
 		return { today, todayPlusOneWeek, owner, otherAccount, token, launchpool, launchpoolAddress,  user1, user2, user3, user4, user5, TOKEN_DEPOSIT_AMOUNT };
   }
 
-	describe("Launchpool Interactions with Claim", async function () {
+	describe("Launchpool Interactions with Claim & Unstake", async function () {
 
 		it("Claim orders with different address ", async function () {
 
@@ -142,6 +142,14 @@ describe.only("Launchpool Interactions with Claims", function () {
 
 			// Verifico di aver distribuito tutti i token
 			expect(realDeliveredTokens).equal(TOKEN_DEPOSIT_AMOUNT);
+
+			console.log("\n5. Effettuo l'unstake di tutti gli utenti ");
+			// Verifico che tutti gli utenti abbiano effettuato crettamente l'unstake
+			await expect(launchpool.connect(user1).unstake()).to.changeEtherBalances([user1, launchpool], [user1Stake, -user1Stake]);  
+			await expect(launchpool.connect(user2).unstake()).to.changeEtherBalances([user2, launchpool], [user2Stake, -user2Stake]);  
+			await expect(launchpool.connect(user3).unstake()).to.changeEtherBalances([user3, launchpool], [user3Stake, -user3Stake]);  
+			await expect(launchpool.connect(user4).unstake()).to.changeEtherBalances([user4, launchpool], [user4Stake, -user4Stake]);  
+			await expect(launchpool.connect(user5).unstake()).to.changeEtherBalances([user5, launchpool], [user5Stake, -user5Stake]);  
 
 		})
 	}); 
