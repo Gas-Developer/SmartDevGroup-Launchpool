@@ -1,0 +1,6 @@
+from root -> npm init wagmi
+enter: 
+1) lpool-fe (project name)
+2) Next.js
+3) Default
+4) 0 (id)
