@@ -1,15 +1,18 @@
 import { UserTypeButton } from "../components/buttons/userType-button";
-import { contractAbi } from "../abi/contract-abi";
+import { Connect } from "../components/Connect";
+import { useContractRead } from "wagmi";
+import { ReadContract } from "../components/ReadContract";
+import { NetworkSwitcher } from "../components/NetworkSwitcher";
+import { wagmiContractConfig } from "../abi/contract-abi";
 
 export default function Page() {
 
-  const contractAddress = process.env.NEXT_CONTRACT_ADDRESS as `0x${string}`;
-
-
   return (
-    <div id="userTypeButtonsContainer">
-      <UserTypeButton name="Investor" disabled={true} />
-      <UserTypeButton name="Creator" disabled={false} />
+    <div>
+      <div id="userTypeButtonsContainer">
+        <UserTypeButton name="Investor" disabled={true} />
+        <UserTypeButton name="Creator" disabled={false} />
+      </div>
     </div>
   );
 }

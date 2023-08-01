@@ -6,24 +6,24 @@ import { wagmiContractConfig } from './contracts'
 import { stringify } from '../utils/stringify'
 
 export function ReadContractsInfinite() {
-  const { data, isLoading, isSuccess, fetchNextPage } =
-    useContractInfiniteReads({
-      cacheKey: 'lootTokenURIs',
-      ...paginatedIndexesConfig(
-        (index: number) => [
-          {
-            ...wagmiContractConfig,
-            functionName: 'ownerOf',
-            args: [BigInt(index)] as const,
-          },
-        ],
-        { start: 0, perPage: 10, direction: 'increment' },
-      ),
-    })
+  // const { data, isLoading, isSuccess, fetchNextPage } =
+  //   useContractInfiniteReads({
+  //     cacheKey: 'lootTokenURIs',
+  //     ...paginatedIndexesConfig(
+  //       (index: number) => [
+  //         {
+  //           ...wagmiContractConfig,
+  //           functionName: 'ownerOf',
+  //           args: [BigInt(index)] as const,
+  //         },
+  //       ],
+  //       { start: 0, perPage: 10, direction: 'increment' },
+  //     ),
+  //   })
 
   return (
     <div>
-      {isLoading && <div>loading...</div>}
+      {/* {isLoading && <div>loading...</div>}
       {isSuccess && (
         <>
           {data?.pages.map((data, i) => (
@@ -35,7 +35,7 @@ export function ReadContractsInfinite() {
           ))}
           <button onClick={() => fetchNextPage()}>Fetch more</button>
         </>
-      )}
+      )} */}
     </div>
   )
 }

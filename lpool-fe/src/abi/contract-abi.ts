@@ -1,4 +1,8 @@
-export const contractAbi = [
+const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`; 
+
+export const wagmiContractConfig = {
+  address: contractAddress,
+  abi: [
     {
       "inputs": [
         {
@@ -552,4 +556,5 @@ export const contractAbi = [
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ];
+],
+} as const
