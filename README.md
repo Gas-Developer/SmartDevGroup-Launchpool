@@ -1,15 +1,14 @@
-# SmartDevGroup-Launchpad
+# The Launchpool Ready
+## Italiano
+Chiunque lanci un nuovo token, prima di creare le liquidity-pool, spesso a fini promozionali fa una Launchpool. Fino ad oggi l'unica possibilità era andare sui Cex. Il nostro progetto decentralizza le Launchpool, dando a chiunque abbia creato un token, la possibilità di distribuirlo agli early-adopter tramite una Launchpool decentralizzata, senza la necessità di dover implementare del codice appositamente per questa necessità
+
+## English
+Anyone launching a new token often conducts a Launchpool before creating liquidity pools, typically for promotional purposes. Until now, the only option was to use centralized exchanges (Cex). Our project decentralizes Launchpools, providing anyone who has created a token the opportunity to distribute it to early adopters through a decentralized Launchpool.
 
 
 ---
 
-OPERATION ORDERED LIST TO OPEN A LAUNCHPOOL
-1. Deploy(token) and mint 
-2. Deploy(Launchpool)
-3. Approve(_amountOfTokenToDistribute)
-4. depositTokenToDistribute(_amountOfTokenToDistribute)
+# Progress status
 
-
-TEST 
-npx hardhat test ./test/LaunchpoolOwner.ts
-npx hardhat test ./test/LaunchpoolInteractions.ts
+Smart-contract 		70%
+Front-End			5%
