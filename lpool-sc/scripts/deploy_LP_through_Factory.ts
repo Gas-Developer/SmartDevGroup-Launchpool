@@ -1,7 +1,8 @@
 require('dotenv').config();
 import { ethers } from "hardhat";
 
-	async function main() {
+
+async function main() {
 
 	// 0. SETUP
 	const to = process.env.PUBLIC_ADDRESS;
@@ -61,7 +62,7 @@ import { ethers } from "hardhat";
 	// Deploy della factory che ci permetterà di deployare le Launchpool
 	console.log("\n*** 3. Deploy Launchpool Factory ***\n");
 	const LaunchpoolFactory = await ethers.getContractFactory("LaunchpoolFactory");										// Cotruisco la factory 
-	const launchpoolFactory = await LaunchpoolFactory.deploy(templateAddress);											// Deploy del contratto di logica
+	const launchpoolFactory = await LaunchpoolFactory.deploy();															// Deploy del contratto di logica
 	const launchpoolFactoryDeployTX = await template.deploymentTransaction();											// Estraggo la transazione di deploy
 	if(!launchpoolFactoryDeployTX)
 		throw new Error("Deployment transaction not found");
@@ -83,28 +84,30 @@ import { ethers } from "hardhat";
 	const TODAY = Math.round(now.getTime() / 1000);														// Converto la data di inizio in secondi
 	const TODAY_PLUS_ONE_WEEK = Math.round(oneWeekFromNow.getTime() / 1000);							// Converto la data di fine in secondi
 
-	const proxy = await launchpoolFactory.createLaunchpool(token, TODAY, TODAY_PLUS_ONE_WEEK);
+	const proxy = await launchpoolFactory.deployClone(templateAddress, token, TODAY, TODAY_PLUS_ONE_WEEK);
 	console.log("Waiting tx to be mined...");
 	await proxy.wait();
 
-	const proxyAddress = await proxy.to;
 
-	console.log("address Proxy:", proxyAddress);
-	console.log("https://mumbai.polygonscan.com/address/"+proxyAddress);
+	const newLaunchpoolAddress = await launchpoolFactory.proxies(0);
+
+	console.log("address newLaunchpoolAddress:", await newLaunchpoolAddress);
+	console.log("https://mumbai.polygonscan.com/address/"+newLaunchpoolAddress);
 
 
 	// 5. INTERACT WITH LAUNCHPOOL
 	// Interagisco con la LP appena deployata
 	console.log("\n*** 5. Interact with Launchpool ***\n");
 
-	if(!proxyAddress)
+	if(!newLaunchpoolAddress)
 		throw new Error("Proxy address not found");
 
-	const LP = await ethers.getContractAt("launchpoolTemplate", proxyAddress);
-	const endLP = await LP.endLP();
+	const newLaunchpool = await ethers.getContractAt("launchpoolTemplate", newLaunchpoolAddress);
 
-	console.log(endLP);
+	console.log("Trying to get endlLP() form the deployed contract");
+	const endLP = await newLaunchpool.endLP();
 
+	console.log("endLP = ", endLP);
 
 	console.log("\n*** END ***\n");
 
