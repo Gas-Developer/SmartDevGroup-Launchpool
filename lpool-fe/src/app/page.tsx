@@ -4,15 +4,13 @@ import { useContractRead } from "wagmi";
 import { ReadContract } from "../components/ReadContract";
 import { NetworkSwitcher } from "../components/NetworkSwitcher";
 import { wagmiContractConfig } from "../abi/contract-abi";
+import LandingPage from "../components/LandingPage";
 
 export default function Page() {
 
-  return (
-    <div>
-      <div id="userTypeButtonsContainer">
-        <UserTypeButton name="Investor" disabled={true} />
-        <UserTypeButton name="Creator" disabled={false} />
-      </div>
-    </div>
-  );
+	return (
+		<div>
+			<LandingPage />
+		</div>
+	);
 }
