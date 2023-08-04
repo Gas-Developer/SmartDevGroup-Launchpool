@@ -1,8 +1,7 @@
 "use client";
-
 import { ContractData } from "../interfaces/ContractData";
 
-export function AreaInvestorStats(props: ContractData) {
+export function AreaCreatorStats(props: ContractData) {
 
     const startLP = props.startLP;
     const endLP = props.endLP;
@@ -23,9 +22,4 @@ export function AreaInvestorStats(props: ContractData) {
             </label>
         </div>
     );
-
 }
-
-
-
-

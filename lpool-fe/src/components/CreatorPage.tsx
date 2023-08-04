@@ -3,10 +3,8 @@
 import { useContractReads } from "wagmi";
 import { useEffect, useState } from "react";
 import { wagmiContractConfig } from "../abi/contract-abi";
-import { stringify } from "../utils/stringify";
 import { AreaInvestorStats } from "./area/AreaInvestorStats";
 import { ContractData } from "./interfaces/ContractData";
-import { AreasContainer } from "./area/AreasContainer";
 
 const logger = require("pino")();
 
@@ -65,7 +63,7 @@ export function InvestorPage() {
 
 	return (
 		<div>
-			<AreasContainer {...contractData} />
+			<h3>CreatorPage</h3>
 		</div>
 	);
 }
