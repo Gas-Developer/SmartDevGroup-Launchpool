@@ -1,4 +1,5 @@
 "use client";
+import { ContractData } from "../interfaces/ContractData";
 
 const logger = require("pino")();
 
@@ -6,20 +7,12 @@ interface AreaInvestorStatsProps {
     contractData: ContractData;
 }
 
-interface ContractData {
-	startLP: string;
-	endLP: string;
-	stakingLength: string;
-	token: string;
-	totalTokenToDistribute: string;
-}
-
 export function AreaInvestorStats(props: AreaInvestorStatsProps) {
     const contractData = props.contractData;
     const startLP = contractData.startLP;
     const endLP = contractData.endLP;
 
-    logger.info(contractData);
+    //logger.info(contractData);
 
     return (
         <div>
@@ -32,7 +25,7 @@ export function AreaInvestorStats(props: AreaInvestorStatsProps) {
             <label>Token: {contractData.token}</label>
             <br />
             <label>
-                Total token to distrubuyte:{" "}
+                Total token to distrubute:{" "}
                 {contractData.totalTokenToDistribute}
             </label>
         </div>
