@@ -1,20 +1,22 @@
 import { configureChains, createConfig } from 'wagmi'
-import { goerli, mainnet } from 'wagmi/chains'
+import { goerli, mainnet, polygonMumbai } from 'wagmi/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 
 import { publicProvider } from 'wagmi/providers/public'
 
 const walletConnectProjectId = '0'
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, ...(process.env.NODE_ENV === 'development' ? [goerli] : [])],
-  [
-    publicProvider(),
-  ],
+const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string;
+ 
+const { chains, publicClient } = configureChains(
+  [polygonMumbai],
+  [alchemyProvider({ apiKey: alchemyKey })],
 )
+ 
 
 export const config = createConfig({
   autoConnect: true,
@@ -41,5 +43,15 @@ export const config = createConfig({
     }),
   ],
   publicClient,
-  webSocketPublicClient,
 })
+
+// const { chains, publicClient } = configureChains(
+//   [mainnet, polygonMumbai],
+//   [alchemyProvider({ apiKey: '5nJqS5GVJhF3v0CAhuTLLsOLTY_yZhVK' }), publicProvider()],
+// )
+ 
+// export const config = createConfig({
+//   autoConnect: true,
+//   connectors: [new InjectedConnector({ chains })],
+//   publicClient,
+// })
