@@ -1,16 +1,9 @@
-import { ReadContracts } from "../../../components/ReadContracts";
-import { InvestorArea } from "../../../components/area/investor";
+import { InvestorPage } from "../../../components/InvestorPage";
 
-
-export default function InvestorPage(props: any) {  
-
-  return (
-    <div>
-      
-	  {
-		 props.isStarted ? <div>Is started</div> : <div>Not started</div>
-	  }
-    </div>
-
-  );
+export default function Page() {
+    return (
+        <div>
+            <InvestorPage />
+        </div>
+    );
 }
