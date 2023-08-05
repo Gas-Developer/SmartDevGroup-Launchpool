@@ -1,9 +1,5 @@
 "use client";
 
-import { useContractReads } from "wagmi";
-import { useEffect, useState } from "react";
-import { wagmiContractConfig } from "../abi/contract-abi";
-import { AreaInvestorStats } from "./area/AreaInvestorStats";
 import { ContractData } from "./interfaces/ContractData";
 import { AreasContainer } from "./area/AreasContainer";
 
@@ -11,6 +7,7 @@ const logger = require("pino")();
 
 
 export function CreatorPage() {
+
 
 	let contractData: ContractData = {} as ContractData;
 /*
@@ -63,8 +60,8 @@ export function CreatorPage() {
 	}, [data]);
 */
 	return (
-		<div>
-			<AreasContainer {...contractData} />
-		</div>
-	);
+        <div>
+            <AreasContainer {...contractData} />
+        </div>
+    );
 }

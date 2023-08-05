@@ -3,7 +3,6 @@
 import '../../assets/styles/controls-list.css'
 
 import { ControlButton } from "../buttons/ControlButton";
-import { Connect } from '../../components/Connect'
 import { ControlButtonData } from "../interfaces/ControlButtonData";
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
@@ -87,8 +86,7 @@ export function CreatorControls() {
 	disconnect_wallet.onClick = () => disconnect();
 
 	return (
-		<div>
-			<h3>CreatorControls</h3>
+		<>
 			<ul className="list-group controls-list-group">
 				<li className="list-group-item controls-list-group-item">
 
@@ -108,8 +106,8 @@ export function CreatorControls() {
 						onChange={undefined} 
 						disabled={true} 
 						required={undefined} 
-						minlength={undefined} 
-						maxlength={undefined} 
+						minLength={undefined} 
+						maxLength={undefined} 
 						size={40} 
 						pattern={undefined} 
 						readonly={undefined} 
@@ -123,7 +121,7 @@ export function CreatorControls() {
 
 			</ul>
 
-		</div>
+		</>
 	);
 }
 

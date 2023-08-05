@@ -64,8 +64,8 @@ export function InvestorPage() {
 	}, [data]);
 
 	return (
-		<div>
+		<>
 			<AreasContainer {...contractData} />
-		</div>
+		</>
 	);
 }

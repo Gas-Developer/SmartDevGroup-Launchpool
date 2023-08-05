@@ -21,6 +21,8 @@ const logger = require("pino")();
 
 export function ControlButton(props: ControlButtonData) {
 
+	logger.info(props);
+
 	const name = props.name || "";
 	const text  = props.text || "Button";
 	const tooltip = props.tooltip || "";

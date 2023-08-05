@@ -69,3 +69,27 @@ body {
 .marginRight {
 	margin-right: 3%;
 }
+
+.stastsContainer {
+	width: 32%;
+	height: 59%;
+	margin-left: 21%;
+	margin-top: 10%;
+	border-radius: 11px;
+	padding: 13px;
+	float: left;
+}
+
+.controlsContainer {
+	width: 32%;
+	height: 59%;
+	float: left;
+	margin-top: 10%;
+	margin-left: 3%;
+	border-radius: 11px;
+	padding: 13px;
+}
+
+#containerAreasTitle {
+	text-align: center;
+}

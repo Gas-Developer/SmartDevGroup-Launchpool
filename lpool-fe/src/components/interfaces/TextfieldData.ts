@@ -9,8 +9,8 @@ export interface TextfieldData {
 	disabled: boolean | undefined;
 	required: boolean | undefined;
 	className: string | undefined;
-	minlength: number | undefined;
-	maxlength: number | undefined;
+	minLength: number | undefined;
+	maxLength: number | undefined;
 	size: number | undefined;
 	pattern: string | undefined;
 	readonly: boolean | undefined;

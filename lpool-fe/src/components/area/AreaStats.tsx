@@ -4,19 +4,24 @@ import { AreaCreatorStats } from "./AreaCreatorStats";
 import { AreaInvestorStats } from "./AreaInvestorStats";
 
 interface AreaStatsProps {
-	type: string;
+	userType: string;
 	cData: ContractData;
 }
 
 export function AreaStats(props: AreaStatsProps) {
 
 	const cData = props.cData;
+	const userType = props.userType;
 
 	return (
-		<div>
-			{ props.type === "investor" ? <AreaInvestorStats {...cData}/> : <AreaCreatorStats {...cData}/> }
-		</div>
-	);
+        <div className="stastsContainer">
+            {userType === "investor" ? (
+                <AreaInvestorStats {...cData} />
+            ) : (
+                <AreaCreatorStats {...cData} />
+            )}
+        </div>
+    );
 
 }
 

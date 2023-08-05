@@ -1,0 +1,18 @@
+/*  STATS */
+.stats-list-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.stats-list-group-item {
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+	color: white;
+}
+
+.stats-form-control {
+	background-color: rgba(0, 0, 0, 0.5);
+	border: none;
+}

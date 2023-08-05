@@ -1,27 +1,43 @@
 "use client";
 
 import { ContractData } from "../interfaces/ContractData";
+import "../../assets/styles/stats-list.css";
+const logger = require("pino")();
+
+function secondsToDate(seconds: number): Date {
+	const milliseconds = seconds * 1000;
+	return new Date(milliseconds);
+}
 
 export function AreaInvestorStats(props: ContractData) {
 
-    const startLP = props.startLP;
-    const endLP = props.endLP;
+	const startLP = secondsToDate(props.startLP);
+	const endLP = secondsToDate(props.endLP);
 
-    return (
-        <div>
-            <label className="">StartLP: {startLP}</label>
-            <br />
-            <label>EndLP: {endLP}</label>
-            <br />
-            <label>Staking lenght: {props.stakingLength}</label>
-            <br />
-            <label>Token: {props.token}</label>
-            <br />
-            <label>
-                Total token to distrubute:{" "}
-                {props.totalTokenToDistribute}
-            </label>
-        </div>
+	const startLPDate = startLP.toLocaleDateString();
+	const startLPTime = startLP.toLocaleTimeString();
+	const endLPDate = endLP.toLocaleDateString();
+	const endLPTime = endLP.toLocaleTimeString();
+
+	const launchpoolDuration = Math.floor(props.stakingLength / 86400);
+
+	return (
+        <>
+            <ul className="list-group stats-list-group">
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Total rewards: {props.totalTokenToDistribute}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Launchpool start: {startLPDate + " at " + startLPTime}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Launchpool end: {endLPDate + " at " + endLPTime}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Farming period: {launchpoolDuration} Days</label>
+                </li>
+            </ul>
+        </>
     );
 
 }
