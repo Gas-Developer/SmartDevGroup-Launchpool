@@ -14,14 +14,14 @@ export function AreaStats(props: AreaStatsProps) {
 	const userType = props.userType;
 
 	return (
-        <div className="stastsContainer">
-            {userType === "investor" ? (
-                <AreaInvestorStats {...cData} />
-            ) : (
-                <AreaCreatorStats {...cData} />
-            )}
-        </div>
-    );
+		<div className="stastsContainer">
+			{userType === "investor" ? (
+				<AreaInvestorStats {...cData} />
+			) : (
+				<AreaCreatorStats {...cData} />
+			)}
+		</div>
+	);
 
 }
 

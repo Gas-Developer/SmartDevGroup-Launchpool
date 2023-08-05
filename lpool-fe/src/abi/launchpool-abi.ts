@@ -1,4 +1,4 @@
-const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS as `0x${string}`; 
+const contractAddress = process.env.NEXT_PUBLIC_LAUNCHPOOL_CONTRACT_ADDRESS as `0x${string}`; 
 
 export const wagmiContractConfig = {
   address: contractAddress,

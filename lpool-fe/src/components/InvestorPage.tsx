@@ -2,14 +2,12 @@
 
 import { useContractReads } from "wagmi";
 import { useEffect, useState } from "react";
-import { wagmiContractConfig } from "../abi/contract-abi";
-import { stringify } from "../utils/stringify";
-import { AreaInvestorStats } from "./area/AreaInvestorStats";
+import { wagmiContractConfig } from "../abi/launchpool-abi";
 import { ContractData } from "./interfaces/ContractData";
 import { AreasContainer } from "./area/AreasContainer";
+import { wagmiTokenConfig } from "../abi/token-abi";
 
 const logger = require("pino")();
-
 
 export function InvestorPage() {
 
@@ -38,17 +36,34 @@ export function InvestorPage() {
 				...wagmiContractConfig,
 				functionName: "totalTokenToDistribute",
 			},
+			{
+				...wagmiTokenConfig,
+				functionName: "name",
+			},
+			{
+				...wagmiTokenConfig,
+				functionName: "symbol",
+			},
+			{
+				...wagmiTokenConfig,
+				functionName: "totalSupply",
+			},
 		],
 	});
 
 	useEffect(() => {
 
-		if(isSuccess && !isLoading && 
-			data?.[0].result !== undefined
-			&& data?.[1].result !== undefined
-			&& data?.[2].result !== undefined
-			&& data?.[3].result !== undefined
-			&& data?.[4].result !== undefined
+		if (
+			isSuccess &&
+			!isLoading &&
+			data?.[0].result !== undefined &&
+			data?.[1].result !== undefined &&
+			data?.[2].result !== undefined &&
+			data?.[3].result !== undefined &&
+			data?.[4].result !== undefined &&
+			data?.[5].result !== undefined &&
+			data?.[6].result !== undefined &&
+			data?.[7].result !== undefined
 		) {
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 			dataToSend = {
@@ -57,9 +72,11 @@ export function InvestorPage() {
 				stakingLength: parseInt(data?.[2].result?.toString()),
 				token: data?.[3].result?.toString(),
 				totalTokenToDistribute: parseInt(data?.[4].result?.toString()),
+				name: data?.[5].result?.toString(),
+				symbol: data?.[6].result?.toString(),
+				totalSupply: data?.[7].result?.toString(),
 			};
 		}
-		// Aggiorna lo stato con i dati ottenuti dal contratto
 		setContractData(dataToSend);
 	}, [data]);
 

@@ -4,7 +4,7 @@ import { UserTypeButton } from "../components/buttons/userType-button";
 import { Connect } from "../components/Connect";
 import { useContractRead } from "wagmi";
 import { NetworkSwitcher } from "../components/NetworkSwitcher";
-import { wagmiContractConfig } from "../abi/contract-abi";
+import { wagmiContractConfig } from "../abi/launchpool-abi";
 import { useState } from "react";
 
 export default function LandingPage() {

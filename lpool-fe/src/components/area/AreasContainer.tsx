@@ -20,7 +20,7 @@ export function AreasContainer(props: ContractData) {
     };
 	
 	return (
-        <div>
+        <div id="userDashboardContainer">
             <h1 id="containerAreasTitle">
                 {userType === "investor"
                     ? "Investor Dashboard"

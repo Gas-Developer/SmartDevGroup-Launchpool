@@ -28,6 +28,13 @@ body {
 
 }
 
+#userDashboardContainer {
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	z-index: 0;
+}
+
 
 #userTypeButtonsContainer {
 	display: flex;
@@ -92,4 +99,9 @@ body {
 
 #containerAreasTitle {
 	text-align: center;
+}
+
+#bLPoolSettings {
+	float: inline-end;
+	margin-top: 1vh;
 }
