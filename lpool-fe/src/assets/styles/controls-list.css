@@ -1,0 +1,84 @@
+/*  CONTROLS */
+.controls-list-group {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.controls-list-group-item {
+	background-color: rgba(0, 0, 0, 0);
+	border: none;
+}
+
+.controls-form-control {
+	background-color: rgba(0, 0, 0, 0.5);
+	border: none;
+}
+
+
+.controlButton {
+	border: 2px solid rgba(255, 255, 255, 0.5);
+	border-radius: 8px;
+	padding: 5px;
+	color: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
+	transition: all 150ms ease-in-out;
+	width: 34vh;
+	height: 4vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+
+	font-size: 0.85rem;
+	justify-content: center;
+	text-decoration: none;
+
+}
+
+.controlButton:hover {
+	background-color: rgba(100, 100, 100, 0.5);
+	color: rgba(255, 255, 255, 0.75);
+	border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.controlButton:disabled {
+	background-color: rgba(100, 100, 100, 0.5);
+	color: rgba(255, 255, 255, 0.25);
+	border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+
+/* TEXTFIELDS */
+.controls-textfield {
+	background-color: rgba(50, 50, 50, 0.5);
+	color: rgba(0, 0, 0, 0.75);
+	border: none;
+
+	font-size: 0.85rem;
+}
+
+.controls-textfield:focus {
+	background-color: rgba(100, 100, 100, 0.75);
+	border: none;
+}
+
+.controls-textfield:disabled {
+	background-color: rgba(50, 50, 50, 0.5);
+	color: rgba(0, 0, 0, 0.25);
+	border: none;
+}
+
+.controls-textfield::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: rgba(255, 255, 255, 0.25);
+	opacity: 1; /* Firefox */
+}
+
+.controls-textfield:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: rgba(255, 255, 255, 0.25);
+}
+
+.controls-textfield::-ms-input-placeholder { /* Microsoft Edge */
+	color: rgba(255, 255, 255, 0.25);
+}

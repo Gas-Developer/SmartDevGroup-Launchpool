@@ -1,12 +1,16 @@
 "use client";
 
-import { ContractData } from "../interfaces/ContractData";
+import { CreatorControls } from "./CreatorControls";
+import { InvestorControls } from "./InvestorControls";
 
-export function AreaControls(props: ContractData) {
+
+export function AreaControls(props: any) {
 
 	return (
 		<div>
-			<h3>AreaControls</h3>
+			<div className="flex flex-row justify-between AreaControls">
+				{props.type === "investor" ? <InvestorControls /> : <CreatorControls />}
+			</div>
 		</div>
 	);
 }
