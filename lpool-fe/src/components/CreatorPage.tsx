@@ -5,14 +5,15 @@ import { useEffect, useState } from "react";
 import { wagmiContractConfig } from "../abi/contract-abi";
 import { AreaInvestorStats } from "./area/AreaInvestorStats";
 import { ContractData } from "./interfaces/ContractData";
+import { AreasContainer } from "./area/AreasContainer";
 
 const logger = require("pino")();
 
 
-export function InvestorPage() {
+export function CreatorPage() {
 
-	let dataToSend: ContractData = {} as ContractData;
-
+	let contractData: ContractData = {} as ContractData;
+/*
 	const [contractData, setContractData] = useState({} as ContractData);
 	const { data, isSuccess, isLoading } = useContractReads({
 		contracts: [
@@ -60,10 +61,10 @@ export function InvestorPage() {
 		// Aggiorna lo stato con i dati ottenuti dal contratto
 		setContractData(dataToSend);
 	}, [data]);
-
+*/
 	return (
 		<div>
-			<h3>CreatorPage</h3>
+			<AreasContainer {...contractData} />
 		</div>
 	);
 }
