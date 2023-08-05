@@ -37,6 +37,7 @@ body {
 }
 
 
+/* BUTTONS */
 .userTypeButton {
 	border: 2px solid #ffffff;
 	border-radius: 8px;
@@ -53,6 +54,16 @@ body {
 	justify-content: center;
 	text-decoration: none;
 	font-size: xxx-large;
+}
+
+.userTypeButton:hover {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+.userTypeButton:active {
+	background-color: #000000;
+	color: #ffffff;
 }
 
 .marginRight {
