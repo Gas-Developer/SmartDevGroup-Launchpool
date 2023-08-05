@@ -16,7 +16,7 @@ export function AreasContainer(props: ContractData) {
 	return (
 		<div>
 			<AreaStats {...AreaStatsProps} />
-			<AreaControls {...cData}/>
+			<AreaControls />
 		</div>
 	);
 }
