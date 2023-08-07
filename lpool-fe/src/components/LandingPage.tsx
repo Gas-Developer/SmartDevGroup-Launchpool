@@ -1,11 +1,8 @@
 'use client'
 
 import { UserTypeButton } from "../components/buttons/userType-button";
-//import { useState } from "react";
 
 export default function LandingPage() {
-
-	//const [isStarted, setIsStarted] = useState(false);
 
 	return (
 		<div>
@@ -14,5 +11,5 @@ export default function LandingPage() {
 				<UserTypeButton name="Creator" />
 			</div>
 		</div>
-		);
-	}
+	);
+}
