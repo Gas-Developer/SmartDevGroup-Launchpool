@@ -16,3 +16,37 @@
 	background-color: rgba(0, 0, 0, 0.5);
 	border: none;
 }
+
+/* LABEL */
+.InfoLabel {
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.75);
+	height: 3.5vh;
+	display: flex;
+	vertical-align: middle;
+	text-align: left;
+	padding: 0px;
+	padding-left: 10px;
+	padding-top: 5px;
+}
+
+.InfoValue {
+	font-size: 0.8rem;
+	color: rgba(255, 255, 255, 0.5);
+	background-color: rgba(255, 255, 255, 0.05);
+	height: 3.5vh;
+	width: 100%;
+	display: flex;
+	border-radius: 8px;
+	vertical-align: middle;
+	text-align: left;
+	padding: 0px;
+	padding-left: 10px;
+	padding-top: 5px;
+
+}
+
+/* BUTTON */
+.fullWidthBTN {
+	width: 100%;
+}

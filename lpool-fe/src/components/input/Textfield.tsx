@@ -22,9 +22,9 @@ export function Textfield(props: TextfieldData) {
 	editableProps.size = props.size ? props.size : 35;
 
 	return (
-		<div>
+		<>
 			<input type="text" {...editableProps}/>
-		</div>
+		</>
 	);
 
 }

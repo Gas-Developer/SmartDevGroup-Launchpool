@@ -1,6 +1,10 @@
 "use client";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { ContractData } from "../interfaces/ContractData";
+import { Textfield } from "../input/Textfield";
+import { ControlButton } from "../buttons/ControlButton";
+import { InfoValue } from "../label/InfoValue";
+import { Info } from "../label/Info";
 
 export function AreaCreatorStats(props: ContractData) {
 
@@ -8,55 +12,94 @@ export function AreaCreatorStats(props: ContractData) {
 	const endLP = props.endLP;
 
 	return (
-        <>
-            <Form>
-                <Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-                    <Form.Label column sm="4"> Token Address</Form.Label>
-                    <Col sm="8">
-                        <Form.Control type="text" defaultValue="token address"/>
-                    </Col>
-                </Form.Group>
+		<>
+			<Form>
+				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
+					<Info 
+						name={"token_address"} 
+						label={"Token Address"} 
+						value={"Token Address"} 
+						size={40} 
+						className={undefined} 
+						classNameLabel={"form-label col-form-label col-sm-4"} 
+						classNameValue="controls-textfield" 
+					/>
+				</Form.Group>
 
-                <Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-					<Form.Label column sm="4"> Token Name:</Form.Label>
-					<Form.Label column sm="4"></Form.Label>
-				</Form.Group>
-				
 				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-                    <Form.Label column sm="4"> Token Symbol</Form.Label>
-					<Form.Label column sm="4"></Form.Label>
+					<Info 
+						name={"token_name"} 
+						label={"Token Name"} 
+						value={"Token Name"} 
+						size={40} 
+						className={undefined} 
+						classNameLabel={"form-label col-form-label col-sm-4"} 
+						classNameValue="controls-textfield" 
+					/>
 				</Form.Group>
-				
+
 				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-                    <Form.Label column sm="4"> Total Rewards</Form.Label>
-                    <Col sm="8">
-                        <Form.Control type="text" defaultValue="Total rewards"/>
-                    </Col>
+					<Info 
+						name={"token_symbol"} 
+						label={"Token Symbol"} 
+						value={"Token Symbol"} 
+						size={40} 
+						className={undefined} 
+						classNameLabel={"form-label col-form-label col-sm-4"} 
+						classNameValue="controls-textfield" 
+					/>
 				</Form.Group>
-								
+
 				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-                    <Form.Label column sm="4">Launchpool Start</Form.Label>
-                    <Col sm="8">
-                        <Form.Control type="text" defaultValue="Launchpool start"/>
-                    </Col>
+					<Info 
+						name={"total_rewards"} 
+						label={"Total Rewards"} 
+						value={"0"} 
+						size={40} 
+						className={undefined} 
+						classNameLabel={"form-label col-form-label col-sm-4"} 
+						classNameValue="controls-textfield" 
+					/>
 				</Form.Group>
-				
+
 				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-                    <Form.Label column sm="4">Launchpool End</Form.Label>
-                    <Col sm="8">
-                        <Form.Control type="text" defaultValue="Launchpool end"/>
-                    </Col>
+					<Info 
+						name={"lp_start"} 
+						label={"Launchpool Start"} 
+						value={"--/--/--"} 
+						size={40} 
+						className={undefined} 
+						classNameLabel={"form-label col-form-label col-sm-4"} 
+						classNameValue="controls-textfield" 
+					/>
 				</Form.Group>
-				
+
 				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
-                    <Form.Label column sm="4">Farming Period</Form.Label>
-                    <Col sm="8">
-                        <Form.Control type="text" defaultValue="Farming period"/>
-                    </Col>
-                </Form.Group>
+					<Info 
+							name={"lp_end"} 
+							label={"Launchpool End"} 
+							value={"--/--/--"} 
+							size={40} 
+							className={undefined} 
+							classNameLabel={"form-label col-form-label col-sm-4"} 
+							classNameValue="controls-textfield" 
+						/>
+				</Form.Group>
+
+				<Form.Group as={Row} className="mb-2" controlId="formPlaintextEmail">
+					<Info 
+							name={"farming_lenght"} 
+							label={"Farming lenght"} 
+							value={"0 days"} 
+							size={40} 
+							className={undefined} 
+							classNameLabel={"form-label col-form-label col-sm-4"} 
+							classNameValue="controls-textfield" 
+						/>
+				</Form.Group>
 			</Form>
 
-			<Button id="bLPoolSettings" variant="dark">Save Changes</Button>
-        </>
-    );
+			<ControlButton name="bLPoolSettings" text="Save Changes" tooltip="Save Changes" onClick={undefined} disabled={false} className="fullWidthBTN" iconURL="" />
+		</>
+	);
 }
