@@ -11,7 +11,7 @@ export function AreaControls(props: any) {
 			{props.userType === "investor" ? (
 				<InvestorControls />
 			) : (
-				<CreatorControls />
+				<CreatorControls setTokenData={props.setTokenData} />
 			)}
 		</div>
 	);
