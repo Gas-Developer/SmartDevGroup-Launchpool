@@ -20,11 +20,15 @@ interface InfoData {
 
 export function Info(props: InfoData) {
 
+	let info_value = props.value;
+	if(props.value != undefined && props.value.length > 40) 
+		info_value = props.value.substring(0, 10) + "..." +props.value.substring(props.value.length - 10, props.value.length);
+
 	return (
 		<>
 			<InfoLabel name={props.name+"Label"} value={props.label} className={props.classNameLabel} />
 			<Col sm="8">
-				<InfoValue name={props.name+"Value"} value={props.value} className={props.classNameValue} size={props.size} />
+				<InfoValue name={props.name+"Value"} value={info_value} className={props.classNameValue} size={props.size} />
 			</Col>
 		</>
 

@@ -13,5 +13,5 @@ export interface TextfieldData {
 	maxLength: number | undefined;
 	size: number | undefined;
 	pattern: string | undefined;
-	readonly: boolean | undefined;
+	readOnly: boolean | undefined;
 }

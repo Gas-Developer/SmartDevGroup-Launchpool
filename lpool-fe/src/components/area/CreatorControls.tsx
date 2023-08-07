@@ -5,8 +5,8 @@ import '../../assets/styles/controls-list.css'
 import { ControlButton } from "../buttons/ControlButton";
 import { ControlButtonData } from "../interfaces/ControlButtonData";
 
-import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import { Textfield } from '../input/Textfield';
+import { useAccount, useConnect, useContractRead, useContractReads, useContractWrite, useDisconnect, useWaitForTransaction } from 'wagmi'
+import { LinkToken } from '../LinkToken';
 
 const logger = require("pino")();
 
@@ -26,21 +26,22 @@ const disconnect_wallet: ControlButtonData = {
 	text: "Disconnect Wallet",
 	tooltip: "Disconnect Wallet",
 	onClick: {},
-	disabled: true,
+	disabled: false,
 	className: "",
 	iconURL: ""
 };
 
+
+
+
 // LINK TOKEN BUTTON
-function linkToken() {
-	console.log("linkToken");
-}
+
 
 const link_token: ControlButtonData = {
 	name: "link_token",
 	text: "Link Token",
 	tooltip: "Link Token",
-	onClick: linkToken,
+	onClick: undefined,
 	disabled: true,
 	className: "",
 	iconURL: ""
@@ -76,8 +77,9 @@ const withdraw_button: ControlButtonData = {
 	iconURL: ""
 };
 
-export function CreatorControls() {
+export function CreatorControls(props: any) {
 
+	// WALLET CONNECT
 	const { connector, isConnected } = useAccount()
 	const { connect, connectors, error, isLoading, pendingConnector } = useConnect()
 	const { disconnect } = useDisconnect()
@@ -85,44 +87,28 @@ export function CreatorControls() {
 	connect_wallet.onClick = () => connect({ connector: connectors[0] });
 	disconnect_wallet.onClick = () => disconnect();
 
+	// LINK TOKEN BUTTON
+	link_token.disabled = !isConnected;
+	link_token.onClick = props.setTokenData;
+
+	const linkTokenData = {
+		...link_token,
+		setTokenData: props.setTokenData,
+	}
+
 	return (
 		<>
 			<ul className="list-group controls-list-group">
 				<li className="list-group-item controls-list-group-item">
-
 					{!isConnected ? 
 						<ControlButton {...connect_wallet}/> :
 						<ControlButton {...disconnect_wallet}/>
 					}
-
 				</li>
-				<li className="list-group-item  controls-list-group-item">
-					<Textfield 
-						id="token_address" 
-						name="token_address" 
-						className="controls-textfield" 
-						placeholder="Token Address" 
-						value={undefined} 
-						onChange={undefined} 
-						disabled={true} 
-						required={undefined} 
-						minLength={undefined} 
-						maxLength={undefined} 
-						size={40} 
-						pattern={undefined} 
-						readonly={undefined} 
-					/>
-				</li>
-				<li className="list-group-item controls-list-group-item">
-					<ControlButton {...link_token}/>
-				</li>
+				<LinkToken {...linkTokenData} />
 				<li className="list-group-item controls-list-group-item"><ControlButton {...deposit_button}/></li>
 				<li className="list-group-item controls-list-group-item"><ControlButton {...withdraw_button}/></li>
-
 			</ul>
-
 		</>
 	);
 }
-
-
