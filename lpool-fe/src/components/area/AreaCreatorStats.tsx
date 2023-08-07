@@ -79,7 +79,7 @@ export function AreaCreatorStats(props: ContractData) {
 							maxLength={undefined} 
 							size={40} 
 							pattern={undefined} 
-							readonly={false} 
+							readOnly={false} 
 						/>
 					</Col>
 
@@ -101,7 +101,7 @@ export function AreaCreatorStats(props: ContractData) {
 							maxLength={undefined} 
 							size={40} 
 							pattern={undefined} 
-							readonly={false} 
+							readOnly={false} 
 						/>
 					</Col>
 				</Form.Group>
