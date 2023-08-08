@@ -59,13 +59,14 @@ contract Launchpool is Ownable, ReentrancyGuard {
 
 	// DATA STRUCTURES & VARIABLES
 	uint256 public totalTokenToDistribute;			// contatore Token ancora da distribuire
-	string nameTokenToDistribute;					// nome Token ERC-20 da distribuire
-	string symbolTokenToDistribute;					// symbolo Token ERC-20 da distribuire
-	uint256 decimalsTokenToDistribute;				// decimali Token ERC-20 da distribuire
+	string public nameTokenToDistribute;					// nome Token ERC-20 da distribuire
+	string public symbolTokenToDistribute;					// symbolo Token ERC-20 da distribuire
+	uint256 public decimalsTokenToDistribute;				// decimali Token ERC-20 da distribuire
 	uint256 public stakingLength;					// lunghezza in secondi del periodo di staking
 	uint256 public startLP;							// timestamp inizio launchpool
 	uint256 public endLP;							// timestamp inizio launchpool
 	uint256 public TotalPower = 0;					// ad ogni commit TotalPower = TotalPower + orderPower;
+	uint256 public totalStaked;						// total staked by  users
 
 	mapping(address => uint256[]) public orderIDs;	// associa ogni ordine di staking all'address che lo ha effettuato
 
@@ -164,6 +165,8 @@ contract Launchpool is Ownable, ReentrancyGuard {
 		// Aggiorno il totale dei power
 		TotalPower = TotalPower + senderOrder.power;						// Aggiungo il power al totale dei power
 
+		totalStaked += senderOrder.stakedAmount;
+
 		//console.log("senderOrder.stakedAmount: ", senderOrder.stakedAmount);
 		//console.log("endLP: ", endLP);
 		//console.log("senderOrder.orderTime: ", senderOrder.orderTime);
@@ -250,9 +253,11 @@ contract Launchpool is Ownable, ReentrancyGuard {
 
 		} 
 
-        // Send the value staked to the user
-        (bool sent, ) = userAddress.call{value: myTotalStaked}("");
-        require(sent, "Failed to send Matic");
+		// Send the value staked to the user
+		(bool sent, ) = userAddress.call{value: myTotalStaked}("");
+		require(sent, "Failed to send Matic");
+
+		totalStaked -= myTotalStaked; 
 
 		emit unstakeOrder(
 			userAddress,
@@ -276,18 +281,18 @@ contract Launchpool is Ownable, ReentrancyGuard {
 	}
 
 	function getUserTotalStaked(address _user) public view returns (uint256) {
-		uint256 totalStaked = 0;
+		uint256 userTotalStaked = 0;
 		for (uint256 i = 0; i < orderIDs[_user].length; i++) {
 			
 			uint256 currentOrderId = orderIDs[_user][i];
 			Order memory order = orders[currentOrderId];
 
 			if(order.unstaked == false) {
-				totalStaked = totalStaked + order.stakedAmount;
+				userTotalStaked = userTotalStaked + order.stakedAmount;
 			}
 
 		}
-		return totalStaked;
+		return userTotalStaked;
 	}
 
 	function setStartLP(uint256 _newStartLP) public onlyOwner launchpoolNotStarted {
