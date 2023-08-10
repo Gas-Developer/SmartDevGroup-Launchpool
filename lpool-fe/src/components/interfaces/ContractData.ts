@@ -6,6 +6,7 @@ export interface ContractData {
 	stakingLength: number;
 	token: string;
 	totalTokenToDistribute: number;
+	totalStaked: number;
 	name: string;
 	symbol: string;
 	totalSupply: string;

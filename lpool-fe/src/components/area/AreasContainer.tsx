@@ -13,13 +13,15 @@ export function AreasContainer(props: ContractData) {
 	
 	const pathname = usePathname();
 
-	const userType = pathname.includes('investor') ? "investor" : "creator"
+	const userType = pathname.includes('investor') ? "investor" : "creator";
 
 	// GESTISCO I DATI DELLE STATS CON GLI STATI
 	const [AreaStatsProps, setAreaStatsProps] = useState({
 		userType: userType,
 		cData: cData,
 	});
+
+	logger.info(AreaStatsProps);	
 
 	const AreaControlsProps = {
 		setTokenData: setTokenData,
@@ -39,15 +41,17 @@ export function AreasContainer(props: ContractData) {
 	}
 
 	return (
-		<div id="userDashboardContainer">
+		<>
+		<div id="dashboardTitleContainer">
 			<h1 id="containerAreasTitle">
 				{userType === "investor"
 					? "Investor Dashboard"
 					: "Creator Dashboard"}{" "}
-			</h1>
+				</h1>
+				</div>
 			<AreaStats {...AreaStatsProps} />
 			<AreaControls {...AreaControlsProps} />
-		</div>
+		</>
 	);
 }
 

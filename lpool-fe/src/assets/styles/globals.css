@@ -28,13 +28,15 @@ body {
 
 }
 
-#userDashboardContainer {
+.mainContainer {
+	position: fixed;
 	width: 100%;
 	height: 100%;
-	margin: 0 auto;
-	z-index: 0;
 }
 
+#dashboardTitleContainer {
+	height: 9%;
+}
 
 #userTypeButtonsContainer {
 	display: flex;
