@@ -6,7 +6,7 @@ import { ControlButton } from "../buttons/ControlButton";
 import { ControlButtonData } from "../interfaces/ControlButtonData";
 
 import { useAccount, useConnect, useContractRead, useContractReads, useContractWrite, useDisconnect, useWaitForTransaction } from 'wagmi'
-import { LinkToken } from '../LinkToken';
+import { CreateLaunchpool } from '../CreateLaunchpool';
 
 const logger = require("pino")();
 
@@ -31,12 +31,7 @@ const disconnect_wallet: ControlButtonData = {
 	iconURL: ""
 };
 
-
-
-
 // LINK TOKEN BUTTON
-
-
 const link_token: ControlButtonData = {
 	name: "link_token",
 	text: "Link Token",
@@ -89,7 +84,7 @@ export function CreatorControls(props: any) {
 
 	// LINK TOKEN BUTTON
 	link_token.disabled = !isConnected;
-	link_token.onClick = props.setTokenData;
+	//link_token.onClick = props.setTokenData;
 
 	const linkTokenData = {
 		...link_token,
@@ -105,9 +100,16 @@ export function CreatorControls(props: any) {
 						<ControlButton {...disconnect_wallet}/>
 					}
 				</li>
-				<LinkToken {...linkTokenData} />
-				<li className="list-group-item controls-list-group-item"><ControlButton {...deposit_button}/></li>
-				<li className="list-group-item controls-list-group-item"><ControlButton {...withdraw_button}/></li>
+				<li className="list-group-item controls-list-group-item">
+					{isConnected ? <CreateLaunchpool setTokenData={ props.setTokenData}/> : null}
+				</li>
+{/* 				
+				<li className="list-group-item controls-list-group-item">
+					{isConnected ? <ControlButton {...deposit_button}/> : null}
+				</li>
+				<li className="list-group-item controls-list-group-item">
+					{isConnected ? <ControlButton {...withdraw_button}/> : null}
+				</li> */}
 			</ul>
 		</>
 	);
