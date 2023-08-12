@@ -1,30 +1,22 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { ControlButton } from "./buttons/ControlButton";
 import { Textfield } from "./input/Textfield";
 import { wagmiTokenConfig } from "../abi/token-abi";
 import { useContractReads } from "wagmi";
 
 export function LinkToken(props: any) {
 
-	const isConnected = props.isConnected;
-
-	// TOKEN ADDRESS
-	const [tokenAddress, setTokenAddress] = useState('');
-
-	const newTokenAddress = tokenAddress as `0x${string}`;
-
-
-	const editableWagmiTokenConfig = { ...wagmiTokenConfig, address: newTokenAddress };
 
 	// READ CONTRACT
 	const { data, isSuccess, isLoading } = useContractReads({
 		contracts: [
 			{
-				...editableWagmiTokenConfig,
+				...wagmiTokenConfig,
+				address: props.tokenAddress as `0x${string}`,
 				functionName: "name",
 			},
 			{
-				...editableWagmiTokenConfig,
+				...wagmiTokenConfig,
+				address: props.tokenAddress as `0x${string}`,
 				functionName: "symbol",
 			},
 		],
@@ -39,32 +31,22 @@ export function LinkToken(props: any) {
 			data?.[0].result !== undefined &&
 			data?.[1].result !== undefined
 		) {
-			props.setTokenData(data, newTokenAddress);
+
+			//console.log("props", props);
+			props.setTokenData(data, props.tokenAddress);
 		}
 	}, [data, isLoading, isSuccess]);
 
-
-	// LINK TOKEN
-	function linkToken() {
-		console.log("linkToken");
-	}
-
-	const link_token = {
-		...props, // Spread the existing props
-		onClick: linkToken, // Add the onClick property
-	};
-
 	return (
 		<>
-			<li className="list-group-item  controls-list-group-item">
 				<Textfield 
 					id="token_address" 
 					name="token_address" 
 					className="controls-textfield" 
 					placeholder="0x..." 
-					value={tokenAddress} 
-					onChange={(e: { target: { value: SetStateAction<string>; }; }) => setTokenAddress(e.target.value)} 
-					disabled={link_token.disabled} 
+					value={props.tokenAddress} 
+					onChange={(e: { target: { value: SetStateAction<string>; }; }) => props.setTokenAddress(e.target.value)} 
+					disabled={props.disabled} 
 					required={undefined} 
 					minLength={undefined} 
 					maxLength={undefined} 
@@ -72,10 +54,6 @@ export function LinkToken(props: any) {
 					pattern={undefined} 
 					readOnly={undefined} 
 				/>
-			</li>
-			{/* <li className="list-group-item controls-list-group-item">
-				<ControlButton {...link_token}/>
-			</li> */}
 		</>
 
 	)
