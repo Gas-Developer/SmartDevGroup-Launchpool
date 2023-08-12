@@ -24,44 +24,39 @@ export function AreaInvestorStats(props: ContractData) {
 	const totalSupply = props.totalSupply;
 
 	return (
-		<>
-			<ul className="list-group stats-list-group">
-				<li className="list-group-item  stats-list-group-item">
-					<label>
-						Token name: {props.name}
-					</label>
-				</li>
-				<li className="list-group-item  stats-list-group-item">
-					<label>
-						Token symbol: {props.symbol}
-					</label>
-				</li>
-				<li className="list-group-item  stats-list-group-item">
-					<label>
-						Total supply: {totalSupply}
-					</label>
-				</li>
-				<li className="list-group-item  stats-list-group-item">
-					<label>
-						Total rewards: {props.totalTokenToDistribute}
-					</label>
-				</li>
-				<li className="list-group-item  stats-list-group-item">
-					<label>
-						Launchpool start: {startLPDate + " at " + startLPTime}
-					</label>
-				</li>
-				<li className="list-group-item  stats-list-group-item">
-					<label>
-						Launchpool end: {endLPDate + " at " + endLPTime}
-					</label>
-				</li>
-				<li className="list-group-item  stats-list-group-item">
-					<label>Farming period: {launchpoolDuration} Days</label>
-				</li>
-			</ul>
-		</>
-	);
+        <>
+            <ul className="list-group stats-list-group">
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Token name: {props.name}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Token symbol: {props.symbol}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Total supply: {totalSupply}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Total rewards: {props.totalTokenToDistribute}</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>
+                        Launchpool start: {startLPDate + " at " + startLPTime}
+                    </label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>
+                        Launchpool end: {endLPDate + " at " + endLPTime}
+                    </label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Farming period: {launchpoolDuration} Days</label>
+                </li>
+                <li className="list-group-item  stats-list-group-item">
+                    <label>Total Staked: {props.totalStaked}</label>
+                </li>
+            </ul>
+        </>
+    );
 
 }
 

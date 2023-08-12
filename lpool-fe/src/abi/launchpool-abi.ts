@@ -234,6 +234,19 @@ export const wagmiContractConfig = {
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "decimalsTokenToDistribute",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "uint256",
@@ -363,6 +376,19 @@ export const wagmiContractConfig = {
           "internalType": "bool",
           "name": "",
           "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nameTokenToDistribute",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
         }
       ],
       "stateMutability": "view",
@@ -512,12 +538,38 @@ export const wagmiContractConfig = {
     },
     {
       "inputs": [],
+      "name": "symbolTokenToDistribute",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "token",
       "outputs": [
         {
           "internalType": "contract ERC20",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalStaked",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -556,5 +608,5 @@ export const wagmiContractConfig = {
       "stateMutability": "nonpayable",
       "type": "function"
     }
-],
+  ],
 } as const

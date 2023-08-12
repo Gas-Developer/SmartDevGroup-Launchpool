@@ -52,6 +52,8 @@ describe.only("Launchpool Interactions", function () {
 
             expect((await launchpool.getMyOrders()).length).equal(2);
 
+            expect((await launchpool.totalStaked())).equal(1850);
+
         })
     });
 
@@ -75,6 +77,8 @@ describe.only("Launchpool Interactions", function () {
 
             await launchpool.stake({ value: 1000 });
 
+            expect((await launchpool.totalStaked())).equal(2650);
+
             //Launchpool needs to finish
             const DAY_IN_SECONDS = 86400;
         
@@ -88,6 +92,8 @@ describe.only("Launchpool Interactions", function () {
             expect(await launchpool.getMyTotalStaked()).equal(0);
 
             expect(await launchpool.connect(otherAccount).getMyTotalStaked()).equal(150);
+
+            expect((await launchpool.totalStaked())).equal(150);
 
         })        
 
