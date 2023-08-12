@@ -102,7 +102,7 @@ contract launchpoolTemplate is Initializable, Ownable, ReentrancyGuard {
 	}
 
 	function initialize(ERC20 _token, uint256 _startLP, uint256 _endLP) external initializer {
-		require(_startLP > block.timestamp, "StartLP must be greater than zero");
+		require(_startLP > block.timestamp, "StartLP must be greater than now");
 		require(_startLP < _endLP, "StartLP must be less than EndLP");
 
 		token = _token;
