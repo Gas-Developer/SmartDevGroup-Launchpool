@@ -2,7 +2,7 @@
 
 import { useContractReads } from 'wagmi'
 
-import { wagmiContractConfig } from "../abi/launchpool-abi";
+import { wagmiContractConfig } from "../abi/wagmi-sample-abi";
 import { stringify } from '../utils/stringify'
 import { useState } from 'react';
 

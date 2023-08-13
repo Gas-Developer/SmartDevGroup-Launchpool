@@ -2,7 +2,7 @@
 
 import { useContractReads } from "wagmi";
 import { useEffect, useState } from "react";
-import { wagmiContractConfig } from "../abi/launchpool-abi";
+import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
 import { ContractData } from "./interfaces/ContractData";
 import { AreasContainer } from "./area/AreasContainer";
 import { wagmiTokenConfig } from "../abi/token-abi";
@@ -17,27 +17,27 @@ export function InvestorPage() {
 	const { data, isSuccess, isLoading } = useContractReads({
         contracts: [
             {
-                ...wagmiContractConfig,
+                ...LaunchpoolContractConfig,
                 functionName: "startLP",
             },
             {
-                ...wagmiContractConfig,
+                ...LaunchpoolContractConfig,
                 functionName: "endLP",
             },
             {
-                ...wagmiContractConfig,
+                ...LaunchpoolContractConfig,
                 functionName: "stakingLength",
             },
             {
-                ...wagmiContractConfig,
+                ...LaunchpoolContractConfig,
                 functionName: "token",
             },
             {
-                ...wagmiContractConfig,
+                ...LaunchpoolContractConfig,
                 functionName: "totalTokenToDistribute",
             },
             {
-                ...wagmiContractConfig,
+                ...LaunchpoolContractConfig,
                 functionName: "totalStaked",
             },
             {
