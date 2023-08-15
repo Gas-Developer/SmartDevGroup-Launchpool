@@ -9,8 +9,10 @@ const logger = require("pino")();
 
 export function AreasContainer(props: ContractData) {
 
+	const [currentLP, setCurrentLP] = useState("");
+
 	const cData: ContractData = {...props};
-	
+
 	const pathname = usePathname();
 
 	const userType = pathname.includes('investor') ? "investor" : "creator";
@@ -21,10 +23,13 @@ export function AreasContainer(props: ContractData) {
 		cData: cData,
 	});
 
-	logger.info(AreaStatsProps);	
+	//logger.info(AreaStatsProps);	
 
 	const AreaControlsProps = {
 		setTokenData: setTokenData,
+		setCurrentLP: setCurrentLP,
+		currentLP: currentLP,
+		userType: userType,
 		cData: cData,
 	};
 
