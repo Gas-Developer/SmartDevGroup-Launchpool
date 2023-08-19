@@ -20,6 +20,7 @@ export function Textfield(props: TextfieldData) {
 	let editableProps = {...props};
 	editableProps.className = "form-control "+props.className;
 	editableProps.size = props.size ? props.size : 35;
+	editableProps.id = props.id ? props.id : props.name;
 
 	return (
 		<>
