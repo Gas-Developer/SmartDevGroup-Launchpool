@@ -1,11 +1,14 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { ControlButton } from "./buttons/ControlButton";
-import { Textfield } from "./input/Textfield";
 import { ControlButtonData } from "./interfaces/ControlButtonData";
 import { LinkToken } from './LinkToken';
 import { useContractRead, useContractWrite, useWaitForTransaction } from "wagmi";
+
 import { FactoryContractConfig } from "../abi/factory-abi";
 import { BaseError, stringify } from "viem";
+import DateTimePicker from "./dateTimePicker";
+import { Textfield } from "./input/Textfield";
+const logger = require("pino")();
 
 var axios = require('axios');
 
@@ -159,21 +162,32 @@ export function CreateLaunchpool(props: any) {
 
 	// DEPLOY NEW LAUNCHPOOL
 	function deployNewLaunchpool(storageURI: string) {
-		if(startLPValue != undefined && startLPValue > 0 && endLPValue != undefined && endLPValue > 0 && tokenAddress != undefined && tokenAddress.startsWith('0x')) {
 
+		if (startLPValue != undefined && startLPValue > 0 && endLPValue != undefined && endLPValue > 0 && tokenAddress != undefined && tokenAddress.startsWith('0x')) {
+
+			logger.info("createLaunchpool");
+			const startLPValueInSeconds = startLPValue / BigInt(1000);
+			const endLPValueInSeconds = endLPValue / BigInt(1000);
+
+			logger.info("startLPValueInSeconds", startLPValueInSeconds);
+			logger.info("endLPValueInSeconds", endLPValueInSeconds);
+
+			logger.info("createLaunchpool",setEndLPValue);
 			write({
+
 				args: [
 					FactoryContractConfig.templateAddress, 
 					tokenAddress as `0x${string}`, 
-					BigInt(startLPValue), 
-					BigInt(endLPValue),
+					BigInt(startLPValueInSeconds), 
+					BigInt(endLPValueInSeconds),
 					storageURI
 				],
 			})
 
+
 		} else {
-			console.log("ERROR: createLaunchpool");
-			console.log("Some input datas are missing or wrong");
+			logger.info("ERROR: createLaunchpool");
+			logger.info("Some input datas are missing or wrong");
 		}
 	}
 
@@ -251,37 +265,26 @@ export function CreateLaunchpool(props: any) {
 					<>
 						<li className="list-group-item  controls-list-group-item">
 							<LinkToken {...linkTokenData} />
-						</li> 
+						</li>
 						<li className="list-group-item controls-list-group-item">
-							<Textfield {...defaultTF}
-								name="start_lp" 
-								placeholder="Start: --/--/---- --:--:--" 
-								value={startLPValue.toString()} 
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-									try {
-										setStartLPValue(BigInt(e.target.value));
-									} catch (err) {
-										// The user is probably typing something that is not a number
-										//console.error("Valore non valido per StartLp BigInt:", e.target.value);
-									}
-								}}
+							<DateTimePicker
+								id="start_lp"
+								placeholder="Enter launchpool start time"
+								calendarInputClass="form-control controls-textfield"
+								setStartLPValue={setStartLPValue}
+								calendarInputSize={40}
 							/>
 						</li>
 						<li className="list-group-item controls-list-group-item">
-							<Textfield {...defaultTF}
-								name="end_lp" 
-								placeholder="End: --/--/---- --:--:--" 
-								value={endLPValue.toString()} 
-								onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-									try {
-										setEndLPValue(BigInt(e.target.value));
-									} catch (err) {
-										// The user is probably typing something that is not a number
-										//console.error("Valore non valido per EndLP BigInt:", e.target.value);
-									}
-								}}
+							<DateTimePicker
+								id="end_lp"
+								placeholder="Enter launchpool end time"
+								calendarInputClass="form-control controls-textfield"
+								setEndLPValue={setEndLPValue}
+								calendarInputSize={40}
 							/>
 						</li>
+
 
 						<li>
 							<hr/>
@@ -365,4 +368,5 @@ export function CreateLaunchpool(props: any) {
 			</ul>
 		</>
 	);
+
 }
