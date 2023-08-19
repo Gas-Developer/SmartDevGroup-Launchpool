@@ -47,8 +47,8 @@ const PINATA_PIN_JSON_TO_IPFS = "https://api.pinata.cloud/pinning/pinJSONToIPFS"
 export function CreateLaunchpool(props: any) {
 
 	const [tokenAddress, setTokenAddress] = useState('');
-	const [startLPValue, setStartLPValue] = useState(BigInt(0));
-	const [endLPValue, setEndLPValue] = useState(BigInt(0));
+	const [startLPValue, setStartLPValue] = useState(0);
+	const [endLPValue, setEndLPValue] = useState(0);
 
 	// Launchpool Info
 	const [IpfsHash, setIPFSHash] = useState('');
@@ -166,8 +166,8 @@ export function CreateLaunchpool(props: any) {
 		if (startLPValue != undefined && startLPValue > 0 && endLPValue != undefined && endLPValue > 0 && tokenAddress != undefined && tokenAddress.startsWith('0x')) {
 
 			logger.info("createLaunchpool");
-			const startLPValueInSeconds = startLPValue / BigInt(1000);
-			const endLPValueInSeconds = endLPValue / BigInt(1000);
+			const startLPValueInSeconds = BigInt(startLPValue) / BigInt(1000);
+			const endLPValueInSeconds = endLPValue / 1000;
 
 			logger.info("startLPValueInSeconds", startLPValueInSeconds);
 			logger.info("endLPValueInSeconds", endLPValueInSeconds);
@@ -183,7 +183,6 @@ export function CreateLaunchpool(props: any) {
 					storageURI
 				],
 			})
-
 
 		} else {
 			logger.info("ERROR: createLaunchpool");
