@@ -2,7 +2,7 @@
 
 import { type Address, useContractRead } from 'wagmi'
 
-import { wagmiContractConfig } from '../abi/launchpool-abi'
+import { wagmiContractConfig } from '../abi/wagmi-sample-abi'
 
 export function ReadContract() {
   return (

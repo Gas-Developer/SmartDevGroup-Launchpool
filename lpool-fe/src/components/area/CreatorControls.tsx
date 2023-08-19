@@ -5,8 +5,9 @@ import '../../assets/styles/controls-list.css'
 import { ControlButton } from "../buttons/ControlButton";
 import { ControlButtonData } from "../interfaces/ControlButtonData";
 
-import { useAccount, useConnect, useContractRead, useContractReads, useContractWrite, useDisconnect, useWaitForTransaction } from 'wagmi'
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { CreateLaunchpool } from '../CreateLaunchpool';
+import { Deposit } from '../Deposit';
 
 const logger = require("pino")();
 
@@ -31,31 +32,6 @@ const disconnect_wallet: ControlButtonData = {
 	iconURL: ""
 };
 
-// LINK TOKEN BUTTON
-const link_token: ControlButtonData = {
-	name: "link_token",
-	text: "Link Token",
-	tooltip: "Link Token",
-	onClick: undefined,
-	disabled: true,
-	className: "",
-	iconURL: ""
-};
-
-// DEPOSIT BUTTON
-function deposit() {
-	console.log("deposit");
-}
-
-const deposit_button: ControlButtonData = {
-	name: "deposit_button",
-	text: "Deposit",
-	tooltip: "Deposit",
-	onClick: deposit,
-	disabled: true,
-	className: "",
-	iconURL: ""
-};
 
 // WITHDRAW BUTTON
 function withdraw() {
@@ -82,34 +58,45 @@ export function CreatorControls(props: any) {
 	connect_wallet.onClick = () => connect({ connector: connectors[0] });
 	disconnect_wallet.onClick = () => disconnect();
 
-	// LINK TOKEN BUTTON
-	link_token.disabled = !isConnected;
-	//link_token.onClick = props.setTokenData;
-
-	const linkTokenData = {
-		...link_token,
-		setTokenData: props.setTokenData,
-	}
-
 	return (
 		<>
 			<ul className="list-group controls-list-group">
-				<li className="list-group-item controls-list-group-item">
-					{!isConnected ? 
+				{/* Wallet Connection */} 
+				{!isConnected ? // TODO: Convertire in un component WalletConnection
+					<li className="list-group-item controls-list-group-item">
 						<ControlButton {...connect_wallet}/> :
+					</li> : 
+					<li className="list-group-item controls-list-group-item">
 						<ControlButton {...disconnect_wallet}/>
-					}
-				</li>
-				<li className="list-group-item controls-list-group-item">
-					{isConnected ? <CreateLaunchpool setTokenData={ props.setTokenData}/> : null}
-				</li>
-{/* 				
-				<li className="list-group-item controls-list-group-item">
-					{isConnected ? <ControlButton {...deposit_button}/> : null}
-				</li>
-				<li className="list-group-item controls-list-group-item">
-					{isConnected ? <ControlButton {...withdraw_button}/> : null}
-				</li> */}
+					</li>
+				}
+				{/* Current Launchpool */}
+				{(isConnected && props.currentLP !== "") ? 
+					<li className="list-group-item controls-list-group-item">
+						<h5 className="controls-title">Current Launchpool</h5>
+						<div className='InfoValue'>{props.currentLP}</div>
+					</li>
+					: null
+				}
+				{/* Create Launchpool */}
+				{(isConnected && props.currentLP == "") ?
+					<li className="list-group-item controls-list-group-item">
+						<CreateLaunchpool setTokenData={props.setTokenData} setCurrentLP={props.setCurrentLP} currentLP={props.currentLP}/> 
+					</li>
+				: null
+				}
+				{/* Deposit */}
+				{(isConnected && props.currentLP !== "") ?
+					<li className="list-group-item controls-list-group-item">
+						 <Deposit /> 
+					</li>
+					/*
+					<li className="list-group-item controls-list-group-item">
+						{isConnected ? <ControlButton {...withdraw_button}/> : null}
+					</li> 
+					*/
+				: null
+				}
 			</ul>
 		</>
 	);

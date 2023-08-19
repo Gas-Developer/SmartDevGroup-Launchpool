@@ -4,3 +4,7 @@ enter:
 2) Next.js
 3) Default
 4) 0 (id)
+
+# install Axios for API calls
+cd lpool-fe
+npm install axios
