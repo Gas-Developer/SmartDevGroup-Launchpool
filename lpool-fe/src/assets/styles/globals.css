@@ -28,6 +28,18 @@ body {
 
 }
 
+/* GLOBAL */
+.text-center {
+	text-align: center;
+}
+.inline-flex {
+	display: inline-flex;
+}
+.width-100 {
+	width: 100%;
+}
+
+/* CONTAINERS */
 .mainContainer {
 	position: fixed;
 	width: 100%;
@@ -44,6 +56,16 @@ body {
 	align-items: center;
 	vertical-align: middle;
 	height: 100%;
+}
+
+#card-img-container {
+	background-color: seashell;
+	width: 100%;
+	/* display: flex;
+	justify-content: center;
+	align-items: center;
+	vertical-align: middle;
+	height: 100%; */
 }
 
 
@@ -107,4 +129,49 @@ body {
 #bLPoolSettings {
 	float: inline-end;
 	margin-top: 1vh;
+}
+
+/* CARDs */
+.card {
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #ffffff;
+	width: 25%;
+
+	margin-left: 37%;
+	margin-right: 37%;
+
+	border: 2px solid #ffffff;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 150ms ease-in-out;
+	display: flex;
+}
+
+.card:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #FFFFFF;
+}
+
+.card:active {
+	background-color: rgba(0, 0, 0, 0.2);
+	color: #FFFFFF;
+}
+
+.card ul {
+	list-style-type: none;
+	padding: 20px;
+}
+
+.card-title {
+	font-size: 1.50rem;
+}
+
+.card-description {
+	font-size: 1.00rem;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.card-button {
+	width: 49%!important;
+	margin: 5px;
 }
