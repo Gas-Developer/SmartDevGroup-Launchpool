@@ -32,9 +32,9 @@ export function ControlButton(props: ControlButtonData) {
 	className = "btn btn-primary controlButton "+className;
 
 	return (
-		<div>
+		<>
 			<input  type="button" name={name} id={name} className={className} value={text} onClick={onClick} title={tooltip} disabled={disabled}/>
-		</div>
+		</>
 	);
 
 	

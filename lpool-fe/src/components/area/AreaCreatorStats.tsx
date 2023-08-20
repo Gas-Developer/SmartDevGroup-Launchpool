@@ -1,11 +1,7 @@
 "use client";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Form, Row } from "react-bootstrap";
 import { ContractData } from "../interfaces/ContractData";
-import { Textfield } from "../input/Textfield";
-import { ControlButton } from "../buttons/ControlButton";
-import { InfoValue } from "../label/InfoValue";
 import { Info } from "../label/Info";
-import { InfoLabel } from "../label/InfoLabel";
 
 export function AreaCreatorStats(props: ContractData) {
 
