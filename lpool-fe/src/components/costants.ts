@@ -1,0 +1,1 @@
+export const ipfs_base_URI = process.env.NEXT_PUBLIC_PINATA_GATEWAY;
