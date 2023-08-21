@@ -43,6 +43,9 @@ const PINATA_APIKEY = process.env.NEXT_PUBLIC_PINATA_APIKEY;
 const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_SECRET;
 const PINATA_GATEWAY = process.env.NEXT_PUBLIC_PINATA_GATEWAY;
 const PINATA_PIN_JSON_TO_IPFS = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+let startLPValueInSeconds = BigInt(0);
+let endLPValueInSeconds = BigInt(0);
+
 
 export function CreateLaunchpool(props: any) {
 
@@ -67,7 +70,7 @@ export function CreateLaunchpool(props: any) {
 
 	// Intercetto la modifica di tokenAddress, startLPValue e endLPValue per aggiornare LPInfo
 	useEffect(() => {
-		setLPInfo({...LPInfo, tokenAddress: tokenAddress, startLP: startLPValue.toString(), endLP: endLPValue.toString(),});
+		setLPInfo({...LPInfo, tokenAddress: tokenAddress, startLP: startLPValueInSeconds.toString(), endLP: endLPValueInSeconds.toString(),});
 	}, [tokenAddress, startLPValue, endLPValue]);
 
 	// Read Launchpool Address Activator/Disactivator
@@ -115,27 +118,36 @@ export function CreateLaunchpool(props: any) {
 	// SAVE LPINFO ON IPFS & THEN DEPLOY THE NEW LAUNCHPOOL
 	function saveLPInfoOnIPFS(LPInfo: any) {
 
+		startLPValueInSeconds = BigInt(startLPValue) / BigInt(1000);
+		endLPValueInSeconds = BigInt(endLPValue) / BigInt(1000);
+
+		logger.info("startLPValueInSeconds", startLPValueInSeconds);
+        logger.info("endLPValueInSeconds", endLPValueInSeconds);
+
 		// Attivo il loading spinner
 		//handleTransactionStart();
 
 		// Save LPInfo in IPFS via Pinata API and get the hash
 		// https://pinata.cloud/documentation#PinJSONToIPFS
+		
+		LPInfo.startLP = startLPValueInSeconds.toString();
+		LPInfo.endLP = endLPValueInSeconds.toString();
 
 		let dataIPFS = JSON.stringify({
-			pinataOptions: {
-				cidVersion: 1,
-			},
-			pinataMetadata: {
-				name: "The Launchpool Ready",
-				keyvalues: {
-					LPName: LPInfo.name,
-					tokenAddress: tokenAddress,
-					startLP: startLPValue.toString(),
-					endLP: endLPValue.toString(),
-				},
-			},
-			pinataContent: LPInfo,
-		});
+            pinataOptions: {
+                cidVersion: 1,
+            },
+            pinataMetadata: {
+                name: "The Launchpool Ready",
+                keyvalues: {
+                    LPName: LPInfo.name,
+                    tokenAddress: tokenAddress,
+                    startLP: startLPValueInSeconds.toString(),
+                    endLP: endLPValueInSeconds.toString(),
+                },
+            },
+            pinataContent: LPInfo,
+        });
 
 		let configIPFS = {
 			method: "post",
@@ -166,20 +178,14 @@ export function CreateLaunchpool(props: any) {
 		if (startLPValue != undefined && startLPValue > 0 && endLPValue != undefined && endLPValue > 0 && tokenAddress != undefined && tokenAddress.startsWith('0x')) {
 
 			logger.info("createLaunchpool");
-			const startLPValueInSeconds = BigInt(startLPValue) / BigInt(1000);
-			const endLPValueInSeconds = endLPValue / 1000;
 
-			logger.info("startLPValueInSeconds", startLPValueInSeconds);
-			logger.info("endLPValueInSeconds", endLPValueInSeconds);
-
-			logger.info("createLaunchpool",setEndLPValue);
 			write({
 
 				args: [
 					FactoryContractConfig.templateAddress, 
 					tokenAddress as `0x${string}`, 
-					BigInt(startLPValueInSeconds), 
-					BigInt(endLPValueInSeconds),
+					startLPValueInSeconds, 
+					endLPValueInSeconds,
 					storageURI
 				],
 			})
