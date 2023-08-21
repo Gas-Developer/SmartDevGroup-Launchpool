@@ -136,15 +136,12 @@ body {
 	background-color: rgba(0, 0, 0, 0.5);
 	color: #ffffff;
 	width: 25%;
-
-	margin-left: 37%;
-	margin-right: 37%;
-
+	margin-left: 7%;
 	border: 2px solid #ffffff;
 	border-radius: 8px;
 	cursor: pointer;
 	transition: all 150ms ease-in-out;
-	display: flex;
+	float: left;
 }
 
 .card:hover {

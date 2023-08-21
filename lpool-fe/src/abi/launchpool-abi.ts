@@ -1,7 +1,6 @@
 const contractAddress = process.env.NEXT_PUBLIC_LAUNCHPOOL_CONTRACT_ADDRESS as `0x${string}`; 
 
 export const LaunchpoolContractConfig = {
-  address: contractAddress,
   abi: [
     {
       "inputs": [

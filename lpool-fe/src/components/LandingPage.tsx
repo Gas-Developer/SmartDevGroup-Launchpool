@@ -1,22 +1,32 @@
 'use client'
 
+import { useContractRead } from "wagmi";
 import { UserTypeButton } from "../components/buttons/userType-button";
 import { LPCard } from "./cards/LPCard";
+import { FactoryContractConfig } from "../abi/factory-abi";
 
 export default function LandingPage() {
 
+	const { data, isLoading, isSuccess } = useContractRead({
+		...FactoryContractConfig,
+		functionName: "getLaunchpools"
+	});
+
 	return (
 		<>
-			{/* 
-				// USATO solo per testare la LPCard
-			<div id="lp-card-container" className="card">
-				<LPCard storageURI="bafkreiditrvu3aavo47h2igotjeqsitxjgbnyyyio7veu2n5b67yum3zoi"/>
-			</div> 
-			*/}
-			<div id="userTypeButtonsContainer">
+			{isSuccess &&
+				data?.map((data) => (
+					<LPCard
+						key={data.storageURI}
+						storageURI={data.storageURI}
+						launchpoolAddress={data.launchpoolAddress}
+					/>
+				))}
+
+			{/* <div id="userTypeButtonsContainer">
 				<UserTypeButton name="Investor" />
 				<UserTypeButton name="Creator" />
-			</div>
+			</div> */}
 		</>
 	);
 }
