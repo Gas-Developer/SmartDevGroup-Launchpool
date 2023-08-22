@@ -1,3 +1,12 @@
+/*
+* Crea una nuova Launchpool
+* 1. Salva LPInfo in IPFS
+* 2. Deploy del nuovo Launchpool
+* 3. Salva l'address del nuovo Launchpool in Factory
+* 4. Legge l'address del nuovo Launchpool da Factory
+* 5. Reindirizza l'utente alla pagina Creator con l'address della nuova Launchpool
+*/
+
 import { useState, useEffect } from "react";
 import { ControlButton } from "./buttons/ControlButton";
 import { ControlButtonData } from "./interfaces/ControlButtonData";
@@ -8,9 +17,12 @@ import { FactoryContractConfig } from "../abi/factory-abi";
 import { BaseError, stringify } from "viem";
 import DateTimePicker from "./dateTimePicker";
 import { Textfield } from "./input/Textfield";
-const logger = require("pino")();
+import { useRouter } from 'next/navigation';
 
+
+const logger = require("pino")();
 var axios = require('axios');
+
 
 /*
 TODO LIST:
@@ -48,6 +60,8 @@ let endLPValueInSeconds = BigInt(0);
 
 
 export function CreateLaunchpool(props: any) {
+
+	const router = useRouter();
 
 	const [tokenAddress, setTokenAddress] = useState('');
 	const [startLPValue, setStartLPValue] = useState(0);
@@ -91,9 +105,7 @@ export function CreateLaunchpool(props: any) {
 		{ 
 			hash: data?.hash,
 			onSuccess(data) {
-				console.log('TX Success');
-				console.log('Adesso dovrei fare una read su Factory (proxy[proxy.lenght - 1]) per prendere l\'address del nuovo launchpool');
-				console.log('Per il momento setto currentLP a 0x...');
+				logger.info('TX Success');
 				setEnableReadProxies(true);
 			},
 		}
@@ -108,8 +120,13 @@ export function CreateLaunchpool(props: any) {
 			console.log('Read Success');
 			console.log(data);
 
-			//props.setCurrentLP(data);
+			const lpAddress = data?.[data.length - 1].launchpoolAddress;
+			const cid = data?.[data.length - 1].storageURI;
+
 			setEnableReadProxies(false);
+
+			// Reindirizzo l'utente alla pagina Creator con l'address della nuova Launchpool
+			router.push("/dashboard/" + lpAddress+"/" + cid + "/creator");
 
 		},
 	})
@@ -122,7 +139,7 @@ export function CreateLaunchpool(props: any) {
 		endLPValueInSeconds = BigInt(endLPValue) / BigInt(1000);
 
 		logger.info("startLPValueInSeconds", startLPValueInSeconds);
-        logger.info("endLPValueInSeconds", endLPValueInSeconds);
+		logger.info("endLPValueInSeconds", endLPValueInSeconds);
 
 		// Attivo il loading spinner
 		//handleTransactionStart();
@@ -134,20 +151,20 @@ export function CreateLaunchpool(props: any) {
 		LPInfo.endLP = endLPValueInSeconds.toString();
 
 		let dataIPFS = JSON.stringify({
-            pinataOptions: {
-                cidVersion: 1,
-            },
-            pinataMetadata: {
-                name: "The Launchpool Ready",
-                keyvalues: {
-                    LPName: LPInfo.name,
-                    tokenAddress: tokenAddress,
-                    startLP: startLPValueInSeconds.toString(),
-                    endLP: endLPValueInSeconds.toString(),
-                },
-            },
-            pinataContent: LPInfo,
-        });
+			pinataOptions: {
+				cidVersion: 1,
+			},
+			pinataMetadata: {
+				name: "The Launchpool Ready",
+				keyvalues: {
+					LPName: LPInfo.name,
+					tokenAddress: tokenAddress,
+					startLP: startLPValueInSeconds.toString(),
+					endLP: endLPValueInSeconds.toString(),
+				},
+			},
+			pinataContent: LPInfo,
+		});
 
 		let configIPFS = {
 			method: "post",
@@ -167,7 +184,6 @@ export function CreateLaunchpool(props: any) {
 				// handleTransactionSuccess();
 				setIPFSHash(response.data.IpfsHash);
 				deployNewLaunchpool(response.data.IpfsHash);
-				//deployNewLaunchpool(storageURI);
 			});
 
 	}
@@ -226,8 +242,8 @@ export function CreateLaunchpool(props: any) {
 	// FUNCTIONS
 	function createLaunchpool() {
 
-		console.log("createLaunchpool");
-		console.log("props.currentLP: ", props.currentLP);
+		logger.info("createLaunchpool");
+		logger.info("props.launchpoolAddress: ", props.launchpoolAddress);
 
 		// Check LPInfo validity
 		if(!checkLPInfoValidity(LPInfo))
@@ -354,16 +370,16 @@ export function CreateLaunchpool(props: any) {
 						: null
 					}
 
-					{(!isLoading && !isPending && props.currentLP == "") ? 
-				 		<ControlButton {...create_launchpool}/> 
+					{(!isLoading && !isPending && (props.launchpoolAddress == "" || props.launchpoolAddress == undefined)) ? 
+						<ControlButton {...create_launchpool}/> 
 						: null
 					}
 
 					{isSuccess && (
 						<div style= {{textAlign: 'center'}}>
 							<p style= {{color: 'white'}}>Launchpool created</p>
-							<p style= {{color: 'white'}}>{props.currentLP}</p>
-							<a href={`https://mumbai.polygonscan.com/address/${props.currentLP}`}>See on Polygonscan</a>
+							<p style= {{color: 'white'}}>{props.launchpoolAddress}</p>
+							<a href={`https://mumbai.polygonscan.com/address/${props.launchpoolAddress}`}>See on Polygonscan</a>
 						</div>
 					)}
 					{isError && <div>{(error as BaseError)?.shortMessage}</div>}
