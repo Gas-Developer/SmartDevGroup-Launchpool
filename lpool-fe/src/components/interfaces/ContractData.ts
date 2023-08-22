@@ -1,6 +1,7 @@
 // ContractData.ts
 
 export interface ContractData {
+	LPAddress: string | undefined;
 	startLP: number;
 	endLP: number;
 	stakingLength: number;
