@@ -76,6 +76,8 @@ export function InvestorPage(props: any) {
 		) {
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 			dataToSend = {
+				launchpoolAddress: launchpoolAddress,
+				cid: "",
 				startLP: parseInt(data?.[0].result?.toString()),
 				endLP: parseInt(data?.[1].result?.toString()),
 				stakingLength: parseInt(data?.[2].result?.toString()),

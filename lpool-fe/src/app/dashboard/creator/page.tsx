@@ -1,4 +1,4 @@
-import { CreatorPage } from "../../../../components/CreatorPage";
+import { CreatorPage } from "../../../components/CreatorPage";
 
 export default function Page() {
 	return (

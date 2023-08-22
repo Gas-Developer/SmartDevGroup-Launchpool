@@ -9,7 +9,6 @@ const logger = require("pino")();
 
 export function AreasContainer(props: ContractData) {
 
-	const [currentLP, setCurrentLP] = useState("");
 
 	const cData: ContractData = {...props};
 
@@ -25,7 +24,7 @@ export function AreasContainer(props: ContractData) {
 	});
 
 	useEffect(() => {
-		
+
 		const newAreaStatsProps = { ...areaStatsProps };
 		newAreaStatsProps.cData = cData;
 
@@ -38,8 +37,6 @@ export function AreasContainer(props: ContractData) {
 
 	const areaControlsProps = {
 		setTokenData: setTokenData,
-		setCurrentLP: setCurrentLP,
-		currentLP: currentLP,
 		userType: userType,
 		cData: cData,
 	};

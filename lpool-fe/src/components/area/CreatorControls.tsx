@@ -71,22 +71,22 @@ export function CreatorControls(props: any) {
 					</li>
 				}
 				{/* Current Launchpool */}
-				{(isConnected && props.currentLP !== "") ? 
+				{(isConnected && props.launchpoolAddress != undefined) ? 
 					<li className="list-group-item controls-list-group-item">
 						<h5 className="controls-title">Current Launchpool</h5>
-						<div className='InfoValue'>{props.currentLP}</div>
+						<div className='InfoValue'>{props.launchpoolAddress}</div>
 					</li>
 					: null
 				}
 				{/* Create Launchpool */}
-				{(isConnected && props.currentLP == "") ?
+				{(isConnected && props.launchpoolAddress == undefined) ?
 					<li className="list-group-item controls-list-group-item">
-						<CreateLaunchpool setTokenData={props.setTokenData} setCurrentLP={props.setCurrentLP} currentLP={props.currentLP}/> 
+						<CreateLaunchpool setTokenData={props.setTokenData}/> 
 					</li>
 				: null
 				}
 				{/* Deposit */}
-				{(isConnected && props.currentLP !== "") ?
+				{(isConnected && props.launchpoolAddress !== undefined) ?
 					<li className="list-group-item controls-list-group-item">
 						 <Deposit /> 
 					</li>

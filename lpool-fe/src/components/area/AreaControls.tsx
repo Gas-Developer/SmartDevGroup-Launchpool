@@ -8,10 +8,11 @@ export function AreaControls(props: any) {
 
 	return (
 		<div className="flex flex-row justify-between AreaControls controlsContainer">
+
 			{props.userType === "investor" ? (
-				<InvestorControls />
+				<InvestorControls {...props.cData}/>
 			) : (
-				<CreatorControls {...props} />
+				<CreatorControls {...props.cData} setTokenData={props.setTokenData} />
 			)}
 		</div>
 	);
