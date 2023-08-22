@@ -1,7 +1,8 @@
 // ContractData.ts
 
 export interface ContractData {
-	LPAddress: string | undefined;
+	launchpoolAddress: string | undefined;
+	cid: string;
 	startLP: number;
 	endLP: number;
 	stakingLength: number;
