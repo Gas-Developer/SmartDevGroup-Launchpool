@@ -43,6 +43,7 @@ export function Deposit(props: any) {
 
 	const { write, data, error, isLoading, isError } = useContractWrite({
 		...LaunchpoolContractConfig,
+		address: props.launchpoolAddress,
 		functionName: 'depositTokenToDistribute',
 
 	})

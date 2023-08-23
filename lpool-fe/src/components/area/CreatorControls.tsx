@@ -88,7 +88,7 @@ export function CreatorControls(props: any) {
 				{/* Deposit */}
 				{(isConnected && props.launchpoolAddress !== undefined) ?
 					<li className="list-group-item controls-list-group-item">
-						 <Deposit /> 
+						<Deposit launchpoolAddress={props.launchpoolAddress} /> 
 					</li>
 					/*
 					<li className="list-group-item controls-list-group-item">

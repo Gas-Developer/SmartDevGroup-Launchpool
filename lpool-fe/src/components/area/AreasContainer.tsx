@@ -9,7 +9,6 @@ const logger = require("pino")();
 
 export function AreasContainer(props: ContractData) {
 
-
 	const cData: ContractData = {...props};
 
 	const pathname = usePathname();
