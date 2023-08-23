@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.19;
 
 import "hardhat/console.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
-contract launchpoolTemplate is Initializable, Ownable, ReentrancyGuard {
+contract launchpoolTemplate is Initializable, OwnableUpgradeable, ReentrancyGuard {
 
 	using SafeMath for uint256;
 
@@ -115,6 +114,8 @@ contract launchpoolTemplate is Initializable, Ownable, ReentrancyGuard {
 		nameTokenToDistribute = _token.name();
 		symbolTokenToDistribute = _token.symbol();
 		decimalsTokenToDistribute = _token.decimals();
+
+		OwnableUpgradeable.__Ownable_init();
 
 		emit LaunchpoolCreated(
 			msg.sender,
