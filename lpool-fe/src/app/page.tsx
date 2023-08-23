@@ -1,10 +1,10 @@
-import LandingPage from "../components/LandingPage";
+import Homepage from "../components/Homepage";
 
 export default function Page() {
 
 	return (
-		<div className="mainContainer">
-			<LandingPage />
-		</div>
-	);
+        <div className="mainContainer">
+            <Homepage />
+        </div>
+    );
 }
