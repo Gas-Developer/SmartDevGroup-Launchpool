@@ -6,12 +6,9 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 //Definisce l'interfaccia ILaunchpool che elenca la firma della funzione initialize del contratto LaunchpoolTemplate.
 interface ILaunchpool {
 	function initialize(ERC20 _token, uint256 _startLP, uint256 _endLP) external;
-}
-
-interface IOwnable {
 	function owner() external view returns (address);
+	function transferOwnership(address newOwner) external;
 }
-
 
 contract LaunchpoolFactory {
 
@@ -37,9 +34,12 @@ contract LaunchpoolFactory {
 		return Launchpools[_index].storageURI;
 	}
 
-	// Funzione che setta l'URI di una Launchpool
+	function getLaunchpoolOwner(uint256 _index) public view returns (address) {
+		return ILaunchpool(Launchpools[_index].launchpoolAddress).owner();
+	}
+
 	function setStorageURI(uint256 _index, string memory _storageURI) public {
-		require(IOwnable(Launchpools[_index].launchpoolAddress).owner() == msg.sender, "Only the owner can set the storage URI");
+		require(ILaunchpool(Launchpools[_index].launchpoolAddress).owner() == msg.sender, "Only the owner can set the storage URI");
 		Launchpools[_index].storageURI = _storageURI;
 	}
 
@@ -64,7 +64,10 @@ contract LaunchpoolFactory {
 		}
 
 		// Call initialization
-		ILaunchpool(proxy).initialize(_token, _startLP, _endLP);						// Deploy della nuova Launchpool
+		ILaunchpool(proxy).initialize(_token, _startLP, _endLP);		// Deploy della nuova Launchpool
+
+		ILaunchpool(proxy).transferOwnership(msg.sender);				// Trasferisco la proprietà della nuova Launchpool al chiamante della funzione (msg.sender
+
 		Launchpools.push(Launchpool(proxy, storageURI));								//Aggiungo la nuova Launchpool appena creata all'array delle Launchpools
 		emit LaunchpoolCreated(proxy,  storageURI);										//Emetto l'evento comunicando l'address della nuova Launchpool creata
 
