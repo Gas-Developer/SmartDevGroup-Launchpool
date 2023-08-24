@@ -27,24 +27,16 @@ var axios = require('axios');
 
 /*
 TODO LIST:
-- [x] Spostare defaultTF in un file di const globale
 - [x] Implementare controlli della checkLPInfoValidity
 - [x] Implementare gli handleTransaction
-
 */
-
-
-
-// TODO: Mettere in un file di const globale e fare l'import ovunque venga utilizzato
-
 
 const PINATA_APIKEY = process.env.NEXT_PUBLIC_PINATA_APIKEY;
 const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_SECRET;
-const PINATA_GATEWAY = process.env.NEXT_PUBLIC_PINATA_GATEWAY;
 const PINATA_PIN_JSON_TO_IPFS = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
+
 let startLPValueInSeconds = BigInt(0);
 let endLPValueInSeconds = BigInt(0);
-
 
 export function CreateLaunchpool(props: any) {
 
@@ -55,7 +47,6 @@ export function CreateLaunchpool(props: any) {
 	const [endLPValue, setEndLPValue] = useState(0);
 
 	// Launchpool Info
-	const [IpfsHash, setIPFSHash] = useState('');
 	const [LPInfo, setLPInfo] = useState(
 		{
 			name: "",
@@ -92,7 +83,8 @@ export function CreateLaunchpool(props: any) {
 		{ 
 			hash: data?.hash,
 			onSuccess(data) {
-				logger.info('TX Success');
+				logger.info('Launchpool deployed succesfully');
+				logger.info('Reading new Launchpool address...');
 				setEnableReadProxies(true);
 			},
 		}
@@ -104,14 +96,15 @@ export function CreateLaunchpool(props: any) {
 		functionName: 'getLaunchpools',
 		enabled: enableReadProxies,
 		onSuccess(data) {
-			console.log('Read Success');
-			console.log(data);
 
 			const lpAddress = data?.[data.length - 1].launchpoolAddress;
 			const cid = data?.[data.length - 1].storageURI;
 
 			setEnableReadProxies(false);
 
+			logger.info('New Launchpool address: ', lpAddress);
+			logger.info('New Launchpool storageURI: ', cid);
+			logger.info('Redirecting Creator to Launchpool page for Creators...');
 			// Reindirizzo l'utente alla pagina Creator con l'address della nuova Launchpool
 			router.push("/dashboard/" + lpAddress+"/" + cid + "/creator");
 
@@ -164,12 +157,15 @@ export function CreateLaunchpool(props: any) {
 			data: dataIPFS,
 		};
 
+		logger.info("Saving LPInfo on IPFS...");
+
 		// Save LPInfo in IPFS via Pinata API and get the hash
 		axios(configIPFS)
 			.then(function (response: any) {
-				console.log("response: ", response);
+
 				// handleTransactionSuccess();
-				setIPFSHash(response.data.IpfsHash);
+
+				logger.info("Deploying new Launchpool...");
 				deployNewLaunchpool(response.data.IpfsHash);
 			});
 
@@ -179,8 +175,6 @@ export function CreateLaunchpool(props: any) {
 	function deployNewLaunchpool(storageURI: string) {
 
 		if (startLPValue != undefined && startLPValue > 0 && endLPValue != undefined && endLPValue > 0 && tokenAddress != undefined && tokenAddress.startsWith('0x')) {
-
-			logger.info("createLaunchpool");
 
 			write({
 
@@ -229,12 +223,11 @@ export function CreateLaunchpool(props: any) {
 	// FUNCTIONS
 	function createLaunchpool() {
 
-		logger.info("createLaunchpool");
-		logger.info("props.launchpoolAddress: ", props.launchpoolAddress);
-
 		// Check LPInfo validity
 		if(!checkLPInfoValidity(LPInfo))
 			return;
+
+		logger.info("Creating new Launchpool...");
 
 		// Save LPInfo in IPFS via Pinata API and store the hash (CID/storageURI) in the LaunchpoolFactory
 		saveLPInfoOnIPFS(LPInfo);
