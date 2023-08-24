@@ -46,6 +46,10 @@ body {
 	height: 100%;
 }
 
+#appContainer {
+	height: inherit;
+}
+
 .grid-center{
 	display: grid;
 	justify-items: center;

@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#headerTitle{
+	font-size: 50px;
+	font-weight: 400;
+	background-image: linear-gradient(to left, #553c9a, #b393d3);
+	color: transparent;
+	background-clip: text;
+	-webkit-background-clip: text;
+	margin-left: 16%;
+}
+#sidebarContainer{
+	height: inherit;
+}
+
+#sidebar{
+	top: 15%;
+	left: 11%
+}
+
+.sidebarIcon {
+	width: 52%;
+	display: initial;
+}
+
+#headerSearchBar {
+	margin-inline-start: 36%;
+	width: 21%;
+}
+
+#menuButton {
+	width: 2%;
+	margin-left: 7%;
+}
+
+.sidebarGroup:first-child {
+	margin-top: 50%;
+
+}
+
+.sidebarItem{
+	margin-top: 20%;
+}
+
+
+

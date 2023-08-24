@@ -9,8 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.18",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
+    "classnames": "^2.3.2",
     "encoding": "^0.1.13",
     "lokijs": "^1.5.12",
     "moment": "^2.29.4",
@@ -20,6 +22,7 @@
     "react-bootstrap": "^2.8.0",
     "react-datetime": "^3.2.0",
     "react-dom": "^18.2.0",
+    "usehooks-ts": "^2.9.1",
     "viem": "~0.3.36",
     "wagmi": "^1.0.6"
   },
@@ -27,8 +30,11 @@
     "@types/node": "^17.0.31",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
+    "autoprefixer": "^10.4.15",
     "eslint": "^8.15.0",
     "eslint-config-next": "^12.1.6",
+    "postcss": "^8.4.28",
+    "tailwindcss": "^3.3.3",
     "typescript": "^5.1.6"
   }
 }

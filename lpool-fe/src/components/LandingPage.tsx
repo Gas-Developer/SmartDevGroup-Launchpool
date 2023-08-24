@@ -13,7 +13,7 @@ export default function LandingPage() {
 	});
 
 	return (
-		<>
+		<div id="appContainer">
 			{isSuccess &&
 				data?.map((data) => (
 					<LPCard
@@ -23,10 +23,6 @@ export default function LandingPage() {
 					/>
 				))}
 
-			{/* <div id="userTypeButtonsContainer">
-				<UserTypeButton name="Investor" />
-				<UserTypeButton name="Creator" />
-			</div> */}
-		</>
+		</div>
 	);
 }
