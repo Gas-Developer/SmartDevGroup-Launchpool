@@ -1,10 +1,9 @@
 import { SetStateAction, useState } from "react";
-import { useContractRead, useContractWrite, useWaitForTransaction } from "wagmi";
 
 import { DepositButton } from "./buttons/DepositButton";
 import { Textfield } from "./input/Textfield";
-import { ControlButtonData } from "./interfaces/ControlButtonData";
-import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
+
+import { ApproveButton } from "./buttons/ApproveButton";
 
 // TODO: Mettere in un file di const globale e fare l'import ovunque venga utilizzato
 const defaultTF = {
@@ -24,54 +23,13 @@ const defaultTF = {
 };
 
 
-// DEPOSIT BUTTON
-const deposit_button: ControlButtonData = {
-	name: "deposit_button",
-	text: "Deposit",
-	tooltip: "Deposit",
-	onClick: undefined,
-	disabled: false,
-	className: "",
-	iconURL: ""
-};
-
 
 export function Deposit(props: any) {
 	
 	const className = "btn btn-primary controlButton "+props.className;
 	const [depositQty, setDepositQty] = useState("0");
-
-	const { write, data, error, isLoading, isError } = useContractWrite({
-		...LaunchpoolContractConfig,
-		address: props.launchpoolAddress,
-		functionName: 'depositTokenToDistribute',
-
-	})
-
-	const {
-		data: receipt,
-		isLoading: isPending,
-		isSuccess,
-	} = useWaitForTransaction(
-		{ 
-			hash: data?.hash,
-			onSuccess(data) {
-				console.log('TX Success');
-				console.log('Deposito effettuato corretamente');
-			},
-		}
-	)
-
-	function deposit() {
-		console.log("deposit");
-		console.log("TODO: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic");
-		//TODO: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic
-		write({
-			args: [
-				BigInt(depositQty)
-			],
-		})
-	}
+	const [isTokenAllowed, setIsTokenAllowed] = useState(false);
+	const [isDeposited, setIsDeposited] = useState(false);
 
 
 	return (
@@ -90,7 +48,30 @@ export function Deposit(props: any) {
 			/>
 			</li>
 			<li className="list-group-item controls-list-group-item">
-				<DepositButton {...deposit_button} className={className} onClick={deposit}/> 
+				{isTokenAllowed ?
+					<DepositButton 
+						className={className} 
+						launchpoolAddress={props.launchpoolAddress}
+						depositQty={depositQty}
+						setIsDeposited={setIsDeposited}
+					/> 
+					:
+					<ApproveButton 
+						className={className} 
+						launchpoolAddress={props.launchpoolAddress} 
+						depositQty={depositQty} 
+						setIsTokenAllowed={setIsTokenAllowed}
+					/> 
+				}
+			</li>
+			<li className="list-group-item controls-list-group-item">
+				{isDeposited ?
+					<div style={{color: "green"}}>Deposited succesfully</div>
+					:
+					""
+				}
+
+
 			</li>
 		</ul>
 		)
