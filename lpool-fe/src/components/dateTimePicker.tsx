@@ -7,7 +7,7 @@ export default function DateTimePicker(props: any) {
         <>
             <Datetime
                 closeOnSelect={true}
-                utc={true}
+                utc={false}
                 inputProps={{
                     placeholder: props.placeholder,
                     className: props.calendarInputClass,
