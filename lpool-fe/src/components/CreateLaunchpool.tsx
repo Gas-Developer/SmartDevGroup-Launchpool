@@ -19,10 +19,11 @@ import DateTimePicker from "./dateTimePicker";
 import { Textfield } from "./input/Textfield";
 import { useRouter } from 'next/navigation';
 
+import { defaultTF } from "./costants";
+
 
 const logger = require("pino")();
 var axios = require('axios');
-
 
 /*
 TODO LIST:
@@ -35,21 +36,7 @@ TODO LIST:
 
 
 // TODO: Mettere in un file di const globale e fare l'import ovunque venga utilizzato
-const defaultTF = {
-	id: "",
-	name: "",
-	className: "controls-textfield",
-	placeholder: "",
-	value: "",
-	onChange: undefined,
-	disabled: false,
-	required: undefined,
-	minLength: undefined,
-	maxLength: undefined,
-	size: 40,
-	pattern: undefined,
-	readOnly: false,
-};
+
 
 const PINATA_APIKEY = process.env.NEXT_PUBLIC_PINATA_APIKEY;
 const PINATA_SECRET = process.env.NEXT_PUBLIC_PINATA_SECRET;

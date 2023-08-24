@@ -4,26 +4,10 @@ import { Textfield } from "./input/Textfield";
 import { ControlButtonData } from "./interfaces/ControlButtonData";
 import { useContractWrite, useWaitForTransaction } from "wagmi";
 import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
-import { useRouter } from "next/navigation";
+
+import { defaultTF } from "./costants";
+
 const logger = require("pino")();
-
-
-// TODO: Mettere in un file di const globale e fare l'import ovunque venga utilizzato
-const defaultTF = {
-	id: "",
-	name: "",
-	className: "controls-textfield",
-	placeholder: "",
-	value: "",
-	onChange: undefined,
-	disabled: false,
-	required: undefined,
-	minLength: undefined,
-	maxLength: undefined,
-	size: 40,
-	pattern: undefined,
-	readOnly: false,
-};
 
 // STAKE BUTTON
 const stake_button: ControlButtonData = {
@@ -35,7 +19,6 @@ const stake_button: ControlButtonData = {
     className: "",
     iconURL: "",
 };
-
 
 export function Stake(props: any) {
 
