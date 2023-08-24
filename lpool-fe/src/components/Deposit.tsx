@@ -1,27 +1,9 @@
 import { SetStateAction, useState } from "react";
-
 import { DepositButton } from "./buttons/DepositButton";
 import { Textfield } from "./input/Textfield";
-
 import { ApproveButton } from "./buttons/ApproveButton";
 
-// TODO: Mettere in un file di const globale e fare l'import ovunque venga utilizzato
-const defaultTF = {
-	id: "",
-	name: "",
-	className: "controls-textfield",
-	placeholder: "",
-	value: "",
-	onChange: undefined,
-	disabled: false,
-	required: undefined,
-	minLength: undefined,
-	maxLength: undefined,
-	size: 40,
-	pattern: undefined,
-	readOnly: false,
-};
-
+import { defaultTF } from "./costants";
 
 
 export function Deposit(props: any) {
