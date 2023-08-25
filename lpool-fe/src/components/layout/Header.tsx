@@ -17,9 +17,7 @@ export function Header() {
         <>
             <header className="w-full h-auto inline-flex p-2">
                 <h1 id="headerTitle">The Launchpool Ready</h1>
-                <SearchBar onSearch={function (query: string): void {
-                    throw new Error("Function not implemented.");
-                } } />
+                <SearchBar/>
                 <MenuButton />
             </header>
         </>

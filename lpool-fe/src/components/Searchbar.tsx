@@ -1,35 +1,27 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
+export default function Searchbar() {
+	const [query, setQuery] = useState("");
 
-interface SearchBarProps {
-  onSearch: (query: string) => void;
+
+	return (
+		<div id="searchbarContainer" className="text-center">
+			<form id="searchbarForm">
+				<input
+					className="text-black border-2 border-black rounded-full px-3 py-2"
+					type="text"
+					placeholder="Search launchpool..."
+				/>
+				<button
+					className="bg-zinc-700 text-white rounded-full px-3 py-2 hover:bg-black/60"
+					type="submit"
+				>
+					Search
+				</button>
+			</form>
+		</div>
+	);
 }
-
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSearch(query);
-  };
-
-  return (
-      <form onSubmit={handleSubmit} id="headerSearchBar">
-          <input
-              type="text"
-              placeholder="Cerca..."
-              value={query}
-              onChange={handleInputChange}
-          />
-          <button type="submit">Cerca</button>
-      </form>
-  );
-};
-
-export default SearchBar;
