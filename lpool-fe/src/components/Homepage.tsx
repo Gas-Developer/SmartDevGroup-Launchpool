@@ -1,6 +1,6 @@
 "use client";
 
-import { LaunchAppButton } from "./buttons/LaunchAppButton";
+import { LaunchAppButton } from "./homepage/buttons/LaunchAppButton";
 import "../assets/styles/homepage.css";
 
 
