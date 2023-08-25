@@ -1,0 +1,6 @@
+[ ] [LaunchpoolFactory.sol]: testare che solo l'owner della LP possa eseguire la setStorageURI()
+[ ] [CreateLaunchpool.tsx]: implementare la checkLPInfoValidity() per verificare che i campi obbligatori siano stati inseriti nel formato atteso
+[ ] [CreateLaunchpool.tsx]: Implementare gli handleTransaction (handleTransactionStart, handleTransactionSuccess, handleTransactionError)
+[ ] [Stake.tsx]: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic
+[ ] [CreatorControls.tsx]: Convertire in un component WalletConnection
+[ ] [DepositButton.tsx]: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic

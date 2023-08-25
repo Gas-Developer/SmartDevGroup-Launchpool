@@ -27,8 +27,8 @@ var axios = require('axios');
 
 /*
 TODO LIST:
-- [x] Implementare controlli della checkLPInfoValidity
-- [x] Implementare gli handleTransaction
+- [ ] Implementare controlli della checkLPInfoValidity
+- [ ] Implementare gli handleTransaction 
 */
 
 const PINATA_APIKEY = process.env.NEXT_PUBLIC_PINATA_APIKEY;
