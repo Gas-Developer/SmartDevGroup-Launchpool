@@ -8,8 +8,8 @@ import {
 export function MenuButton() {
     return (
         <>
-            <button id="menuButton" className="rounded-md bg-zinc-700 w-11">
-                <Bars3Icon className="w-10 h-10" />
+            <button id="menuButton" className="rounded-full bg-zinc-700 w-11">
+                <Bars3Icon className="w-4/6 inline" />
             </button>
         </>
     );

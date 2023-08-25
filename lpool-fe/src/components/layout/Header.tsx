@@ -1,8 +1,8 @@
 "use client";
 
 import classNames from "classnames";
-import { Searchbar } from "../Searchbar";
 import { MenuButton } from "../buttons/MenuButton";
+import SearchBar from "../Searchbar";
 
 
 // define a NavItem prop
@@ -17,7 +17,9 @@ export function Header() {
         <>
             <header className="w-full h-auto inline-flex p-2">
                 <h1 id="headerTitle">The Launchpool Ready</h1>
-                <Searchbar />
+                <SearchBar onSearch={function (query: string): void {
+                    throw new Error("Function not implemented.");
+                } } />
                 <MenuButton />
             </header>
         </>
