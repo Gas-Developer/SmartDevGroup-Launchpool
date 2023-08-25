@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#dashboardMainContainer {
+    height: inherit;
+}
+
+#featuredArea{
+    /* background-color: red; */
+}
+
+#createLaunchpoolArea{
+    /* background-color: blue; */
+}
+
+#tlrEventsArea{
+    /* background-color: green; */
+}

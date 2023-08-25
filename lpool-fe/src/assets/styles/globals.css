@@ -18,13 +18,13 @@
 
 body {
 	margin: 0;
-		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-			'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		background-color: black;
-		background-image: url('../images/5053309.jpg');
-		color: #ffffff;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: black;
+	background-image: url('../images/5053309.jpg');
+	color: #ffffff;
 
 }
 
@@ -45,6 +45,24 @@ body {
 	width: 100%;
 	height: 100%;
 }
+
+#appContainer {
+	height: inherit;
+}
+
+.grid-center{
+	display: grid;
+	justify-items: center;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+} 
+
+.grid-cover-container {
+	place-items: center;
+	display: grid;
+}
+
 
 #dashboardTitleContainer {
 	height: 9%;
