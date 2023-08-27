@@ -1,11 +1,35 @@
 "use client";
 
-import CreateLaunchpoolButton from "../buttons/CreateLaunchpool";
+import { ImageButton } from "../../buttons/ImageButton";
+import CreateYourLaunchpoolBTN from "../../../assets/images/CreateYourLaunchpoolBTN.png"
+import { InfoValue } from "../../label/InfoValue";
+// import { useRouter } from 'next/navigation';
 
-export default function createLaunchpoolArea() {
-    return (
-        <>
-            <CreateLaunchpoolButton />
-        </>
-    );
+import "../../../assets/styles/stats-list.css";
+
+
+
+export default function CreateLaunchpool() {
+
+	// const router = useRouter();
+
+	function openCreatorPage() {
+		const href = "/dashboard/creator";
+		//router.push(href);					// Rimosso perchè molto lento al click
+
+		window.open(href, '_self');
+	}
+
+
+	return (
+		<>
+			<ImageButton name="createLaunchpoolBTN" src={CreateYourLaunchpoolBTN} tooltip="Create Launchpool" onClick={openCreatorPage} />
+			<InfoValue 
+				name="createLaunchpoolInfo" 
+				value="Are you ready to create your own launchpool, in a couple of clicks?" 
+				className={" "} 
+				size={70} 
+			/>
+		</>
+	);
 }
