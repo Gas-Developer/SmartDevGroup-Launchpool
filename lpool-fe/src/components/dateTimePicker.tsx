@@ -1,5 +1,7 @@
 import Datetime from "react-datetime";
 import "react-datetime/css/react-datetime.css";
+import "../assets/styles/tlr-datetimepicker.css";
+
 
 export default function DateTimePicker(props: any) {
 
@@ -16,7 +18,7 @@ export default function DateTimePicker(props: any) {
                 }}
                 onChange={(e) => {
                     props.id == "start_lp"
-                        ? props.setStartLPValue(e.valueOf())
+                        ? props.setStartLPValue(e.valueOf())			// TODO: Modificare e gestire con una funzione unica passata da sopra prop.onChange
                         : props.setEndLPValue(e.valueOf());
                 }}
             />
