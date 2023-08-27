@@ -26,7 +26,7 @@ export function Textarea(props: TextareaData) {
 
 	return (
 		<>
-			<textarea {...editableProps} defaultValue={props.value} name={editableProps.name} cols={props.size} />
+			<textarea {...editableProps} name={editableProps.name} cols={props.size} />
 		</>
 	);
 

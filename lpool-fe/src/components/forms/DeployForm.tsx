@@ -6,6 +6,7 @@ import { InfoLabel } from "../label/InfoLabel";
 import { InfoValue } from "../label/InfoValue";
 import DateTimePicker from "../dateTimePicker";
 import { Textarea } from "../input/Textarea";
+import { Checkbox } from "../input/Checkbox";
 
 
 
@@ -17,10 +18,17 @@ export function DeployForm() {
 	const [webURL, setWebURL] = useState("https://...");
 	const [startLPValue, setStartLPValue] = useState(0);
 	const [endLPValue, setEndLPValue] = useState(0);
+	const [checked, setChecked] = useState(false);
+	
 
 	const tfStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
 	const labelStyle = " font-['Roboto'] text-xs text-slate-200";
 	const dateTimePickerStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
+
+	const handleOnChange = () => {
+		setChecked(!checked);
+		console.log("checked: "+checked);
+	  };
 
 	return (
 		<>
@@ -120,10 +128,19 @@ export function DeployForm() {
 
 				{/* ROW 5 */}
 				<div className="col-span-1">
-					Featured
+					<InfoLabel name={"Featured"} value={"Featured"} className={labelStyle} />
 				</div>
-				<div className={"col-span-1"+tfStyle}>
-					X
+				<div className={"col-span-1"}>
+					<Checkbox 
+						{...defaultTF}
+						id="featured" 
+						name="featured" 
+						placeholder={undefined}
+						value={undefined} 
+						onChange={handleOnChange}
+						className={" "}
+						checked={checked}
+					/>
 				</div>
 				<div className="col-span-8">
 					
