@@ -9,7 +9,7 @@ import { ControlButtonData } from "../interfaces/ControlButtonData";
 import { ControlButton } from "../buttons/ControlButton";
 import { InvestorPage } from '../InvestorPage';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 const logger = require("pino")();
 
 export function LPCard(props: any) {
