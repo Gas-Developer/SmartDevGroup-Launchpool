@@ -4,4 +4,4 @@
 [ ] [Stake.tsx]: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic
 [ ] [CreatorControls.tsx]: Convertire in un component WalletConnection
 [ ] [DepositButton.tsx]: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic
-[ ] [dateTimePricker.tsx]: Modificare e gestire con una funzione unica passata da sopra prop.onChange
+[x] [dateTimePricker.tsx]: Modificare e gestire con una funzione unica passata da sopra prop.onChange
