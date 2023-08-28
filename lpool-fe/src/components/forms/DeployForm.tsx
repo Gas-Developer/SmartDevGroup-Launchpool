@@ -11,26 +11,25 @@ import { ImageButton } from "../buttons/ImageButton";
 import deployLaunchpoolBTN from "../../assets/images/DeployLaunchpoolBTN.png";
 
 
-
 export function DeployForm() {
 
-	const [description, setDescription] = useState("Write the Launchpool / Token description here");
-	const [tokenAddress, setTokenAdrress] = useState("0x...");
-	const [imageURL, setImageURL] = useState("https://...");
-	const [webURL, setWebURL] = useState("https://...");
-	const [startLPValue, setStartLPValue] = useState(0);
-	const [endLPValue, setEndLPValue] = useState(0);
-	const [checked, setChecked] = useState(false);
-	
+	const [formData, setFormData] = useState({
+		description: "Write the Launchpool / Token description here",
+		tokenAddress: "0x...",
+		imageURL: "https://...",
+		webURL: "https://...",
+		startLPValue: BigInt(0),
+		endLPValue: BigInt(0),
+		checked: false
+	});
 
 	const tfStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
 	const labelStyle = " font-['Roboto'] text-xs text-slate-200";
 	const dateTimePickerStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
 
 	const handleOnChange = () => {
-		setChecked(!checked);
-		console.log("checked: "+checked);
-	  };
+		setFormData( {...formData, checked: !formData.checked} );
+	};
 
 	function deployLaunchpool() {
 		console.log("Deploying Launchpool...");
@@ -46,8 +45,8 @@ export function DeployForm() {
 						id="description" 
 						name="description" 
 						placeholder="Write the Launchpool / Token description here"
-						value={description} 
-						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setDescription(e.target.value)}
+						value={formData.description} 
+						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, description: e.target.value.toString()} )}
 						className={tfStyle}
 						rows={5}
 
@@ -64,8 +63,8 @@ export function DeployForm() {
 						id="tokenAddress" 
 						name="tokenAddress" 
 						placeholder="0x..."
-						value={tokenAddress} 
-						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setTokenAdrress(e.target.value)}
+						value={formData.tokenAddress} 
+						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, tokenAddress: e.target.value.toString()} )}
 						className={tfStyle}
 					/>
 				</div>
@@ -80,7 +79,6 @@ export function DeployForm() {
 						placeholder="--"
 						//calendarInputClass="form-control controls-textfield"
 						calendarInputClass={dateTimePickerStyle}
-						setStartLPValue={setStartLPValue}
 						calendarInputSize={20}
 					/>
 				</div>
@@ -93,8 +91,10 @@ export function DeployForm() {
 						placeholder="--"
 						//calendarInputClass="form-control controls-textfield"
 						calendarInputClass={dateTimePickerStyle}
-						setEndLPValue={setEndLPValue}
 						calendarInputSize={20}
+						onChange={
+							(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, endLPValue: BigInt(e.valueOf().toString())} )
+						}
 					/>
 				</div>
 				<div className="col-span-2 text-xs text-end">
@@ -112,8 +112,8 @@ export function DeployForm() {
 						id="imageURL" 
 						name="imageURL" 
 						placeholder="0x..."
-						value={imageURL} 
-						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setImageURL(e.target.value)}
+						value={formData.imageURL} 
+						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, imageURL: e.target.value.toString()} )}
 						className={tfStyle}
 					/>
 				</div>
@@ -126,8 +126,8 @@ export function DeployForm() {
 						id="webURL" 
 						name="webURL" 
 						placeholder="0x..."
-						value={webURL} 
-						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setWebURL(e.target.value)}
+						value={formData.webURL} 
+						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, webURL: e.target.value.toString()} )}
 						className={tfStyle}
 					/>
 				</div>
@@ -145,7 +145,7 @@ export function DeployForm() {
 						value={undefined} 
 						onChange={handleOnChange}
 						className={" "}
-						checked={checked}
+						checked={formData.checked}
 					/>
 				</div>
 				<div className="col-span-8">
