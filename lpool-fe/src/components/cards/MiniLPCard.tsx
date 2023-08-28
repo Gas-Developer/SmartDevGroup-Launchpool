@@ -7,7 +7,9 @@ const logger = require("pino")();
 export default function MiniLPCard(props: any) {
 	const router = useRouter();
 
-	const miniLPCardInfo = props.launchpoolInfo;
+	const miniLPCardInfo = props;
+
+	logger.info("MiniLPCard props", miniLPCardInfo);
 
 	function toLaunchpoolPage() {
 		const href =

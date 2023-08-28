@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import MiniLPCard from "../../cards/MiniLPCard";
-import { stringify } from "../../../utils/stringify";
-
 const logger = require("pino")();
 
 export default function LaunchpoolPhase(props: any) {
@@ -14,8 +11,8 @@ export default function LaunchpoolPhase(props: any) {
 		<div id={phase + "Container"}>
 			<p className="phaseTitle">{phase} phase</p>
 			<hr />
-			{launchpools?.map((data: any) => (
-				<MiniLPCard key={stringify(data)} launchpoolInfo={data} />
+			{launchpools?.map((lpool: any) => (
+				<MiniLPCard key={lpool} {...lpool} />
 			))}
 		</div>
 	);
