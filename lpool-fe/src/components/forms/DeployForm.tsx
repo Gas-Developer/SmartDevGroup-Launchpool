@@ -7,6 +7,8 @@ import { InfoValue } from "../label/InfoValue";
 import DateTimePicker from "../dateTimePicker";
 import { Textarea } from "../input/Textarea";
 import { Checkbox } from "../input/Checkbox";
+import { ImageButton } from "../buttons/ImageButton";
+import deployLaunchpoolBTN from "../../assets/images/DeployLaunchpoolBTN.png";
 
 
 
@@ -29,6 +31,10 @@ export function DeployForm() {
 		setChecked(!checked);
 		console.log("checked: "+checked);
 	  };
+
+	function deployLaunchpool() {
+		console.log("Deploying Launchpool...");
+	}
 
 	return (
 		<>
@@ -145,10 +151,13 @@ export function DeployForm() {
 				<div className="col-span-8">
 					
 				</div>
-
+				<div className="col-span-9 text-center">
+					<ImageButton 
+						name="deployLaunchpoolBTN" src={deployLaunchpoolBTN} tooltip="Deploy Launchpool" onClick={deployLaunchpool} 
+						width={200} height={50} className=" "
+					/>
+				</div>
 			</div>
-
-			
 		</>
 	);
 
