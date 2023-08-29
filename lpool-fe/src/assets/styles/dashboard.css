@@ -3,17 +3,49 @@
 @tailwind utilities;
 
 #dashboardMainContainer {
-    height: inherit;
+	height: inherit;
 }
 
-#featuredArea{
-    /* background-color: red; */
+#featuredArea {
+	/* background-color: red; */
 }
 
-#createLaunchpoolArea{
-    /* background-color: blue; */
+#createLaunchpoolArea {
+	/* background-color: blue; */
 }
 
-#tlrEventsArea{
-    /* background-color: green; */
+#tlrEventsArea {
+	/* background-color: green; */
+}
+
+
+#allPhaseContainer {
+	padding: 1%;
+}
+
+.phaseTitle {
+	font-size: 30px;
+	font-weight: 500;
+	letter-spacing: 4px;
+	color: white;
+}
+
+.miniLPCard {
+	padding: 1%;
+	width: 13%;
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 0.5%;
+	height: 78%;
+
+}
+
+.miniLPCard:not(:first-child) {
+	margin-left: 1%;
+}
+
+.miniLPCardImgContainer {
+	border-radius: 20%;
+	margin-top: 2%;
+	height: 88%;
 }
