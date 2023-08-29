@@ -1,11 +1,14 @@
-import { InvestorPage } from "../../../../components/InvestorPage";
+import InvestorMainContainer from "../../../../components/InvestorMainContainer";
+import { BaseLayout } from "../../../../components/layout/BaseLayout";
+import "../../../../assets/styles/investor.css";
 
 export default function Page({ params }:
 	{ params: { lpool_address: string } }) {
 
 	return (
-		<>
-			<InvestorPage launchpoolAddress={params.lpool_address} />
-		</>
-	);
+        <>
+            <BaseLayout />
+            <InvestorMainContainer launchpoolAddress={params.lpool_address} />
+        </>
+    );
 }

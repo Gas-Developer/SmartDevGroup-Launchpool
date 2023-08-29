@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#investorMainContainer {
+    height: inherit;
+}
+
+#upperInvestorLeftSide{
+    background-color: red;
+    height: 18%;
+}
+
+#middleInvestorLeftSide{
+    background-color: white;
+    height: 54%;
+}
+
+#lowerInvestorLeftSide{
+    background-color: blue;
+    height: 28%;
+}
