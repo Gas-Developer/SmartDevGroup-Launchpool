@@ -40,6 +40,12 @@
 
 }
 
+.miniLPCard:hover {
+	cursor: pointer;
+	border: 1px solid yellow;
+	box-shadow: 0 0 10px yellow;
+}
+
 .miniLPCard:not(:first-child) {
 	margin-left: 1%;
 }
