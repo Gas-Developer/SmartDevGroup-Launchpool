@@ -13,7 +13,7 @@ export default function MiniLPCard(props: any) {
 
 	function toLaunchpoolPage() {
 		const href =
-			"/dashboard/" + miniLPCardInfo.launchpoolAddress + "/investor";
+			"/dashboard/" + miniLPCardInfo.launchpoolAddress + "/" + miniLPCardInfo.cid + "/investor";
 		router.push(href);
 	}
 

@@ -18,12 +18,14 @@ export default function LaunchpoolsPreviewArea(props: any) {
 
 	function setLPPhase(
 		launchpoolData: any,
-		launchpoolAddress: string | undefined
+		launchpoolAddress: string | undefined,
+		cid: string | undefined
 	) {
 		const now = new Date();
 		const start = new Date(launchpoolData.startLP * 1000);
 		const end = new Date(launchpoolData.endLP * 1000);
 		launchpoolData.launchpoolAddress = launchpoolAddress;
+		launchpoolData.cid = cid;
 		if (now < start) {
 			setLpoolStartingPhaseData((prevData) => [
 				...prevData,
@@ -51,7 +53,7 @@ export default function LaunchpoolsPreviewArea(props: any) {
 					.get(ipfsURI, { headers: { Accept: "text/plain" } })
 					.then((res) => {
 						if (res !== undefined) {
-							setLPPhase(res.data, launchpool.launchpoolAddress);
+							setLPPhase(res.data, launchpool.launchpoolAddress, launchpool.storageURI);
 						}
 					});
 			}
