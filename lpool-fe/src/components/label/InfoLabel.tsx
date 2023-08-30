@@ -9,7 +9,8 @@ import { InfoLabelData } from "../interfaces/InfoLabelData";
 
 export function InfoLabel(props: InfoLabelData) {
 
-	let editableProps = {...props};
+	let editableProps = { ...props };
+	
 	if(props.className)
 		editableProps.className = "InfoLabel "+props.className;
 

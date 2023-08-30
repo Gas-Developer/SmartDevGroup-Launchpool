@@ -9,6 +9,10 @@ import { Stake } from "./Stake";
 import { ipfs_base_URI } from "./costants";
 import axios from "axios";
 import { IPFSLaunchpoolData } from "./interfaces/IPFSLaunchpoolData";
+import Image from "next/image";
+import { InfoLabel } from "./label/InfoLabel";
+import Tokenomics from "./Tokenomics";
+import TechnicalInfo from "./TechnicalInfo";
 
 const logger = require("pino")();
 
@@ -16,7 +20,7 @@ export default function InvestorMainContainer(props: any) {
     const launchpoolAddress = props.launchpoolAddress as `0x${string}`;
     const cid = props.cid;
 
-    const [IPFSData, setIPFSData] = useState<IPFSLaunchpoolData | null>(null);
+    const [ipfsData, setIpfsData] = useState<IPFSLaunchpoolData | null>(null);
 
     let dataToSend: ContractData = {} as ContractData;
 
@@ -27,15 +31,15 @@ export default function InvestorMainContainer(props: any) {
                 .get(ipfsURI, { headers: { Accept: "text/plain" } })
                 .then((res) => {
                     if (res !== undefined) {
-                        setIPFSData(res.data);
+                        setIpfsData(res.data);
                     }
                 })
                 .catch((error) => {
                     logger.error("Error fetching IPFS data:", error);
-                    setIPFSData(null);
+                    setIpfsData(null);
                 });
         }
-    }, [cid]); // Esegui la chiamata solo quando cid cambia
+    }, [cid]);
 
     const [contractData, setContractData] = useState({} as ContractData);
     const { data, isSuccess, isLoading } = useContractReads({
@@ -69,19 +73,7 @@ export default function InvestorMainContainer(props: any) {
                 ...LaunchpoolContractConfig,
                 address: launchpoolAddress,
                 functionName: "totalStaked",
-            },
-            {
-                ...wagmiTokenConfig,
-                functionName: "name",
-            },
-            {
-                ...wagmiTokenConfig,
-                functionName: "symbol",
-            },
-            {
-                ...wagmiTokenConfig,
-                functionName: "totalSupply",
-            },
+            }
         ],
     });
 
@@ -107,16 +99,7 @@ export default function InvestorMainContainer(props: any) {
                 totalStaked:
                     data?.[5].result !== undefined
                         ? parseInt(data?.[5].result?.toString())
-                        : 0,
-                name: data?.[6].result?.toString()
-                    ? data?.[6].result?.toString()
-                    : "",
-                symbol: data?.[7].result?.toString()
-                    ? data?.[7].result?.toString()
-                    : "",
-                totalSupply: data?.[8].result?.toString()
-                    ? data?.[8].result?.toString()
-                    : "",
+                        : 0
             };
         }
 
@@ -127,7 +110,7 @@ export default function InvestorMainContainer(props: any) {
         <>
             <div
                 id="investorMainContainer"
-                className=" bg-slate-400 grid grid-cols-4"
+                className=" bg-slate-400 grid grid-cols-4 overflow-auto"
             >
                 <div
                     id="investorLeftSide"
@@ -138,12 +121,23 @@ export default function InvestorMainContainer(props: any) {
                         className="bg-slate-800 row-span-1 grid grid-cols-6"
                     >
                         <div id="imgContainer">
-                            <image></image>
+                            <Image
+                                loader={() => ipfsData?.iconURL || ""}
+                                src={ipfsData?.iconURL || ""}
+                                alt={ipfsData?.name || ""}
+                                width={50}
+                                height={50}
+                                layout="responsive"
+                            />
                         </div>
                         <div id="launchpoolTitle" className="col-span-3">
-							<h1>{contractData.name}</h1>
-							<br />
-							<h2>{IPFSData?.tokenWebsite}</h2>
+                            <InfoLabel
+                                value={ipfsData?.name}
+                                name={"investorLaunchpoolTitle"}
+                                className={""}
+                            />
+                            <br />
+                            <a>{ipfsData?.tokenWebsite}</a>
                         </div>
                         <div
                             id="investorStakeBContainer"
@@ -156,14 +150,24 @@ export default function InvestorMainContainer(props: any) {
                         id="investorLeftSideMiddle"
                         className=" bg-slate-900 row-span-3"
                     >
-                        <p className=" font-sans text-justify">
-                           {IPFSData?.description}
-                        </p>
+                        <InfoLabel
+                            value={ipfsData?.description}
+                            name={"investorLaunchpoolDescription"}
+                            className={"font-sans text-justify"}
+                        />
                     </div>
                     <div
                         id="investorLeftSideBottom"
-                        className=" bg-slate-800 row-span-2"
-                    ></div>
+                        className=" bg-slate-800 row-span-2 grid grid-cols-2"
+                    >
+                        <div className="grid grid-cols-2 gap-3 h-fit text-start">
+                            <Tokenomics tokenAddress={contractData.token} totalTokenToDistribute={contractData.totalTokenToDistribute} />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-3 h-fit text-end">
+                            <TechnicalInfo tokenAddress={contractData.token} />
+                        </div>
+                    </div>
                 </div>
                 <div
                     id="investorRightSide"
