@@ -24,3 +24,11 @@
 #investorLeftSideBottom{
     padding: 1%;
 }
+
+.stakeBtn{
+    background-color: #DEAD52;
+    width: 30vh;
+    height: 5vh;
+    cursor: pointer;
+    border: none;
+}
