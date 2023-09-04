@@ -102,22 +102,38 @@ export default function InvestorMainContainer(props: any) {
 			};
 		}
 
+			
+
 		setContractData(dataToSend);
 	}, [data]);
+
+	const launchpoolDuration = Math.floor(contractData.stakingLength / 86400);
+	let launchpoolPhase = "";
+
+	if (contractData.startLP !== undefined && contractData.endLP !== undefined) {
+		const now = new Date().getTime() / 1000;
+		if (now < contractData.startLP) {
+			launchpoolPhase = "To Starting";
+		} else if (now > contractData.startLP && now < contractData.endLP) {
+			launchpoolPhase = "Staking Phase";
+		} else {
+			launchpoolPhase = "Claiming Phase";
+		}
+	}
 
 	return (
 		<>
 			<div
 				id="investorMainContainer"
-				className=" bg-slate-400 grid grid-cols-4 overflow-auto"
+				className="bg-zinc-700 grid grid-cols-4 overflow-auto opacity-80 text-2xl"
 			>
 				<div
 					id="investorLeftSide"
-					className=" bg-slate-700 col-span-3 grid grid-rows-6"
+					className="col-span-3 grid grid-rows-6"
 				>
 					<div
 						id="investorLeftSideTop"
-						className="bg-slate-800 row-span-1 grid grid-cols-6"
+						className="row-span-1 grid grid-cols-6"
 					>
 						<div id="imgContainer">
 							<Image
@@ -133,10 +149,16 @@ export default function InvestorMainContainer(props: any) {
 							<InfoLabel
 								value={ipfsData?.name}
 								name={"investorLaunchpoolTitle"}
-								className={""}
+								className={"text-5xl font-bold"}
 							/>
 							<br />
-							<a>{ipfsData?.tokenWebsite}</a>
+							<br />
+							<a
+								href={ipfsData?.tokenWebsite}
+								className="cursor-pointer underline"
+							>
+								{ipfsData?.tokenWebsite}
+							</a>
 						</div>
 						<div
 							id="investorStakeBContainer"
@@ -148,10 +170,7 @@ export default function InvestorMainContainer(props: any) {
 							/>
 						</div>
 					</div>
-					<div
-						id="investorLeftSideMiddle"
-						className=" bg-slate-900 row-span-3"
-					>
+					<div id="investorLeftSideMiddle" className="row-span-3">
 						<InfoLabel
 							value={ipfsData?.description}
 							name={"investorLaunchpoolDescription"}
@@ -160,7 +179,7 @@ export default function InvestorMainContainer(props: any) {
 					</div>
 					<div
 						id="investorLeftSideBottom"
-						className=" bg-slate-800 row-span-2 grid grid-cols-2"
+						className="row-span-2 grid grid-cols-2"
 					>
 						<div className="grid grid-cols-2 gap-3 h-fit text-start">
 							<Tokenomics
@@ -178,8 +197,64 @@ export default function InvestorMainContainer(props: any) {
 				</div>
 				<div
 					id="investorRightSide"
-					className=" bg-slate-900 grid grid-cols-5"
-				></div>
+					className="grid grid-rows-4 text-center justify-center items-center"
+				>
+					<div>
+						<InfoLabel
+							name={""}
+							value={launchpoolPhase}
+							className={undefined}
+						></InfoLabel>
+					</div>
+					<div>
+						<InfoLabel
+							name={""}
+							value={"Total value locked"}
+							className={undefined}
+						></InfoLabel>
+						<br />
+						<InfoLabel
+							name={""}
+							value={
+								contractData.totalStaked !== undefined
+									? contractData.totalStaked + " MATIC"
+									: ""
+							}
+							className={undefined}
+						></InfoLabel>
+					</div>
+					<div>
+						<InfoLabel
+							name={""}
+							value={"Ending in"}
+							className={undefined}
+						></InfoLabel>
+						<br />
+						<InfoLabel
+							name={""}
+							value={
+								launchpoolDuration !== undefined
+									? launchpoolDuration + " Days"
+									: ""
+							}
+							className={undefined}
+						></InfoLabel>
+					</div>
+					<div>
+						<InfoLabel
+							name={""}
+							value={"Actual Ratio"}
+							className={undefined}
+						></InfoLabel>
+						<br />
+
+						<InfoLabel
+							name={""}
+							value={"135,7 Token per matic"}
+							className={undefined}
+						></InfoLabel>
+					</div>
+				</div>
 			</div>
 		</>
 	);

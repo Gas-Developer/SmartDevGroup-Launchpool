@@ -22,7 +22,7 @@ export default function Tokenomics(props: any) {
             <InfoLabel
                 name={"tokenomicsInvestor"}
                 value={"Tokenomics"}
-                className={"col-span-2"}
+                className={"col-span-2 font-bold text-4xl"}
             />
             <InfoLabel
                 name={"investorTotalSupply"}

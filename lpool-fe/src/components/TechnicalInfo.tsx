@@ -9,7 +9,7 @@ export default function TechnicalInfo(props: any) {
             <InfoLabel
                 name={"tokenomicsInvestor"}
                 value={"Technical Info"}
-                className={"col-span-2"}
+                className={"col-span-2 font-bold text-4xl"}
             />
             <InfoLabel
                 name={""}

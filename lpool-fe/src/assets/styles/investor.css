@@ -6,23 +6,16 @@
     height: inherit;
 }
 
-#upperInvestorLeftSide{
-    background-color: red;
-    height: 18%;
-}
-
-#middleInvestorLeftSide{
-    background-color: white;
-    height: 54%;
-}
-
-#lowerInvestorLeftSide{
-    background-color: blue;
-    height: 28%;
+#investorLeftSideMiddle{
+    padding: 5%;
 }
 
 #investorLeftSideBottom{
     padding: 1%;
+}
+
+#launchpoolTitle{
+    padding: 5%;
 }
 
 .stakeBtn{
@@ -32,3 +25,4 @@
     cursor: pointer;
     border: none;
 }
+
