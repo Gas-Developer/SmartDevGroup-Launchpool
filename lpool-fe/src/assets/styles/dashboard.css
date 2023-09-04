@@ -6,19 +6,6 @@
 	height: inherit;
 }
 
-#featuredArea {
-	/* background-color: red; */
-}
-
-#createLaunchpoolArea {
-	/* background-color: blue; */
-}
-
-#tlrEventsArea {
-	/* background-color: green; */
-}
-
-
 #allPhaseContainer {
 	padding: 1%;
 }
@@ -38,6 +25,12 @@
 	margin-top: 0.5%;
 	height: 78%;
 
+}
+
+.miniLPCard:hover {
+	cursor: pointer;
+	border: 1px solid yellow;
+	box-shadow: 0 0 10px yellow;
 }
 
 .miniLPCard:not(:first-child) {

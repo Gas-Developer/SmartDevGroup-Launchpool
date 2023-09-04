@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#investorMainContainer {
+    height: inherit;
+}
+
+#investorLeftSideMiddle{
+    padding: 5%;
+}
+
+#investorLeftSideBottom{
+    padding: 1%;
+}
+
+#launchpoolTitle{
+    padding: 5%;
+}
+
+.stakeBtn{
+    background-color: #DEAD52;
+    width: 30vh;
+    height: 5vh;
+    cursor: pointer;
+    border: none;
+}
+
