@@ -6,6 +6,7 @@ import { LPCard } from "./cards/LPCard";
 import { DeployFormContainer } from "./containers/DeployFormContainer";
 import { LPCardPreviewContainer } from "./containers/LPCardPreviewContainer";
 import { DeployCostsContainer } from "./containers/DeployCostsContainer";
+import { useState } from "react";
 
 const logger = require("pino")();
 
@@ -23,36 +24,44 @@ export function CreatorPage(props: any) {
 	// contractData.launchpoolAddress = contractData.launchpoolAddress ? contractData.launchpoolAddress : props.launchpoolAddress;
 	// contractData.cid = contractData.cid ? contractData.cid : props.cid;
 
+	const [previewLPCardData, setLPCardPreviewData] = useState({
+
+		imageURL: "https://...",
+		startLPValue: BigInt(0),
+		endLPValue: BigInt(0),
+		checked: false,
+		description: "Write the Launchpool / Token description here",
+		tokenAddress: "",
+		webURL: "https://...",
+		isFeatured: false,
+
+	});
+
 	return (
 		<>
-			{/* <div className="grid grid-cols-4 gap-4">
-				<div className="col-span-2">
-					<LPCardPreviewContainer />
-				</div>
-				<div className="col-span-2">
-					<DeployFormContainer />
-				</div>
-				<div className="col-span-2">
-					<DeployCostsContainer />
-				</div>
-			</div> */}
+
 
 
 			<div className="grid grid-cols-2 gap-4">
 				<div className="col-span-1">
-					<div className="grid grid-rows-3 grid-flow-col gap-4 ">
-						<div className="row-span-2 ">
-							{/* <LPCard {...contractData} /> */}
-							<LPCardPreviewContainer />
-						</div>
+
+					<LPCardPreviewContainer {...previewLPCardData}/>
+
+
+					{/* <div className="grid grid-rows-3 grid-flow-col gap-4 ">
 						<div className="row-span-1 ">
-							{/* <DeployCosts {...contractData} /> */}
-							<DeployCostsContainer />
+							<LPCardPreviewContainer {...previewLPCardData}/>
 						</div>
-					</div>
+						<div className="row-span-2 ">
+							<DeployCostsContainer isFeatured={previewLPCardData.isFeatured}/>
+						</div>
+
+					</div> */}
 				</div>
 				<div className="col-span-1">
-					<DeployFormContainer />
+					<DeployFormContainer setLPCardPreviewData={setLPCardPreviewData}/>
+					<DeployCostsContainer isFeatured={previewLPCardData.isFeatured} tokenAddress={previewLPCardData.tokenAddress}/>
+
 				</div>
 
 			</div>

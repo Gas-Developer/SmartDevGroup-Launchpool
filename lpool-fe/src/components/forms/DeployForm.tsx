@@ -1,39 +1,319 @@
-import { SetStateAction, useState } from "react";
-import { defaultTF } from "../costants";
+import { SetStateAction, useEffect, useState } from "react";
+import { defaultTF, PINATA_APIKEY, PINATA_SECRET, PINATA_PIN_JSON_TO_IPFS } from "../costants";
 import { Textfield } from "../input/Textfield";
-import { Info } from "../label/Info";
 import { InfoLabel } from "../label/InfoLabel";
-import { InfoValue } from "../label/InfoValue";
 import DateTimePicker from "../dateTimePicker";
 import { Textarea } from "../input/Textarea";
 import { Checkbox } from "../input/Checkbox";
 import { ImageButton } from "../buttons/ImageButton";
 import deployLaunchpoolBTN from "../../assets/images/DeployLaunchpoolBTN.png";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useContractWrite, useWaitForTransaction, useContractRead, useAccount, useConnect, useDisconnect } from "wagmi";
+import { FactoryContractConfig } from "../../abi/factory-abi";
+import { useRouter } from 'next/navigation';
+import axios from "axios";
+import { ControlButton } from "../buttons/ControlButton";
+import { ControlButtonData } from "../interfaces/ControlButtonData";
 
+const logger = require("pino")();
 
-export function DeployForm() {
+/*
+TODO LIST:
+- [ ] Implementare controlli della checkLPInfoValidity
+- [ ] Implementare gli handleTransaction 
+- [ ] Implemntare pattern nei campi del form
+*/
+
+const tfStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0 placeholder-gray-500";
+const labelStyle = " font-['Roboto'] text-xs text-slate-200";
+const dateTimePickerStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
+
+let startLPValueInSeconds = BigInt(0);
+let endLPValueInSeconds = BigInt(0);
+
+export function DeployForm(props: any) {
+
+	const router = useRouter();
+	const now = new Date();
 
 	const [formData, setFormData] = useState({
 		description: "Write the Launchpool / Token description here",
-		tokenAddress: "0x...",
-		imageURL: "https://...",
-		webURL: "https://...",
+		tokenAddress: "",
+		imageURL: "",
+		webURL: "",
 		startLPValue: BigInt(0),
 		endLPValue: BigInt(0),
-		checked: false
+		isFeatured: false,
 	});
 
-	const tfStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
-	const labelStyle = " font-['Roboto'] text-xs text-slate-200";
-	const dateTimePickerStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
+
+		// // Launchpool Info
+		// const [LPInfo, setLPInfo] = useState(
+		// 	{
+		// 		name: "",
+		// 		description: "",
+		// 		iconURL: "",
+		// 		lpWebsite: "",
+		// 		tokenWebsite: "",
+		// 		tokenAddress: "",
+		// 		startLP: "",
+		// 		endLP: "",
+		// 	}
+		// );
+
+
+	const [duration, setDuration] = useState("");
+
+	const debouncedFormData = useDebounce(formData);
+
+	// Setto i Preview Data al variare del Form Data - uso il debouncedFormData per evitare di fare troppe chiamate
+	useEffect(() => {
+
+		setDuration(getDuration());
+
+		// Controllo che il token address abbia la lunghezza giusta e inizi con 0x
+		// oppure sia vuoto per attivare la scomparsa delle schede Preview e Deploy Cost
+		if(
+			(debouncedFormData.tokenAddress.length == 42 && debouncedFormData.tokenAddress.startsWith("0x")) ||
+			(debouncedFormData.tokenAddress.length == 0)
+		) {
+			props.setLPCardPreviewData( {...debouncedFormData} );
+		}
+	}, [debouncedFormData]);
+
 
 	const handleOnChange = () => {
-		setFormData( {...formData, checked: !formData.checked} );
+		setFormData( {...formData, isFeatured: !formData.isFeatured} );
 	};
 
-	function deployLaunchpool() {
-		console.log("Deploying Launchpool...");
+	// Restituisce una stringa formattata con la durata del Launchpool
+	function getDuration() {
+		let dur_ms = Number(debouncedFormData.endLPValue - debouncedFormData.startLPValue);
+		let dur_s = dur_ms / 1000;
+		let dur_m = dur_s / 60;
+		let dur_h = dur_m / 60;
+		let dur_d = dur_h / 24;
+		let dur = "";
+
+		if( dur_s > 1) 
+			dur = Math.trunc(dur_s).toString() + " seconds";
+		if( dur_m > 1 )
+			dur = Math.trunc(dur_m).toString() + " minutes";
+		if( dur_h > 1 )
+			dur = Math.trunc(dur_h).toString() + " hours";
+		if( dur_d > 1 ) 
+			dur = Math.trunc(dur_d).toString() + " days";
+
+		return dur;
 	}
+
+
+	/* INIZIO NUOVA PARTE */
+
+	// Read Launchpool Address Activator/Disactivator
+	const [enableReadProxies, setEnableReadProxies] = useState(false);
+
+	// Prepare deployClone
+	// deployClone(address _implementationContract, ERC20 _token, uint _startLP, uint _endLP)
+	const { write, data, error, isLoading, isError } = useContractWrite({
+		...FactoryContractConfig,
+		functionName: 'deployClone',
+	})
+
+	const {
+		data: receipt,
+		isLoading: isPending,
+		isSuccess,
+	} = useWaitForTransaction(
+		{ 
+			hash: data?.hash,
+			onSuccess(data) {
+				logger.info('Launchpool deployed succesfully');
+				logger.info('Reading new Launchpool address...');
+				setEnableReadProxies(true);
+			},
+		}
+	)
+
+	// READ LAUNCHPOOL ADDRESS
+	useContractRead({
+		...FactoryContractConfig,
+		functionName: 'getLaunchpools',
+		enabled: enableReadProxies,
+		onSuccess(data) {
+
+			const lpAddress = data?.[data.length - 1].launchpoolAddress;
+			const cid = data?.[data.length - 1].storageURI;
+
+			setEnableReadProxies(false);
+
+			logger.info('New Launchpool address: ', lpAddress);
+			logger.info('New Launchpool storageURI: ', cid);
+			logger.info('Redirecting Creator to Launchpool page for Creators...');
+			// Reindirizzo l'utente alla pagina Creator con l'address della nuova Launchpool
+			router.push("/dashboard/" + lpAddress+"/" + cid + "/creator");
+
+		},
+	})
+
+
+	// SAVE LPINFO ON IPFS & THEN DEPLOY THE NEW LAUNCHPOOL
+	function saveLPInfoOnIPFS() {
+
+		let tokenAddress = formData.tokenAddress;
+
+		startLPValueInSeconds = BigInt(formData.startLPValue) / BigInt(1000);
+		endLPValueInSeconds = BigInt(formData.endLPValue) / BigInt(1000);
+
+		//logger.info("startLPValueInSeconds", startLPValueInSeconds);
+		//logger.info("endLPValueInSeconds", endLPValueInSeconds);
+
+		// Attivo il loading spinner
+		//handleTransactionStart();
+
+		// Save LPInfo in IPFS via Pinata API and get the hash
+		// https://pinata.cloud/documentation#PinJSONToIPFS
+
+
+		const LPInfo = {
+			//name: "The Launchpool Ready",
+			description: formData.description,
+			iconURL: formData.imageURL,
+			//lpWebsite: "",
+			tokenWebsite: formData.webURL,
+			tokenAddress: tokenAddress,
+			startLP: startLPValueInSeconds.toString(),
+			endLP: endLPValueInSeconds.toString(),
+		};
+
+		logger.info("LPInfo", LPInfo);
+
+		let dataIPFS = JSON.stringify({
+			pinataOptions: {
+				cidVersion: 1,
+			},
+			pinataMetadata: {
+				name: "The Launchpool Ready",
+				keyvalues: {
+					//LPName: LPInfo.name,
+					tokenAddress: tokenAddress,
+					startLP:  LPInfo.startLP,
+					endLP: LPInfo.endLP,
+				},
+			},
+			pinataContent: LPInfo,
+		});
+
+		let configIPFS = {
+			method: "post",
+			url: PINATA_PIN_JSON_TO_IPFS,
+			headers: {
+				pinata_api_key: PINATA_APIKEY,
+				pinata_secret_api_key: PINATA_SECRET,
+				"Content-Type": "application/json",
+			},
+			data: dataIPFS,
+		};
+
+		logger.info("Saving LPInfo on IPFS...");
+
+		// Save LPInfo in IPFS via Pinata API and get the hash
+		axios(configIPFS)
+			.then(function (response: any) {
+
+				// handleTransactionSuccess();
+
+				logger.info("Deploying new Launchpool...");
+				deployNewLaunchpool(response.data.IpfsHash);
+			});
+
+	}
+
+	// DEPLOY NEW LAUNCHPOOL
+	function deployNewLaunchpool(storageURI: string) {
+
+		let tokenAddress = formData.tokenAddress;
+		let startLPValue = formData.startLPValue;
+		let endLPValue = formData.endLPValue;
+
+		if (startLPValue != undefined && startLPValue > 0 && endLPValue != undefined && endLPValue > 0 && tokenAddress != undefined && tokenAddress.startsWith('0x')) {
+
+			write({
+
+				args: [
+					FactoryContractConfig.templateAddress, 
+					tokenAddress as `0x${string}`, 
+					startLPValueInSeconds, 
+					endLPValueInSeconds,
+					storageURI
+				],
+			})
+
+		} else {
+			logger.info("ERROR: createLaunchpool");
+			logger.info("Some input datas are missing or wrong");
+		}
+	}
+
+/* FINE NUOVA PARTE */
+
+	// CHECK LPINFO VALIDITY
+	function checkLPInfoValidity(LPInfo: any) {
+		
+		let validity = true;
+
+		// TODO: Check LPInfo validity
+
+		if(!validity)
+			console.log("ERROR: checkLPInfoValidity");
+
+		return validity;
+
+	}
+
+	// START
+	// Deploy BTN
+	function createLaunchpool() {
+
+		// Check LPInfo validity
+		if(!checkLPInfoValidity(formData))
+			return;
+
+		logger.info("Creating new Launchpool...");
+
+		// Save LPInfo in IPFS via Pinata API and store the hash (CID/storageURI) in the LaunchpoolFactory
+		saveLPInfoOnIPFS();
+
+	}
+
+
+	// WALLET CONNECT
+	const { connector, isConnected } = useAccount()
+	const { connect, connectors, pendingConnector } = useConnect()
+	const { disconnect } = useDisconnect()
+
+	// CONNECT WALLET BUTTON
+	let connect_wallet: ControlButtonData = {
+		name: "connect_wallet",
+		text: "Connect Wallet",
+		tooltip: "Connect Wallet",
+		onClick: {},
+		disabled: false,
+		className: "",
+		iconURL: ""
+	};
+	const disconnect_wallet: ControlButtonData = {
+		name: "disconnect_wallet",
+		text: "Disconnect Wallet",
+		tooltip: "Disconnect Wallet",
+		onClick: {},
+		disabled: false,
+		className: "",
+		iconURL: ""
+	};
+
+	connect_wallet.onClick = () => connect({ connector: connectors[0] });
+	disconnect_wallet.onClick = () => disconnect();
 
 	return (
 		<>
@@ -76,20 +356,21 @@ export function DeployForm() {
 				<div className={"col-span-3 "}>
 					<DateTimePicker 
 						id="startLP"
-						placeholder="--"
-						//calendarInputClass="form-control controls-textfield"
+						placeholder={now.toLocaleString()}
 						calendarInputClass={dateTimePickerStyle}
 						calendarInputSize={20}
+						onChange={
+							(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, startLPValue: BigInt(e.valueOf().toString())} )
+						}
 					/>
 				</div>
-				<div className="col-span-1">
+				<div className="col-span-1 text-right">
 					<InfoLabel name={"toLabel"} value={"to*"} className={labelStyle} />
 				</div>
 				<div className={"col-span-3 "}>
 					<DateTimePicker 
 						id="endLP"
-						placeholder="--"
-						//calendarInputClass="form-control controls-textfield"
+						placeholder={now.toLocaleString()}
 						calendarInputClass={dateTimePickerStyle}
 						calendarInputSize={20}
 						onChange={
@@ -98,8 +379,7 @@ export function DeployForm() {
 					/>
 				</div>
 				<div className="col-span-2 text-xs text-end">
-					<InfoLabel name={"toLabel"} value={"duration"} className={labelStyle} />
-					<InfoLabel name={"toLabel"} value={"12 days"} className={labelStyle} />
+					<InfoLabel name={"toLabel"} value={duration} className={labelStyle} />
 				</div>
 
 				{/* ROW 4 */}
@@ -125,7 +405,7 @@ export function DeployForm() {
 						{...defaultTF}
 						id="webURL" 
 						name="webURL" 
-						placeholder="0x..."
+						placeholder="http://"
 						value={formData.webURL} 
 						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, webURL: e.target.value.toString()} )}
 						className={tfStyle}
@@ -145,17 +425,23 @@ export function DeployForm() {
 						value={undefined} 
 						onChange={handleOnChange}
 						className={" "}
-						checked={formData.checked}
+						checked={formData.isFeatured}
 					/>
 				</div>
 				<div className="col-span-8">
 					
 				</div>
 				<div className="col-span-9 text-center">
-					<ImageButton 
-						name="deployLaunchpoolBTN" src={deployLaunchpoolBTN} tooltip="Deploy Launchpool" onClick={deployLaunchpool} 
-						width={200} height={50} className=" "
-					/>
+
+					{/* Wallet Connection */} 
+					{!isConnected ? // TODO: Convertire in un component WalletConnection
+						<ControlButton {...connect_wallet}/> :
+						<ImageButton 
+							name="deployLaunchpoolBTN" src={deployLaunchpoolBTN} tooltip="Deploy Launchpool" onClick={createLaunchpool} 
+							width={200} height={50} className=" "
+						/>
+					}
+			
 				</div>
 			</div>
 		</>
