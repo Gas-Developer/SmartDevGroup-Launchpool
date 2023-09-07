@@ -25,6 +25,7 @@ body {
 	background-color: black;
 	background-image: url('../images/5053309.jpg');
 	color: #ffffff;
+	overflow: auto;
 
 }
 
