@@ -3,13 +3,13 @@ import DefaultContainer from "./DefaultContainer";
 import TrasparentContainer from "./TrasparentContainer";
 
 
-export function DeployFormContainer() {
+export function DeployFormContainer(props: any) {
 
 	return (
 		<>
 			<TrasparentContainer className="" >
 				<DefaultContainer className="">
-					<DeployForm />
+					<DeployForm {...props} />
 				</DefaultContainer>
 			</TrasparentContainer>
 		</>
