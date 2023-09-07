@@ -192,3 +192,8 @@ body {
 	width: 49%!important;
 	margin: 5px;
 }
+
+/* CHECKBOX */
+input[type="checkbox"] {
+	accent-color: rgb(35, 40, 58);
+}

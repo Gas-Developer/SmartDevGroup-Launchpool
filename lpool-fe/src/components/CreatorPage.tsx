@@ -2,6 +2,11 @@
 
 import { ContractData } from "./interfaces/ContractData";
 import { AreasContainer } from "./area/AreasContainer";
+import { LPCard } from "./cards/LPCard";
+import { DeployFormContainer } from "./containers/DeployFormContainer";
+import { LPCardPreviewContainer } from "./containers/LPCardPreviewContainer";
+import { DeployCostsContainer } from "./containers/DeployCostsContainer";
+import { useState } from "react";
 
 const logger = require("pino")();
 
@@ -15,9 +20,52 @@ export function CreatorPage(props: any) {
 	if(contractData.cid === undefined && props.cid !== undefined)
 		contractData.cid = props.cid;
 
+	// TODO: Verify that this is the correct way to do this
+	// contractData.launchpoolAddress = contractData.launchpoolAddress ? contractData.launchpoolAddress : props.launchpoolAddress;
+	// contractData.cid = contractData.cid ? contractData.cid : props.cid;
+
+	const [previewLPCardData, setLPCardPreviewData] = useState({
+
+		imageURL: "https://...",
+		startLPValue: BigInt(0),
+		endLPValue: BigInt(0),
+		checked: false,
+		description: "Write the Launchpool / Token description here",
+		tokenAddress: "",
+		webURL: "https://...",
+		isFeatured: false,
+
+	});
+
 	return (
 		<>
-			<AreasContainer {...contractData} />
+
+
+
+			<div className="grid grid-cols-2 gap-4">
+				<div className="col-span-1">
+
+					<LPCardPreviewContainer {...previewLPCardData}/>
+
+
+					{/* <div className="grid grid-rows-3 grid-flow-col gap-4 ">
+						<div className="row-span-1 ">
+							<LPCardPreviewContainer {...previewLPCardData}/>
+						</div>
+						<div className="row-span-2 ">
+							<DeployCostsContainer isFeatured={previewLPCardData.isFeatured}/>
+						</div>
+
+					</div> */}
+				</div>
+				<div className="col-span-1">
+					<DeployFormContainer setLPCardPreviewData={setLPCardPreviewData}/>
+					<DeployCostsContainer isFeatured={previewLPCardData.isFeatured} tokenAddress={previewLPCardData.tokenAddress}/>
+
+				</div>
+
+			</div>
+			{/* <AreasContainer {...contractData} /> */}
 		</>
 	);
 }

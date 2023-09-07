@@ -7,7 +7,7 @@
 * 5. Reindirizza l'utente alla pagina Creator con l'address della nuova Launchpool
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { ControlButton } from "./buttons/ControlButton";
 import { ControlButtonData } from "./interfaces/ControlButtonData";
 import { LinkToken } from './LinkToken';
@@ -272,7 +272,9 @@ export function CreateLaunchpool(props: any) {
 								id="start_lp"
 								placeholder="Enter launchpool start time"
 								calendarInputClass="form-control controls-textfield"
-								setStartLPValue={setStartLPValue}
+								onChange={
+									(e: { target: { value: SetStateAction<string>; }; }) => setStartLPValue( Number(e.valueOf().toString()) )
+								}
 								calendarInputSize={40}
 							/>
 						</li>
@@ -281,7 +283,9 @@ export function CreateLaunchpool(props: any) {
 								id="end_lp"
 								placeholder="Enter launchpool end time"
 								calendarInputClass="form-control controls-textfield"
-								setEndLPValue={setEndLPValue}
+								onChange={
+									(e: { target: { value: SetStateAction<string>; }; }) => setEndLPValue( Number(e.valueOf().toString()) )
+								}
 								calendarInputSize={40}
 							/>
 						</li>

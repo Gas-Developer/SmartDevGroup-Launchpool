@@ -55,7 +55,6 @@
 	background-color: rgba(50, 50, 50, 0.5);
 	color: rgba(0, 0, 0, 0.75);
 	border: none;
-
 	font-size: 0.85rem;
 }
 
@@ -71,14 +70,14 @@
 }
 
 .controls-textfield::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-	color: rgba(255, 255, 255, 0.25);
+	color: rgba(0, 255, 255, 1);
 	opacity: 1; /* Firefox */
 }
 
 .controls-textfield:-ms-input-placeholder { /* Internet Explorer 10-11 */
-	color: rgba(255, 255, 255, 0.25);
+	color: rgba(0, 255, 255, 1);
 }
 
 .controls-textfield::-ms-input-placeholder { /* Microsoft Edge */
-	color: rgba(255, 255, 255, 0.25);
+	color: rgba(0, 255, 255, 0.25);
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import CreateLaunchpool from "./dashboard/area/CreateLaunchpool";
-import FeaturedLaunchpools from "./dashboard/area/FeaturedLaunchpools";
-import LaunchpoolsPreviewArea from "./dashboard/area/LaunchpoolsPreview";
-import TLREventsArea from "./dashboard/area/TLREvents";
+import CreateLaunchpool from "../dashboard/area/CreateLaunchpool";
+import FeaturedLaunchpools from "../dashboard/area/FeaturedLaunchpools";
+import LaunchpoolsPreviewArea from "../dashboard/area/LaunchpoolsPreview";
+import TLREventsArea from "../dashboard/area/TLREvents";
 
 export default function DashboardMainContainer() {
     return (

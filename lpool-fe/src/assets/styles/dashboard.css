@@ -3,17 +3,32 @@
 @tailwind utilities;
 
 #dashboardMainContainer {
-    height: inherit;
+	height: inherit;
 }
 
 #featuredArea{
-    /* background-color: red; */
+	/* background-color: red; */
 }
 
 #createLaunchpoolArea{
-    /* background-color: blue; */
+	/* background-color: blue; */
 }
 
 #tlrEventsArea{
-    /* background-color: green; */
+	/* background-color: green; */
+}
+
+#createLaunchpoolInfo {
+	background-color: #1A1A1AAA;
+	border-radius: 10px;
+	padding: 20px;
+	padding-bottom: 40px;
+	width: fit-content;
+	vertical-align: middle;
+}
+
+.transparent-button{
+	background-color: transparent;
+	border: none;
+	outline: none;
 }
