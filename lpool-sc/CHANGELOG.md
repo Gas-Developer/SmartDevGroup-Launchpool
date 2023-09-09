@@ -17,6 +17,10 @@ straightforward as possible.
   PATCH Ticket title goes here.
 
 ---------------------------------------------------------------------------------------------------------
+# [0.1.0] - 09-09-2023
+
+	- Merged on main
+
 # [0.0.15] - 12-07-2023
 ### Added
 	- [launchpool.sol]
