@@ -1,9 +1,9 @@
-import { CreatorPage } from "../../../../../components/CreatorPage";
+import { CreatorLPCreatedPage } from "../../../../../components/CreatorLPCreatedPage";
 
 export default function Page({ params }: { params: { lpool_address: string, cid: string } }) {
 	return (
 		<>
-			<CreatorPage launchpoolAddress={params.lpool_address} cid={params.cid}/>
+			<CreatorLPCreatedPage launchpoolAddress={params.lpool_address} cid={params.cid}/>
 		</>
 	);
 }
