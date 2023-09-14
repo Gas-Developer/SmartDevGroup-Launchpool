@@ -9,6 +9,5 @@ Anyone launching a new token often conducts a Launchpool before creating liquidi
 ---
 
 # Progress status
-
-Smart-contract 		70%
-Front-End			5%
+Smart-contract 		80%
+Front-End			55%
