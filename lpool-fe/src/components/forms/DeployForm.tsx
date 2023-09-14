@@ -1,5 +1,6 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { defaultTF, PINATA_APIKEY, PINATA_SECRET, PINATA_PIN_JSON_TO_IPFS } from "../costants";
+import { defaultTF, tfStyle, labelStyle, dateTimePickerStyle, PINATA_APIKEY, PINATA_SECRET, PINATA_PIN_JSON_TO_IPFS, connect_wallet, disconnect_wallet } 
+	from "../constants";
 import { Textfield } from "../input/Textfield";
 import { InfoLabel } from "../label/InfoLabel";
 import DateTimePicker from "../dateTimePicker";
@@ -24,9 +25,6 @@ TODO LIST:
 - [ ] Implemntare pattern nei campi del form
 */
 
-const tfStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0 placeholder-gray-500";
-const labelStyle = " font-['Roboto'] text-xs text-slate-200";
-const dateTimePickerStyle = " bg-slate-800 rounded-md pl-2 pt-1.5 pb-1 pr-2 font-['Roboto'] text-slate-200 text-xs shadow border-0";
 
 let startLPValueInSeconds = BigInt(0);
 let endLPValueInSeconds = BigInt(0);
@@ -293,24 +291,24 @@ export function DeployForm(props: any) {
 	const { disconnect } = useDisconnect()
 
 	// CONNECT WALLET BUTTON
-	let connect_wallet: ControlButtonData = {
-		name: "connect_wallet",
-		text: "Connect Wallet",
-		tooltip: "Connect Wallet",
-		onClick: {},
-		disabled: false,
-		className: "",
-		iconURL: ""
-	};
-	const disconnect_wallet: ControlButtonData = {
-		name: "disconnect_wallet",
-		text: "Disconnect Wallet",
-		tooltip: "Disconnect Wallet",
-		onClick: {},
-		disabled: false,
-		className: "",
-		iconURL: ""
-	};
+	// let connect_wallet: ControlButtonData = {
+	// 	name: "connect_wallet",
+	// 	text: "Connect Wallet",
+	// 	tooltip: "Connect Wallet",
+	// 	onClick: {},
+	// 	disabled: false,
+	// 	className: "",
+	// 	iconURL: ""
+	// };
+	// const disconnect_wallet: ControlButtonData = {
+	// 	name: "disconnect_wallet",
+	// 	text: "Disconnect Wallet",
+	// 	tooltip: "Disconnect Wallet",
+	// 	onClick: {},
+	// 	disabled: false,
+	// 	className: "",
+	// 	iconURL: ""
+	// };
 
 	connect_wallet.onClick = () => connect({ connector: connectors[0] });
 	disconnect_wallet.onClick = () => disconnect();
@@ -329,7 +327,6 @@ export function DeployForm(props: any) {
 						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, description: e.target.value.toString()} )}
 						className={tfStyle}
 						rows={5}
-
 					/>
 				</div>
 				

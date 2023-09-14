@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { ipfs_base_URI } from "../../costants";
+import { ipfs_base_URI } from "../../constants";
 import { LaunchpoolReference } from "../../interfaces/LaunchpoolReference";
 import LaunchpoolPhase from "./LaunchpoolPhase";
 import { IPFSLaunchpoolData } from "../../interfaces/IPFSLaunchpoolData";

@@ -3,7 +3,7 @@ import { DepositButton } from "./buttons/DepositButton";
 import { Textfield } from "./input/Textfield";
 import { ApproveButton } from "./buttons/ApproveButton";
 
-import { defaultTF } from "./costants";
+import { defaultTF } from "./constants";
 
 
 export function Deposit(props: any) {

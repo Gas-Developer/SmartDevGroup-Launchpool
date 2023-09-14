@@ -4,7 +4,7 @@ import { Textfield } from "./input/Textfield";
 import { ControlButtonData } from "./interfaces/ControlButtonData";
 import { useContractWrite, useWaitForTransaction } from "wagmi";
 import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
-import { defaultTF } from "./costants";
+import { defaultTF } from "./constants";
 import { InfoLabel } from "./label/InfoLabel";
 import TLRModal from "./Modal";
 

@@ -19,7 +19,7 @@ import DateTimePicker from "./dateTimePicker";
 import { Textfield } from "./input/Textfield";
 import { useRouter } from 'next/navigation';
 
-import { defaultTF } from "./costants";
+import { defaultTF } from "./constants";
 
 
 const logger = require("pino")();
