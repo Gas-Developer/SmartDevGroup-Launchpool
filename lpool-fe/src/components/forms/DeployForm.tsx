@@ -35,7 +35,7 @@ export function DeployForm(props: any) {
 	const now = new Date();
 
 	const [formData, setFormData] = useState({
-		description: "Write the Launchpool / Token description here",
+		description: "",
 		tokenAddress: "",
 		imageURL: "",
 		webURL: "",
@@ -104,9 +104,6 @@ export function DeployForm(props: any) {
 
 		return dur;
 	}
-
-
-	/* INIZIO NUOVA PARTE */
 
 	// Read Launchpool Address Activator/Disactivator
 	const [enableReadProxies, setEnableReadProxies] = useState(false);
@@ -252,8 +249,6 @@ export function DeployForm(props: any) {
 			logger.info("Some input datas are missing or wrong");
 		}
 	}
-
-/* FINE NUOVA PARTE */
 
 	// CHECK LPINFO VALIDITY
 	function checkLPInfoValidity(LPInfo: any) {

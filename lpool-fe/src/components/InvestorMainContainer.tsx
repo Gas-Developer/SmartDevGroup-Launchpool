@@ -101,9 +101,6 @@ export default function InvestorMainContainer(props: any) {
 						: 0,
 			};
 		}
-
-			
-
 		setContractData(dataToSend);
 	}, [data]);
 

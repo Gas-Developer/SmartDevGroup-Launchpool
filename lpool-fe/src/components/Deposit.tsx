@@ -80,21 +80,14 @@ export function Deposit(props: any) {
 				</div>
 
 				{/* ROW 4 */}
-				<div className="col-span-10 text-center p-10 pl-20 pr-20 text-xl">
+				<div className="col-span-10 text-center p-2 pl-20 pr-20 text-xl">
 					{isDeposited ?
 						<div style={{color: "green"}}>Deposited succesfully</div>
 						:
 						""
 					}
 				</div>
-				{/* ROW 4 */}
-				<div className="col-span-10 text-center p-10 pl-20 pr-20 text-xl">
-					{isDeposited ?
-						<div style={{color: "green"}}>Deposited succesfully</div>
-						:
-						""
-					}
-				</div>
+
 			</div>
 		</>
 	)

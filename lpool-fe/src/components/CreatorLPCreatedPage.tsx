@@ -9,6 +9,7 @@ import { DepositInfoContainer } from "./containers/DepositInfoContainer";
 import { useEffect, useState } from "react";
 import { ipfs_base_URI } from "./constants";
 import axios from "axios";
+import { useAccount } from "wagmi";
 
 const logger = require("pino")();
 
@@ -23,6 +24,7 @@ export function CreatorLPCreatedPage(props: any) {
 		contractData.cid = props.cid;
 
 	const [cid, setCid] = useState(props.cid);
+	const { address } = useAccount();
 
 	const [previewLPCardData, setLPCardPreviewData] = useState({
 
@@ -78,7 +80,7 @@ export function CreatorLPCreatedPage(props: any) {
 				</div>
 				<div className="col-span-1">
 					<DepositFormContainer setLPCardPreviewData={setLPCardPreviewData} launchpoolAddress={props.launchpoolAddress}/>
-					<DepositInfoContainer launchpoolAddress={props.launchpoolAddress} isFeatured={previewLPCardData.isFeatured} tokenAddress={previewLPCardData.tokenAddress}/>
+					<DepositInfoContainer launchpoolAddress={props.launchpoolAddress} isFeatured={previewLPCardData.isFeatured} tokenAddress={previewLPCardData.tokenAddress} account={address}/>
 				</div>
 			</div>
 		</>
