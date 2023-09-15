@@ -5,7 +5,7 @@ import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
 import { ContractData } from "./interfaces/ContractData";
 import { useState, useEffect } from "react";
 import { Stake } from "./Stake";
-import { ipfs_base_URI } from "./costants";
+import { ipfs_base_URI } from "./constants";
 import axios from "axios";
 import { IPFSLaunchpoolData } from "./interfaces/IPFSLaunchpoolData";
 import Image from "next/image";
@@ -101,9 +101,6 @@ export default function InvestorMainContainer(props: any) {
 						: 0,
 			};
 		}
-
-			
-
 		setContractData(dataToSend);
 	}, [data]);
 

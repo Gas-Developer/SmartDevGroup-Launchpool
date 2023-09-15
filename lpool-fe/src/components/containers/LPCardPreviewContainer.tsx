@@ -6,7 +6,7 @@ import { useContractRead, useContractReads, useToken } from "wagmi";
 import { InfoLabel } from "../label/InfoLabel";
 import { InfoValue } from "../label/InfoValue";
 import Image from 'next/image'
-import { defaultNoImage } from "../costants";
+import { defaultNoImage } from "../constants";
 
 
 
@@ -28,7 +28,7 @@ export function LPCardPreviewContainer(props: any) {
 	  })
 
 	useEffect(() => {
-		console.log("tokenAddress: ", tokenAddress);
+		// console.log("tokenAddress: ", tokenAddress);
 		if(tokenAddress.length == 42 && tokenAddress.startsWith("0x"))
 			setEnableTokenDataRead(true);
 	}, [tokenAddress]);
@@ -38,7 +38,7 @@ export function LPCardPreviewContainer(props: any) {
 	// }, [startLPValue]);
 
 	useEffect(() => {
-		console.log("props: ", props);
+		// console.log("props: ", props);
 	}, [props]);
 	
 	return (
