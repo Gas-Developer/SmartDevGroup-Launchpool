@@ -1,5 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react";
-import { defaultTF, tfStyle, labelStyle, dateTimePickerStyle, PINATA_APIKEY, PINATA_SECRET, PINATA_PIN_JSON_TO_IPFS, connect_wallet, disconnect_wallet } 
+import { defaultTF, tfStyle, labelStyle, dateTimePickerStyle, PINATA_APIKEY, PINATA_SECRET, PINATA_PIN_JSON_TO_IPFS, connect_wallet, disconnect_wallet, getDuration } 
 	from "../constants";
 import { Textfield } from "../input/Textfield";
 import { InfoLabel } from "../label/InfoLabel";
@@ -14,7 +14,6 @@ import { FactoryContractConfig } from "../../abi/factory-abi";
 import { useRouter } from 'next/navigation';
 import axios from "axios";
 import { ControlButton } from "../buttons/ControlButton";
-import { ControlButtonData } from "../interfaces/ControlButtonData";
 
 const logger = require("pino")();
 
@@ -67,7 +66,7 @@ export function DeployForm(props: any) {
 	// Setto i Preview Data al variare del Form Data - uso il debouncedFormData per evitare di fare troppe chiamate
 	useEffect(() => {
 
-		setDuration(getDuration());
+		setDuration(getDuration(debouncedFormData.startLPValue, debouncedFormData.endLPValue));
 
 		// Controllo che il token address abbia la lunghezza giusta e inizi con 0x
 		// oppure sia vuoto per attivare la scomparsa delle schede Preview e Deploy Cost
@@ -83,27 +82,6 @@ export function DeployForm(props: any) {
 	const handleOnChange = () => {
 		setFormData( {...formData, isFeatured: !formData.isFeatured} );
 	};
-
-	// Restituisce una stringa formattata con la durata del Launchpool
-	function getDuration() {
-		let dur_ms = Number(debouncedFormData.endLPValue - debouncedFormData.startLPValue);
-		let dur_s = dur_ms / 1000;
-		let dur_m = dur_s / 60;
-		let dur_h = dur_m / 60;
-		let dur_d = dur_h / 24;
-		let dur = "";
-
-		if( dur_s > 1) 
-			dur = Math.trunc(dur_s).toString() + " seconds";
-		if( dur_m > 1 )
-			dur = Math.trunc(dur_m).toString() + " minutes";
-		if( dur_h > 1 )
-			dur = Math.trunc(dur_h).toString() + " hours";
-		if( dur_d > 1 ) 
-			dur = Math.trunc(dur_d).toString() + " days";
-
-		return dur;
-	}
 
 	// Read Launchpool Address Activator/Disactivator
 	const [enableReadProxies, setEnableReadProxies] = useState(false);
@@ -179,9 +157,10 @@ export function DeployForm(props: any) {
 			tokenAddress: tokenAddress,
 			startLP: startLPValueInSeconds.toString(),
 			endLP: endLPValueInSeconds.toString(),
+			isFeatured: formData.isFeatured,
 		};
 
-		logger.info("LPInfo", LPInfo);
+		//logger.info("LPInfo", LPInfo);
 
 		let dataIPFS = JSON.stringify({
 			pinataOptions: {
@@ -285,25 +264,6 @@ export function DeployForm(props: any) {
 	const { connect, connectors, pendingConnector } = useConnect()
 	const { disconnect } = useDisconnect()
 
-	// CONNECT WALLET BUTTON
-	// let connect_wallet: ControlButtonData = {
-	// 	name: "connect_wallet",
-	// 	text: "Connect Wallet",
-	// 	tooltip: "Connect Wallet",
-	// 	onClick: {},
-	// 	disabled: false,
-	// 	className: "",
-	// 	iconURL: ""
-	// };
-	// const disconnect_wallet: ControlButtonData = {
-	// 	name: "disconnect_wallet",
-	// 	text: "Disconnect Wallet",
-	// 	tooltip: "Disconnect Wallet",
-	// 	onClick: {},
-	// 	disabled: false,
-	// 	className: "",
-	// 	iconURL: ""
-	// };
 
 	connect_wallet.onClick = () => connect({ connector: connectors[0] });
 	disconnect_wallet.onClick = () => disconnect();
