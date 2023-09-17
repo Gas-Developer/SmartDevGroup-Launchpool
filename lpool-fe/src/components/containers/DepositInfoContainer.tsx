@@ -8,18 +8,19 @@ import { LaunchpoolContractConfig } from "../../abi/launchpool-abi";
 import { useEffect, useState } from "react";
 import { ContractData } from "../interfaces/ContractData";
 import { wagmiTokenConfig } from "../../abi/token-abi";
+import { getDuration } from "../constants";
 
 
 export function DepositInfoContainer(props: any) {
 	
-	const now = new Date().getTime();
+	const now = BigInt(new Date().getTime());
 	//console.log("DepositInfoContainer props: ", props);
 	const launchpoolAddress = props.launchpoolAddress as `0x${string}`;
 	const tokenAddress = props.tokenAddress as `0x${string}`;
 
 	const [depositInfo , setDepositInfo] = useState({
 		totalTokenToDistribute: 0,
-		timeUntilStart: 0,
+		timeUntilStart: "",
 		myTokenSupply: 0,
 		tokenName: "",
 		tokenSymbol: "",
@@ -99,9 +100,18 @@ export function DepositInfoContainer(props: any) {
 			data?.[9].result !== undefined
 		) {
 
+
+		const startLP = parseInt(data?.[0].result?.toString()) * 1000;
+		let timeUntilStart = "";
+		if ( now > startLP)
+			timeUntilStart = "Started";
+		else
+			timeUntilStart = getDuration(now, BigInt(startLP));
+
 			const depositInfoData = {
 				totalTokenToDistribute: parseInt(data?.[4].result?.toString()),
-				timeUntilStart: now - parseInt(data?.[0].result?.toString()),
+				//timeUntilStart: now - parseInt(data?.[0].result?.toString()),
+				timeUntilStart: timeUntilStart,
 				myTokenSupply: 0,
 				tokenName: data?.[6].result?.toString(),
 				tokenSymbol: data?.[7].result?.toString(),
@@ -132,7 +142,7 @@ export function DepositInfoContainer(props: any) {
 											<InfoLabel name={"timeToStartLabel"} value={"Time until Launchpool start"} className={" text-sm "} />
 										</div>
 										<div className="col-span-1 text-left">
-											<InfoLabel name={"timeToStartValue"} value={depositInfo.timeUntilStart.toString()} className={" text-green-500 text-sm font-medium"} />
+											<InfoLabel name={"timeToStartValue"} value={depositInfo.timeUntilStart} className={" text-green-500 text-sm font-medium"} />
 										</div>
 									</div>
 								</div>
