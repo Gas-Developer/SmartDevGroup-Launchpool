@@ -16,6 +16,9 @@ export default function MiniLPCard(props: any) {
 	}
 
 
+
+
+
 	return (
 		<>
 			<div className="miniLPCard bg-zinc-700 rounded-lg" onClick={() => toLaunchpoolPage()}>
@@ -25,7 +28,7 @@ export default function MiniLPCard(props: any) {
 					<Image
 						loader={() => miniLPCardInfo.iconURL}
 						src={miniLPCardInfo.iconURL}
-						alt={miniLPCardInfo.name}
+						alt={miniLPCardInfo.name ? miniLPCardInfo.name : ""}
 						width={50}
 						height={50}
 						layout="responsive"
