@@ -12,7 +12,7 @@
 import { Form, Row } from "react-bootstrap";
 import { ContractData } from "../interfaces/ContractData";
 import { Info } from "../label/Info";
-import { ipfs_base_URI } from "../costants";
+import { ipfs_base_URI } from "../constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 

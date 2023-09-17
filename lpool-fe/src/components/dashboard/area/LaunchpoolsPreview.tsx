@@ -1,7 +1,5 @@
 "use client";
 
-import axios from "axios";
-import { ipfs_base_URI } from "../../costants";
 import { LaunchpoolReference } from "../../interfaces/LaunchpoolReference";
 import LaunchpoolPhase from "./LaunchpoolPhase";
 import { IPFSLaunchpoolData } from "../../interfaces/IPFSLaunchpoolData";
@@ -75,34 +73,14 @@ export default function LaunchpoolsPreviewArea(props: any) {
 		}
 	}
 
-	const { data, isLoading, isSuccess, refetch } = useContractRead({
+		const { data, isLoading, isSuccess, refetch } = useContractRead({
 		...LaunchpoolContractConfig,
 		functionName: "getMyTotalStaked",
 		address: launchpoolAddress,
 		enabled: false,
 		account: "0x9dC8812Cda50C7a00cacEa3dabf65739e6f30329",
-	});
-
-	useEffect(() => {
-		allLaunchpoolReferecence.forEach((launchpool: LaunchpoolReference) => {
-			const storageURI = launchpool.storageURI;
-			if (storageURI && storageURI !== "") {
-				const ipfsURI = ipfs_base_URI + storageURI;
-				axios
-					.get(ipfsURI, { headers: { Accept: "text/plain" } })
-					.then((res) => {
-						if (res !== undefined) {
-							setLPPhase(
-								res.data,
-								launchpool.launchpoolAddress,
-								launchpool.storageURI
-							);
-						}
-					});
-			}
 		});
-	}, [allLaunchpoolReferecence]);
-
+	
 	return (
 		<>
 			{myProfileContainer ? (

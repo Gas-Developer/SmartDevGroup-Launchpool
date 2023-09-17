@@ -1,7 +1,7 @@
 import '../../assets/styles/controls-list.css'
 
 import axios from "axios";
-import { ipfs_base_URI } from "../costants";
+import { ipfs_base_URI } from "../constants";
 import { InfoLabel } from "../label/InfoLabel";
 import { useEffect, useState } from "react";
 import Image from 'next/image'
