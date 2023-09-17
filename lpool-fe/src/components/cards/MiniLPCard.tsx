@@ -9,7 +9,7 @@ export default function MiniLPCard(props: any) {
 
 	const miniLPCardInfo = props;
 
-	logger.info("MiniLPCard props", miniLPCardInfo);
+	// logger.info("MiniLPCard props", miniLPCardInfo);
 
 	function toLaunchpoolPage() {
 		const href =
@@ -17,19 +17,25 @@ export default function MiniLPCard(props: any) {
 		router.push(href);
 	}
 
+
 	return (
-		<div className="miniLPCard bg-zinc-700 rounded-lg" onClick={() => toLaunchpoolPage()}>
-			<h1>{miniLPCardInfo.name}</h1>
-			<div className="miniLPCardImgContainer bg-zinc-500">
-				<Image
-					loader={() => miniLPCardInfo.iconURL}
-					src={miniLPCardInfo.iconURL}
-					alt={miniLPCardInfo.name}
-					width={50}
-					height={50}
-					layout="responsive"
-				/>
+		<>
+			<div className="miniLPCard bg-zinc-700 rounded-lg" onClick={() => toLaunchpoolPage()}>
+				<h1>{miniLPCardInfo.name}</h1>
+				<div className="miniLPCardImgContainer bg-zinc-500">
+				{ (miniLPCardInfo.iconURL != undefined && miniLPCardInfo.iconURL != "") ? (
+					<Image
+						loader={() => miniLPCardInfo.iconURL}
+						src={miniLPCardInfo.iconURL}
+						alt={miniLPCardInfo.name}
+						width={50}
+						height={50}
+						layout="responsive"
+					/>
+					) : ("")
+				}
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }
