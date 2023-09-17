@@ -8,11 +8,6 @@ import { InfoValue } from "../label/InfoValue";
 import Image from 'next/image'
 import { defaultNoImage } from "../costants";
 
-
-
-
-
-
 export function LPCardPreviewContainer(props: any) {
 
 	const tokenAddress = props.tokenAddress ? props.tokenAddress : "";

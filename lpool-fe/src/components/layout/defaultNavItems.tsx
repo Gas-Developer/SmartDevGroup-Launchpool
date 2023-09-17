@@ -25,11 +25,5 @@ export const defaultNavItems: NavItem[] = [
 		label: "Settings",
 		href: "/settings",
 		icon: <Cog8ToothIcon className="sidebarIcon" />,
-	},
-	{
-		id: 3,
-		label: "Wallet",
-		href: "/wallet",
-		icon: <WalletIcon className="sidebarIcon" />,
-	},
+	}
 ];

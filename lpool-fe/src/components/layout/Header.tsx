@@ -1,9 +1,8 @@
 "use client";
 
-import classNames from "classnames";
 import { MenuButton } from "../buttons/MenuButton";
+import { WalletButton } from "../buttons/WalletButton";
 import SearchBar from "../Searchbar";
-
 
 // define a NavItem prop
 export type NavItem = {
@@ -15,10 +14,17 @@ export type NavItem = {
 export function Header() {
     return (
         <>
-            <header className="w-full h-auto inline-flex p-2">
-                <h1 id="headerTitle">The Launchpool Ready</h1>
-                <SearchBar/>
-                <MenuButton />
+            <header className="grid grid-cols-8 p-2">
+                <div className="col-span-4">
+                    <h1 id="headerTitle">The Launchpool Ready</h1>
+                </div>
+                <div className="col-span-3 m-auto">
+                    <SearchBar />
+                </div>
+                <div className="mt-auto mb-auto">
+                    <WalletButton />
+                    <MenuButton />
+                </div>
             </header>
         </>
     );
