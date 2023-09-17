@@ -1,20 +1,29 @@
 import { SetStateAction, useState } from "react";
-import { defaultTF, tfStyle, labelStyle, PINATA_APIKEY, PINATA_SECRET, PINATA_PIN_JSON_TO_IPFS } from "../constants";
-import { Numberfield } from "../input/Numberfield";
+import { DepositButton } from "../buttons/DepositButton";
+import { ApproveButton } from "../buttons/ApproveButton";
+
+import { defaultTF, labelStyle, tfStyle, connect_wallet, disconnect_wallet }  from "../constants";
+import { useContractWrite, useWaitForTransaction, useContractRead, useAccount, useConnect, useDisconnect } from "wagmi";
 import { InfoLabel } from "../label/InfoLabel";
+import { Numberfield } from "../input/Numberfield";
 import { ControlButton } from "../buttons/ControlButton";
 import { ImageButton } from "../buttons/ImageButton";
-import depositLaunchpoolBTN from "../../assets/images/DepositLaunchpoolBTN.png";
+
 
 export function DepositForm(props: any) {
+	
+	const className = "btn btn-primary controlButton "+props.className;
+	const [depositQty, setDepositQty] = useState("0");
+	const [isTokenAllowed, setIsTokenAllowed] = useState(false);
+	const [isDeposited, setIsDeposited] = useState(false);
 
-	const [formData, setFormData] = useState({
-		tokenQty: "0",
-	});
+	// WALLET CONNECT
+	const { connector, isConnected } = useAccount()
+	const { connect, connectors, pendingConnector } = useConnect()
+	const { disconnect } = useDisconnect()
 
-	function depositTokens() {	
-		console.log("formData: ", formData);
-	}
+	connect_wallet.onClick = () => connect({ connector: connectors[0] });
+	disconnect_wallet.onClick = () => disconnect();
 
 	return (
 		<>
@@ -34,11 +43,11 @@ export function DepositForm(props: any) {
 				<div className="col-span-6">
 					<Numberfield 
 						{...defaultTF}
-						id="tokenAddress" 
-						name="tokenAddress" 
-						placeholder="0x..."
-						value={formData.tokenQty} 
-						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, tokenQty: e.target.value.toString()} )}
+						id="deposit_qty" 
+						name="deposit_qty" 
+						placeholder="Deposit Quantity" 								// Wei o Matic ?
+						value={depositQty} 
+						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setDepositQty(e.target.value)}
 						className={tfStyle}
 					/>
 				</div>
@@ -46,25 +55,40 @@ export function DepositForm(props: any) {
 					&nbsp;
 				</div>
 
+				
 				{/* ROW 3 */}
 				<div className="col-span-10 text-center p-10 pl-20 pr-20 text-xl">
-					{/* Wallet Connection */} 
-					{/* {!isConnected ? // TODO: Convertire in un component WalletConnection
-						<ControlButton {...connect_wallet}/> :
-						<ImageButton 
-							name="deployLaunchpoolBTN" src={depositLaunchpoolBTN} tooltip="Deploy Launchpool" onClick={depositTokens} 
-							width={247} height={50} className=" "
-						/>
-					} */}
 
-					<ImageButton 
-						name="deployLaunchpoolBTN" src={depositLaunchpoolBTN} tooltip="Deploy Launchpool" onClick={depositTokens} 
-						width={247} height={50} className=" "
-					/>
+					{/* Wallet Connection */} 
+					{!isConnected ? 
+						<ControlButton {...connect_wallet}/> :
+						isTokenAllowed ?
+							<DepositButton 
+								className={className} 
+								launchpoolAddress={props.launchpoolAddress}
+								depositQty={depositQty}
+								setIsDeposited={setIsDeposited}
+							/> 
+							:
+							<ApproveButton 
+								className={className} 
+								launchpoolAddress={props.launchpoolAddress} 
+								depositQty={depositQty} 
+								setIsTokenAllowed={setIsTokenAllowed}
+							/>
+					}
+				</div>
+
+				{/* ROW 4 */}
+				<div className="col-span-10 text-center p-2 pl-20 pr-20 text-xl">
+					{isDeposited ?
+						<div style={{color: "green"}}>Deposited succesfully</div>
+						:
+						""
+					}
 				</div>
 
 			</div>
 		</>
-	);
-
+	)
 }

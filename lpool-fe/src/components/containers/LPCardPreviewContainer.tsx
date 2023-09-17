@@ -8,11 +8,6 @@ import { InfoValue } from "../label/InfoValue";
 import Image from 'next/image'
 import { defaultNoImage } from "../constants";
 
-
-
-
-
-
 export function LPCardPreviewContainer(props: any) {
 
 	const tokenAddress = props.tokenAddress ? props.tokenAddress : "";
@@ -33,14 +28,7 @@ export function LPCardPreviewContainer(props: any) {
 			setEnableTokenDataRead(true);
 	}, [tokenAddress]);
 
-	// useEffect(() => {
-	// 	console.log("startLPValue: ", startLPValue);
-	// }, [startLPValue]);
 
-	useEffect(() => {
-		// console.log("props: ", props);
-	}, [props]);
-	
 	return (
 		<>
 			{tokenAddress.length == 42 && tokenAddress.startsWith("0x") ?
