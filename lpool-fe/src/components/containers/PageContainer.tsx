@@ -23,41 +23,16 @@ export default function PageContainer() {
         LaunchpoolReference[]
     >([]);
 
-	const [ipfsData, setIpfsData] = useState<IPFSLaunchpoolData[]>([]);
-	
+    const [ipfsData, setIpfsData] = useState<IPFSLaunchpoolData[]>([]);
 
-	let filled = useRef(false);
+    let filled = useRef(false);
 
     useEffect(() => {
         if (isSuccess && !isLoading && data !== undefined && !filled.current) {
-			setLaunchpoolsReference([...data]);
-			filled.current = true;
+            setLaunchpoolsReference([...data]);
+            filled.current = true;
         }
     }, [data]);
-
-    let count = 0;
-
-    // useEffect(() => {
-    //     launchpoolsReference.forEach((launchpool: LaunchpoolReference) => {
-    //         const storageURI = launchpool.storageURI;
-    //         if (storageURI && storageURI !== "") {
-    // 			const ipfsURI = ipfs_base_URI + storageURI;
-    // 			logger.info("sto facendo una chiamata a ", ipfsURI);
-    // 			count++;
-    // 			logger.info(count)
-    //             axios
-    //                 .get(ipfsURI, { headers: { Accept: "text/plain" } })
-    //                 .then((res) => {
-    //                     if (res !== undefined) {
-    //                         setIpfsData((prevData) => [
-    //                             ...prevData,
-    //                             { ...res.data },
-    //                         ]);
-    //                     }
-    //                 });
-    //         }
-    //     });
-    // }, [launchpoolsReference]);
 
     useEffect(() => {
         // Verifica se ci sono launchpoolsReference validi e non vuoti
@@ -70,14 +45,19 @@ export default function PageContainer() {
                 const storageURI = launchpool.storageURI;
                 if (storageURI && storageURI !== "") {
                     const ipfsURI = ipfs_base_URI + storageURI;
-                    logger.info("sto facendo una chiamata a ", ipfsURI);
-                    logger.info(count++);
                     ipfsPromises.push(
                         axios
                             .get(ipfsURI, { headers: { Accept: "text/plain" } })
                             .then((res) => {
                                 if (res !== undefined) {
-                                    return { ...res.data };
+                                    const launchpoolData: IPFSLaunchpoolData = {
+                                        ...res.data,
+                                    };
+                                    if (launchpool.launchpoolAddress !== undefined) {
+                                        launchpoolData.launchpoolAddress = launchpool.launchpoolAddress;
+                                    }
+                                    launchpoolData.cid = launchpool.storageURI;
+                                    return launchpoolData;
                                 }
                             })
                     );

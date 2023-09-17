@@ -10,25 +10,12 @@ import LaunchpoolsPreviewArea from "./dashboard/area/LaunchpoolsPreview";
 const logger = require("pino")();
 
 export default function ProfileContainer(props:any) {
-    const { data, isLoading, isSuccess } = useContractRead({
-        ...FactoryContractConfig,
-        functionName: "getLaunchpools",
-    });
 
     let allLaunchpoolReferecence: LaunchpoolReference[] = [];
 
     const [launchpoolsReference, setLaunchpoolsReference] = useState<
         LaunchpoolReference[]
     >([]);
-
-    useEffect(() => {
-        if (isSuccess && !isLoading && data !== undefined) {
-            data.map((reference: LaunchpoolReference) => {
-                allLaunchpoolReferecence.push(reference);
-            });
-            setLaunchpoolsReference(allLaunchpoolReferecence);
-        }
-    }, [data]);
 
     return (
         <>

@@ -10,9 +10,9 @@ import { LaunchpoolContractConfig } from "../../../abi/launchpool-abi";
 const logger = require("pino")();
 
 export default function LaunchpoolsPreviewArea(props: any) {
-	const allLaunchpoolReferecence: LaunchpoolReference[] =
-		props.allLaunchpoolReferecence;
+
 	const launchpoolToShow = props.type;
+	const ipfsData = props.ipfsData;
 
 	const pathname = usePathname();
 	const myProfileContainer = pathname.includes("my-profile") ? true : false;
@@ -29,16 +29,23 @@ export default function LaunchpoolsPreviewArea(props: any) {
 
 	const [launchpoolAddress, setLaunchpoolAddress] = useState<`0x${string}`>();
 
+    useEffect(() => {
+		if (ipfsData !== undefined) {
+			ipfsData.forEach((ipfsLaunchpoolData: IPFSLaunchpoolData) => {
+                setLPPhase(
+                    ipfsLaunchpoolData
+                );
+            });
+        }
+    }, [ipfsData]);
+
 	async function setLPPhase(
 		launchpoolData: any,
-		launchpoolAddress: string | undefined,
-		cid: string | undefined
 	) {
 		const now = new Date();
 		const start = new Date(launchpoolData.startLP * 1000);
 		const end = new Date(launchpoolData.endLP * 1000);
 		launchpoolData.launchpoolAddress = launchpoolAddress;
-		launchpoolData.cid = cid;
 
 		setLaunchpoolAddress(launchpoolData.launchpoolAddress);
 
