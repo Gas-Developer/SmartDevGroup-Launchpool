@@ -10,25 +10,10 @@ import { useContractRead } from "wagmi";
 import { LaunchpoolReference } from "../interfaces/LaunchpoolReference";
 const logger = require("pino")();
 
-export default function DashboardMainContainer() {
-    const { data, isLoading, isSuccess } = useContractRead({
-        ...FactoryContractConfig,
-        functionName: "getLaunchpools",
-    });
+export default function DashboardMainContainer(props:any) {
 
-    let allLaunchpoolReferecence: LaunchpoolReference[] = [];
-
-    const [launchpoolsReference, setLaunchpoolsReference] = useState<LaunchpoolReference[]>([]);
-
-    useEffect(() => {
-        if (isSuccess && !isLoading && data !== undefined) {
-            data.map((reference: LaunchpoolReference) => {
-                allLaunchpoolReferecence.push(reference);
-            });
-            setLaunchpoolsReference(allLaunchpoolReferecence);
-        }
-    }, [data]);
-
+    const launchpoolsReference = props.launchpoolsReference;
+    
     return (
         <>
             <div

@@ -9,8 +9,6 @@ export default function MiniLPCard(props: any) {
 
 	const miniLPCardInfo = props;
 
-	// logger.info("MiniLPCard props", miniLPCardInfo);
-
 	function toLaunchpoolPage() {
 		const href =
 			"/dashboard/" + miniLPCardInfo.launchpoolAddress + "/" + miniLPCardInfo.cid + "/investor";

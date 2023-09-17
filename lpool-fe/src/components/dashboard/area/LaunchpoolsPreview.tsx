@@ -44,22 +44,6 @@ export default function LaunchpoolsPreviewArea(props: any) {
 		}
 	}
 
-	useEffect(() => {
-		allLaunchpoolReferecence.forEach((launchpool: LaunchpoolReference) => {
-			const storageURI = launchpool.storageURI;
-			if (storageURI && storageURI !== "") {
-				const ipfsURI = ipfs_base_URI + storageURI;
-				axios
-					.get(ipfsURI, { headers: { Accept: "text/plain" } })
-					.then((res) => {
-						if (res !== undefined) {
-							setLPPhase(res.data, launchpool.launchpoolAddress, launchpool.storageURI);
-						}
-					});
-			}
-		});
-	}, [allLaunchpoolReferecence]); 
-
 	return (
 		<>
 			<div id="allPhaseContainer" className="grid grid-cols-2">
