@@ -17,7 +17,7 @@ export default function DashboardMainContainer(props:any) {
                 id="dashboardMainContainer"
                 className="grid grid-cols-2 grid-rows-3 overflow-auto"
             >
-				<div id="featuredArea" className=" row-span-2">
+				<div id="featuredArea" className="row-span-2 h-full">
 					<FeaturedLaunchpools launchpoolsReference={launchpoolsReference} ipfsData={ipfsData} />
 				</div>
                 <div id="createLaunchpoolArea">
