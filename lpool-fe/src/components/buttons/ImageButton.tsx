@@ -28,28 +28,29 @@ export function ImageButton(props: any) {
 	const onClick = props.onClick || (() => {logger.info("You clicked [image] button!");});
 	const disabled = props.disabled ? props.disabled : false;
 	let className = props.className || "";
-	const width = props.width || 450;
-	const height = props.height || 400;
+	const width = props.width || 350;
+	const height = props.height || 350;
 
-	const buttonClassName = "transparent-button";
+	const buttonClassName = "transparent-button h-full";
 	return (
-		<>
-		<div id={name} className={className} onClick={onClick}>
-			<button type="submit" disabled={disabled} className={buttonClassName}>
-				<Image
-					src={src}
-					alt={tooltip}
-					width={width}
-					height={height}
-				/>
-			</button>
-		</div>
-		</>
-	);
-
-	
-
-
+        <>
+            <div id={name} className={className} onClick={onClick}>
+                <button
+                    type="submit"
+                    disabled={disabled}
+                    className={buttonClassName}
+                >
+                    <Image
+                        className="h-full w-auto"
+                        src={src}
+                        alt={tooltip}
+                        width={width}
+                        height={height}
+                    />
+                </button>
+            </div>
+        </>
+    );
 
 }
 

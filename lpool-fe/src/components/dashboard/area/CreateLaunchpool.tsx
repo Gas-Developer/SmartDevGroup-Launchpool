@@ -23,11 +23,11 @@ export default function CreateLaunchpool() {
 
 	return (
 		<>
-			<ImageButton name="createLaunchpoolBTN" src={CreateYourLaunchpoolBTN} tooltip="Create Launchpool" onClick={openCreatorPage} />
+			<ImageButton name="createLaunchpoolBTN" src={CreateYourLaunchpoolBTN} tooltip="Create Launchpool" onClick={openCreatorPage} className={"h-full w-full" } />
 			<InfoValue 
 				name="createLaunchpoolInfo" 
 				value="Are you ready to create your own launchpool, in a couple of clicks?" 
-				className={" "} 
+				className={"m-auto"} 
 				size={70} 
 			/>
 		</>
