@@ -1,5 +1,5 @@
 
 export interface LaunchpoolReference {
-	launchpoolAddress: string | undefined;
+	launchpoolAddress: string;
 	storageURI: string;
 }

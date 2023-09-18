@@ -7,7 +7,6 @@ const logger = require("pino")();
 
 export function BaseLayout(props: any) {
 	
-	logger.info("le props sono",props.ipfsData);
 	return (
 		<>
 			<Header />

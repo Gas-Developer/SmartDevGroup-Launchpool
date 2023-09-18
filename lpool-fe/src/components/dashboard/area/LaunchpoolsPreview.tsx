@@ -10,115 +10,115 @@ import { LaunchpoolContractConfig } from "../../../abi/launchpool-abi";
 const logger = require("pino")();
 
 export default function LaunchpoolsPreviewArea(props: any) {
-
-	const launchpoolToShow = props.type;
+    const launchpoolToShow = props.type;
 	const ipfsData = props.ipfsData;
+	
+	logger.info("dati da ipfs", ipfsData);
 
-	const pathname = usePathname();
-	const myProfileContainer = pathname.includes("my-profile") ? true : false;
+    const pathname = usePathname();
+    const myProfileContainer = pathname.includes("my-profile") ? true : false;
 
-	const [lpoolStakingPhaseData, setLpoolStakingPhaseData] = useState<
-		IPFSLaunchpoolData[]
-	>([]);
-	const [lpoolClaimingPhaseData, setLpoolClaimingPhaseData] = useState<
-		IPFSLaunchpoolData[]
-	>([]);
-	const [lpoolStartingPhaseData, setLpoolStartingPhaseData] = useState<
-		IPFSLaunchpoolData[]
-	>([]);
+    const [lpoolStakingPhaseData, setLpoolStakingPhaseData] = useState<
+        IPFSLaunchpoolData[]
+    >([]);
+    const [lpoolClaimingPhaseData, setLpoolClaimingPhaseData] = useState<
+        IPFSLaunchpoolData[]
+    >([]);
+    const [lpoolStartingPhaseData, setLpoolStartingPhaseData] = useState<
+        IPFSLaunchpoolData[]
+    >([]);
 
-	const [launchpoolAddress, setLaunchpoolAddress] = useState<`0x${string}`>();
+    const [launchpoolAddress, setLaunchpoolAddress] = useState<`0x${string}`>();
 
     useEffect(() => {
-		if (ipfsData !== undefined) {
+        if (ipfsData !== undefined) {
 			ipfsData.forEach((ipfsLaunchpoolData: IPFSLaunchpoolData) => {
-                setLPPhase(
-                    ipfsLaunchpoolData
-                );
+                setLPPhase(ipfsLaunchpoolData);
             });
         }
     }, [ipfsData]);
 
-	async function setLPPhase(
-		launchpoolData: any,
-	) {
-		const now = new Date();
-		const start = new Date(launchpoolData.startLP * 1000);
-		const end = new Date(launchpoolData.endLP * 1000);
-		launchpoolData.launchpoolAddress = launchpoolAddress;
+    async function setLPPhase(launchpoolData: any) {
+        const now = new Date();
 
-		setLaunchpoolAddress(launchpoolData.launchpoolAddress);
+        const start = new Date(launchpoolData.startLP * 1000);
+        const end = new Date(launchpoolData.endLP * 1000);
 
-		if (now < start) {
-			setLpoolStartingPhaseData((prevData) => [
-				...prevData,
-				{ ...launchpoolData },
-			]);
-		} else if (now > start && now < end) {
-			if (myProfileContainer) {
-				// if (launchpoolAddress) {
-				// 	const staked = await refetch();
-				// 	logger.info("Ho stakato ", staked);
-				// 	if (staked.data && staked.data > BigInt(0)) {
+        const lpAddress = launchpoolData.lpAddress; // Memorizza l'indirizzo in una variabile
+
+        setLaunchpoolAddress(lpAddress); // Aggiorna l'indirizzo
+
+        if (now < start) {
+            setLpoolStartingPhaseData((prevData) => [
+                ...prevData,
+                { ...launchpoolData },
+            ]);
+        } else if (now > start && now < end) {
+            if (myProfileContainer) {
+                // if (lpAddress) {
+                //     const staked = await refetch();
+                //     logger.info("Ho stakato ", staked);
+                //     if (staked.data && staked.data > BigInt(0)) {
                 //         setLpoolStakingPhaseData((prevData) => [
                 //             ...prevData,
                 //             { ...launchpoolData },
                 //         ]);
                 //     }
-				// }
-			} else {
-				setLpoolStakingPhaseData((prevData) => [
-					...prevData,
-					{ ...launchpoolData },
-				]);
-			}
-		} else if (now > end) {
-			setLpoolClaimingPhaseData((prevData) => [
-				...prevData,
-				{ ...launchpoolData },
-			]);
-		}
-	}
+                // }
+            } else {
+                setLpoolStakingPhaseData((prevData) => [
+                    ...prevData,
+                    { ...launchpoolData },
+                ]);
+            }
+        } else if (now > end) {
+            setLpoolClaimingPhaseData((prevData) => [
+                ...prevData,
+                { ...launchpoolData },
+            ]);
+        }
+    }
 
-		const { data, isLoading, isSuccess, refetch } = useContractRead({
-		...LaunchpoolContractConfig,
-		functionName: "getMyTotalStaked",
-		address: launchpoolAddress,
-		enabled: false,
-		account: "0x9dC8812Cda50C7a00cacEa3dabf65739e6f30329",
-		});
-	
-	return (
-		<>
-			{myProfileContainer ? (
-				<div>
-					<LaunchpoolPhase
-						phase={launchpoolToShow}
-						launchpools={
-							launchpoolToShow === "staked"
-								? lpoolStakingPhaseData
-								: launchpoolToShow === "toClaim"
-								? lpoolClaimingPhaseData
-								: lpoolStartingPhaseData
-						}
-					/>
-				</div>
-			) : (
-				<div id="allPhaseContainer" className="grid grid-cols-2">
-					<LaunchpoolPhase
-						phase="Staking"
-						launchpools={lpoolStakingPhaseData}
-					/>
-					<LaunchpoolPhase
-						phase="Claiming"
-						launchpools={lpoolClaimingPhaseData}
-					/>
-					<LaunchpoolPhase
-						phase="Starting"
-						launchpools={lpoolStartingPhaseData}
-					/>
-				</div>
-			)}
-		</>
-	);
+
+    const { data, isLoading, isSuccess, refetch } = useContractRead({
+        ...LaunchpoolContractConfig,
+        functionName: "getMyTotalStaked",
+        address: launchpoolAddress,
+        enabled: false,
+        account: "0x9dC8812Cda50C7a00cacEa3dabf65739e6f30329",
+    });
+
+    return (
+        <>
+            {myProfileContainer ? (
+                <div>
+                    <LaunchpoolPhase
+                        phase={launchpoolToShow}
+                        launchpools={
+                            launchpoolToShow === "staked"
+                                ? lpoolStakingPhaseData
+                                : launchpoolToShow === "toClaim"
+                                ? lpoolClaimingPhaseData
+                                : lpoolStartingPhaseData
+                        }
+                    />
+                </div>
+            ) : (
+                <div id="allPhaseContainer" className="grid grid-cols-2">
+                    <LaunchpoolPhase
+                        phase="Staking"
+                        launchpools={lpoolStakingPhaseData}
+                    />
+                    <LaunchpoolPhase
+                        phase="Claiming"
+                        launchpools={lpoolClaimingPhaseData}
+                    />
+                    <LaunchpoolPhase
+                        phase="Starting"
+                        launchpools={lpoolStartingPhaseData}
+                    />
+                </div>
+            )}
+        </>
+    );
 }
