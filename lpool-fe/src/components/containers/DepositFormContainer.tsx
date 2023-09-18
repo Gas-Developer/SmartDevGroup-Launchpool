@@ -1,4 +1,4 @@
-import { Deposit } from "../Deposit";
+import { DepositForm } from "../forms/DepositForm";
 import DefaultContainer from "./DefaultContainer";
 import TrasparentContainer from "./TrasparentContainer";
 
@@ -9,7 +9,7 @@ export function DepositFormContainer(props: any) {
 		<>
 			<TrasparentContainer className="" >
 				<br/>
-					<Deposit launchpoolAddress={props.launchpoolAddress} /> 
+					<DepositForm launchpoolAddress={props.launchpoolAddress} /> 
 			</TrasparentContainer>
 		</>
 	);

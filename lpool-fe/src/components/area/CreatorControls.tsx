@@ -7,7 +7,7 @@ import { ControlButtonData } from "../interfaces/ControlButtonData";
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { CreateLaunchpool } from '../CreateLaunchpool';
-import { Deposit } from '../Deposit';
+import { DepositForm } from '../forms/DepositForm';
 
 const logger = require("pino")();
 
@@ -88,7 +88,7 @@ export function CreatorControls(props: any) {
 				{/* Deposit */}
 				{(isConnected && props.launchpoolAddress !== undefined) ?
 					<li className="list-group-item controls-list-group-item">
-						<Deposit launchpoolAddress={props.launchpoolAddress} /> 
+						<DepositForm launchpoolAddress={props.launchpoolAddress} /> 
 					</li>
 					/*
 					<li className="list-group-item controls-list-group-item">

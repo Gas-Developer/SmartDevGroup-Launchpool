@@ -10,16 +10,16 @@ export default function DashboardMainContainer(props:any) {
 
     const launchpoolsReference = props.launchpoolsReference;
     const ipfsData = props.ipfsData;
-    
+
     return (
         <>
             <div
                 id="dashboardMainContainer"
                 className="grid grid-cols-2 grid-rows-3 overflow-auto"
             >
-                <div id="featuredArea" className=" row-span-2">
-                    <FeaturedLaunchpools />
-                </div>
+				<div id="featuredArea" className=" row-span-2">
+					<FeaturedLaunchpools launchpoolsReference={launchpoolsReference} ipfsData={ipfsData} />
+				</div>
                 <div id="createLaunchpoolArea">
                     <CreateLaunchpool />
                 </div>
@@ -35,4 +35,5 @@ export default function DashboardMainContainer(props:any) {
             </div>
         </>
     );
+
 }

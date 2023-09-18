@@ -1,8 +1,6 @@
 "use client";
 
 import { ContractData } from "./interfaces/ContractData";
-import { AreasContainer } from "./area/AreasContainer";
-import { LPCard } from "./cards/LPCard";
 import { DepositFormContainer } from "./containers/DepositFormContainer";
 import { LPCardPreviewContainer } from "./containers/LPCardPreviewContainer";
 import { DepositInfoContainer } from "./containers/DepositInfoContainer";

@@ -5,3 +5,5 @@
 [ ] [CreatorControls.tsx]: Convertire in un component WalletConnection
 [ ] [DepositButton.tsx]: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic
 [x] [dateTimePricker.tsx]: Modificare e gestire con una funzione unica passata da sopra prop.onChange
+[x] [FeaturedLaunchpools.tsx] e [LaunchpoolsPreviewArea.tsx] spostare le chiamate Axios nel componente padre che contiene entrambi i componenti e passare la res ad entrabi i figli in modod da non fare 2 volte tutte le chiamate
+[ ] [ Molti file coinvolti ]: Rialliniare i nomi delle props con quelli dell'interfaccia IPFSLaunchpoolData.tsx
