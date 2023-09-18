@@ -9,4 +9,5 @@ export interface IPFSLaunchpoolData {
 	endLP: number;
 	lpAddress: string;
 	cid: string;
+	isFeatured: boolean;
 }

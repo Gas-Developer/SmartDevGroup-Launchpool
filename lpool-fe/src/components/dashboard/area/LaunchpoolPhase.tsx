@@ -12,7 +12,8 @@ export default function LaunchpoolPhase(props: any) {
 				<div id={phase + "Container"}>
 					<p className="phaseTitle">{phase} phase</p>
 					<hr />
-					{launchpools?.map((lpool: any, index:number) => (
+
+					{launchpools?.map((lpool: any, index: number) => (
 						<MiniLPCard key={index} {...lpool} />
 					))}
 				</div>

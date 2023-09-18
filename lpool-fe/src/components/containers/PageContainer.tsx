@@ -72,6 +72,7 @@ export default function PageContainer() {
 						(result) => result !== null && result !== undefined
 					);
 
+
 					setIpfsData([...filteredResults]);
 					setIpfsDataGContext([...filteredResults]);
 

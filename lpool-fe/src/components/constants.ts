@@ -50,7 +50,7 @@ export const disconnect_wallet: ControlButtonData = {
 // Restituisce una stringa formattata con la durata del Launchpool
 export function getDuration( startDateTime: bigint, endDateTime: bigint ) {
 
-	console.log("getDuration: startDateTime: " + startDateTime + " endDateTime: " + endDateTime);
+	// console.log("getDuration: startDateTime: " + startDateTime + " endDateTime: " + endDateTime);
 
 	let dur_ms = endDateTime - startDateTime;
 	let dur_s = dur_ms / BigInt(1000) ;
@@ -71,4 +71,12 @@ export function getDuration( startDateTime: bigint, endDateTime: bigint ) {
 		dur = (dur_d).toString() + " days";
 
 	return dur;
+}
+
+export function toDate(timestamp: number| string | BigInt) {
+
+	const date = new Date(Number(timestamp) * 1000);
+
+	return date.toLocaleString();
+
 }
