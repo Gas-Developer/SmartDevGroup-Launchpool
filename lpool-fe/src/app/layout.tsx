@@ -1,6 +1,7 @@
 import '../assets/styles/globals.css'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Providers } from './providers';
+import { GlobalContextProvider } from "./Context/store";
 
 export const metadata = {
   title: 'Launchpool',
@@ -12,10 +13,12 @@ export default function RootLayout({
   children: React.ReactNode
   }) {
   return (
-    <html lang="en">
-      <body>
-        <Providers>{children}</Providers>
-      </body>
-    </html>
+      <html lang="en">
+          <body>
+              <Providers>
+                  <GlobalContextProvider>{children}</GlobalContextProvider>
+              </Providers>
+          </body>
+      </html>
   );
 }

@@ -21,8 +21,8 @@ export default function MiniLPCard(props: any) {
 			<div className="miniLPCardImgContainer bg-zinc-500">
 				<Image
 					loader={() => miniLPCardInfo.iconURL}
-					src={miniLPCardInfo.iconURL}
-					alt={miniLPCardInfo.name}
+					src={miniLPCardInfo.iconURL !== undefined ? miniLPCardInfo.iconURL : ""}
+					alt={miniLPCardInfo.name !== undefined ? miniLPCardInfo.name : ""}
 					width={50}
 					height={50}
 					layout="responsive"

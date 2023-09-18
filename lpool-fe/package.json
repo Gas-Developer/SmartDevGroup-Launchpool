@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "@nextui-org/react": "^2.1.12",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.1",
     "classnames": "^2.3.2",
     "encoding": "^0.1.13",
+    "framer-motion": "^10.16.4",
     "lokijs": "^1.5.12",
     "moment": "^2.29.4",
     "next": "^13.4.0",

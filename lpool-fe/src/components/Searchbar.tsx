@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
 export default function Searchbar() {
@@ -8,8 +7,8 @@ export default function Searchbar() {
 
 
 	return (
-		<div id="searchbarContainer" className="text-center">
-			<form id="searchbarForm">
+		<>
+			<form >
 				<input
 					className="text-black border-2 border-black rounded-full px-3 py-2"
 					type="text"
@@ -22,6 +21,6 @@ export default function Searchbar() {
 					Search
 				</button>
 			</form>
-		</div>
+		</>
 	);
 }

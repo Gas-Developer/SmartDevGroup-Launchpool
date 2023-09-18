@@ -9,108 +9,89 @@ import DashboardMainContainer from "./DashboardMainContainer";
 import axios from "axios";
 import { ipfs_base_URI } from "../constants";
 import { IPFSLaunchpoolData } from "../interfaces/IPFSLaunchpoolData";
+import { useGlobalContext } from "../../app/Context/store";
 const logger = require("pino")();
 
 export default function PageContainer() {
-    const { data, isLoading, isSuccess } = useContractRead({
-        ...FactoryContractConfig,
-        functionName: "getLaunchpools",
-    });
 
-    const allLaunchpoolReferecence: LaunchpoolReference[] = [];
+	const { data, isLoading, isSuccess } = useContractRead({
+		...FactoryContractConfig,
+		functionName: "getLaunchpools",
+	});
 
-    const [launchpoolsReference, setLaunchpoolsReference] = useState<
-        LaunchpoolReference[]
-    >([]);
-
+	const [launchpoolsReference, setLaunchpoolsReference] = useState<LaunchpoolReference[]>([]);
 	const [ipfsData, setIpfsData] = useState<IPFSLaunchpoolData[]>([]);
-	
-
 	let filled = useRef(false);
+	const {
+        allLaunchpoolReferenceGContext,
+        setAllLaunchpoolReferenceGContext,
+        ipfsDataGContext,
+        setIpfsDataGContext,
+    } = useGlobalContext();
 
-    useEffect(() => {
-        if (isSuccess && !isLoading && data !== undefined && !filled.current) {
+	useEffect(() => {
+		if (isSuccess && !isLoading && data !== undefined && !filled.current) {
 			setLaunchpoolsReference([...data]);
 			filled.current = true;
-        }
-    }, [data]);
+		}
+	}, [data]);
 
-    let count = 0;
+	useEffect(() => {
+		if (launchpoolsReference.length > 0) {
 
-    // useEffect(() => {
-    //     launchpoolsReference.forEach((launchpool: LaunchpoolReference) => {
-    //         const storageURI = launchpool.storageURI;
-    //         if (storageURI && storageURI !== "") {
-    // 			const ipfsURI = ipfs_base_URI + storageURI;
-    // 			logger.info("sto facendo una chiamata a ", ipfsURI);
-    // 			count++;
-    // 			logger.info(count)
-    //             axios
-    //                 .get(ipfsURI, { headers: { Accept: "text/plain" } })
-    //                 .then((res) => {
-    //                     if (res !== undefined) {
-    //                         setIpfsData((prevData) => [
-    //                             ...prevData,
-    //                             { ...res.data },
-    //                         ]);
-    //                     }
-    //                 });
-    //         }
-    //     });
-    // }, [launchpoolsReference]);
+			const ipfsPromises: any[] = [];
+			launchpoolsReference.forEach((launchpool: LaunchpoolReference) => {
 
-    useEffect(() => {
-        // Verifica se ci sono launchpoolsReference validi e non vuoti
-        if (launchpoolsReference.length > 0) {
-            // Crea un array temporaneo per memorizzare le promesse delle chiamate IPFS
-            const ipfsPromises: any[] = [];
+				logger.info("Launchpool reference", launchpool);
 
-            // Itera su launchpoolsReference per effettuare le chiamate IPFS
-            launchpoolsReference.forEach((launchpool: LaunchpoolReference) => {
-                const storageURI = launchpool.storageURI;
-                if (storageURI && storageURI !== "") {
-                    const ipfsURI = ipfs_base_URI + storageURI;
-                    logger.info("sto facendo una chiamata a ", ipfsURI);
-                    logger.info(count++);
-                    ipfsPromises.push(
-                        axios
-                            .get(ipfsURI, { headers: { Accept: "text/plain" } })
-                            .then((res) => {
-                                if (res !== undefined) {
-                                    return { ...res.data };
-                                }
-                            })
-                    );
-                }
-            });
+				const storageURI = launchpool.storageURI;
+				const launchpoolAddress = launchpool.launchpoolAddress;
+				if (storageURI && storageURI !== "") {
+					const ipfsURI = ipfs_base_URI + storageURI;
+					ipfsPromises.push(
+						axios
+							.get(ipfsURI, { headers: { Accept: "text/plain" } })
+							.then((res) => {
+								if (res !== undefined) {
 
-            // Usa Promise.all per attendere che tutte le chiamate IPFS siano complete
-            Promise.all(ipfsPromises)
-                .then((ipfsResults) => {
-                    // Filtra eventuali risultati nulli o undefined
-                    const filteredResults = ipfsResults.filter(
-                        (result) => result !== null && result !== undefined
-                    );
+									const launchpoolData: IPFSLaunchpoolData = {
+                                        ...res.data,
+                                        lpAddress: launchpoolAddress,
+                                        cid: storageURI,
+                                    };
+									return launchpoolData;
+								}
+							})
+					);
+				}
+			});
 
-                    // Aggiorna ipfsData una sola volta con tutti i risultati validi
-                    setIpfsData([...filteredResults]);
-                })
-                .catch((error) => {
-                    // Gestisci gli errori se necessario
-                });
-        }
-    }, [launchpoolsReference]);
+			Promise.all(ipfsPromises)
+				.then((ipfsResults) => {
+					const filteredResults = ipfsResults.filter(
+						(result) => result !== null && result !== undefined
+					);
 
-    return (
-        <>
-            <BaseLayout
-                ipfsData={ipfsData}
-                launchpoolsReference={launchpoolsReference}
-            />
-            <DashboardMainContainer
-                ipfsData={ipfsData}
-                launchpoolsReference={launchpoolsReference}
-            />
-        </>
-    );
+					setIpfsData([...filteredResults]);
+					setIpfsDataGContext([...filteredResults]);
+
+				})
+				.catch((error) => {
+					logger.error(error)
+				});
+		}
+	}, [launchpoolsReference]);
+
+	return (
+		<>
+			<BaseLayout
+				ipfsData={ipfsData}
+				launchpoolsReference={launchpoolsReference}
+			/>
+			<DashboardMainContainer
+				ipfsData={ipfsData}
+				launchpoolsReference={launchpoolsReference}
+			/>
+		</>
+	);
 }
