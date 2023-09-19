@@ -56,7 +56,7 @@ export default function PageContainer() {
 
 									const launchpoolData: IPFSLaunchpoolData = {
                                         ...res.data,
-                                        lpAddress: launchpoolAddress,
+                                        launchpoolAddress: launchpoolAddress,
                                         cid: storageURI,
                                     };
 									return launchpoolData;

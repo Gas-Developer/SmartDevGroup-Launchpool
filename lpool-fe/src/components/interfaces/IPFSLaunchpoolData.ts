@@ -7,7 +7,7 @@ export interface IPFSLaunchpoolData {
 	tokenAddress: string,
 	startLP: number;
 	endLP: number;
-	lpAddress: string;
+	launchpoolAddress: string;
 	cid: string;
 	isFeatured: boolean;
 }

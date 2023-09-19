@@ -16,19 +16,18 @@ export default function FeaturedLaunchpools(props: any) {
 	//const launchpoolsReference: LaunchpoolReference[] = props.launchpoolsReference;
 
 	const [previewLPCardData, setPreviewLPCardData] = useState({
-			name: "",
-			description: "",
-			iconURL: "",
-			lpWebsite: "",
-			tokenWebsite: "",
-			tokenAddress: "",
-			startLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.startLP
-			endLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.endLP
-			launchpoolAddress: "",
-			cid: "",
-			isFeatured: false
-		}
-	);
+        name: "",
+        description: "",
+        iconURL: "",
+        lpWebsite: "",
+        tokenWebsite: "",
+        tokenAddress: "",
+        startLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.startLP
+        endLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.endLP
+        launchpoolAddress: "",
+        cid: "",
+        isFeatured: false,
+    });
 
 	//logger.info("ipfsData: ", ipfsData);
 	// logger.info("props: ", props);

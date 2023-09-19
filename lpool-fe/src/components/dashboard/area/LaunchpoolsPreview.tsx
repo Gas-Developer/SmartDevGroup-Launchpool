@@ -44,7 +44,7 @@ export default function LaunchpoolsPreviewArea(props: any) {
         const start = new Date(launchpoolData.startLP * 1000);
         const end = new Date(launchpoolData.endLP * 1000);
 
-        const lpAddress = launchpoolData.lpAddress; // Memorizza l'indirizzo in una variabile
+        const lpAddress = launchpoolData.launchpoolAddress; // Memorizza l'indirizzo in una variabile
 
         setLaunchpoolAddress(lpAddress); // Aggiorna l'indirizzo
 
