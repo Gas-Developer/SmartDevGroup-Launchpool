@@ -1,18 +1,19 @@
 import { use, useEffect, useState } from "react";
 import DefaultContainer from "./DefaultContainer";
 import TrasparentContainer from "./TrasparentContainer";
-import { useToken } from "wagmi";
+import { useBalance, useToken } from "wagmi";
 import { InfoLabel } from "../label/InfoLabel";
 import { InfoValue } from "../label/InfoValue";
 import Image from 'next/image'
 import { defaultNoImage, toDate } from "../constants";
+import { usePathname } from "next/navigation";
 
 export function LPCardPreviewContainer(props: any) {
 
-	console.log("LPCardPreviewContainer props: ", props);
+	const pathname = usePathname();
+	const isCreatorPage = pathname.includes('creator') ? true : false;
 
 	// SAFE DATA BINDING // TODO: Rialliniare i nomi delle props con quelli dell'interfaccia IPFSLaunchpoolData.tsx
-
 	const iconURL = 
 		props.imageURL ? props.imageURL : 
 			props.iconURL ? props.iconURL :
@@ -28,7 +29,9 @@ export function LPCardPreviewContainer(props: any) {
 			props.endLPValue ? props.endLPValue :
 				BigInt(0)).toString());
 
+	// USE TOKEN
 	const tokenAddress = props.tokenAddress ? props.tokenAddress : "";
+	const launchpoolAddress = props.launchpoolAddress ? props.launchpoolAddress : "";
 	const [enableTokenDataRead, setEnableTokenDataRead] = useState(false);
 
 	// Legge le info dal token ERC20
@@ -46,12 +49,40 @@ export function LPCardPreviewContainer(props: any) {
 			setEnableTokenDataRead(true);
 	}, [tokenAddress]);
 
+	// USE BALANCE ERC-20
+	// Legge il balance della launchpool del token ERC20
+	const [depositValue, setDepositValue] = useState("0");
+	const balance = useBalance({
+		address: launchpoolAddress,
+		token: tokenAddress,
+		enabled: enableTokenDataRead,
+		onSuccess(data) {
+			// setEnableTokenDataRead(false);
+			// console.log("balance: ", data);
+			setDepositValue(data.formatted);
+		},
+	});
+
+	// USE BALANCE MATIC
+	// Legge il balance della launchpool dei Matic messi in staking
+	const [stakedValue, setStakedValue] = useState("0");
+	const maticBalance = useBalance({
+		address: launchpoolAddress,
+		enabled: enableTokenDataRead,
+		onSuccess(data) {
+			// console.log("Matic: ", data);
+			setStakedValue(data.formatted);
+		},
+	});
+
+
+
 	return (
         <>
             {tokenAddress.length == 42 && tokenAddress.startsWith("0x") ? (
                 <TrasparentContainer className="h-full">
                     <DefaultContainer className="h-full">
-                        <div className="grid grid-rows-5 grid-flow-col gap-1 text-center h-full">
+                        <div className="grid grid-rows-6 grid-flow-col gap-1 text-center h-full">
                             {/* Token Name */}
                             <div className="row-span-1 m-auto">
                                 {data?.name ? (
@@ -126,8 +157,72 @@ export function LPCardPreviewContainer(props: any) {
 
                             {/* Token to Distribute */}
                             <div className="row-span-1 m-auto">
-                                0 {data?.symbol} /{data?.totalSupply.formatted}{" "}
-                                {data?.symbol}
+								<div className="grid grid-rows-3 gap-1">
+									{
+										isCreatorPage ? (
+											<>
+											<div className="row-span-1 m-auto">
+												<InfoLabel 
+													name={"tokenToDistributeValue"} 
+													value={"To Distribute / Total Supply"} 
+													className="font-['Roboto'] text-xs text-slate-700 text-center inline-block align-middle"
+												/>
+											</div>
+
+											<div className="row-span-1 m-auto">
+												<InfoLabel 
+													name={"depositValue"} 
+													value={depositValue} 
+													className="font-['Roboto'] text-sm text-slate-500 text-center inline-block align-middle"
+												/>
+												<InfoLabel 
+													name={"symbolValue1"} 
+													value={data?.symbol}
+													className="font-['Roboto'] text-xs text-slate-500 text-center inline-block align-middle"
+												/>
+												<InfoLabel 
+													name={"symbolValue1"} 
+													value={" / "}
+													className="font-['Roboto'] text-xs text-slate-700 text-center inline-block align-middle"
+												/>
+												<InfoLabel 
+													name={"totalSupplyValue"} 
+													value={data?.totalSupply.formatted}
+													className="font-['Roboto'] text-sm text-slate-700 text-center inline-block align-middle"
+												/>
+												<InfoLabel 
+													name={"symbolValue2"} 
+													value={data?.symbol}
+													className="font-['Roboto'] text-xs text-slate-700 text-center inline-block align-middle"
+												/>
+											</div>
+											</>
+										) : (
+											<>
+												<div className="row-span-1 m-auto">
+													<InfoLabel 
+														name={"tokenToDistributeValue"} 
+														value={"Actual Staking"} 
+														className="font-['Roboto'] text-xs text-slate-700 text-center inline-block align-middle"
+													/>
+												</div>
+
+												<div className="row-span-1 m-auto">
+													<InfoLabel 
+														name={"stakedValue"} 
+														value={stakedValue}
+														className="font-['Roboto'] text-sm text-green-500 text-center inline-block align-middle"
+													/>
+													<InfoLabel 
+														name={"maticSymbolValue"}
+														value={"MATIC"}
+														className="font-['Roboto'] text-xs text-green-500 text-center inline-block align-middle"
+													/>
+												</div>
+											</>
+										)
+									}
+								</div>
                             </div>
                         </div>
                     </DefaultContainer>
