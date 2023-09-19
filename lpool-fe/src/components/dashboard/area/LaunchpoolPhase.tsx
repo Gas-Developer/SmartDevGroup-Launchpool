@@ -16,11 +16,11 @@ export default function LaunchpoolPhase(props: any) {
 					<p className="phaseTitle">{phase} phase</p>
 					<hr />
 
-						<DefaultContainer className="">
+						{/* <DefaultContainer className=""> */}
 							{launchpools?.map((lpool: any, index: number) => (
 								<MiniLPCard key={index} {...lpool} />
 							))}
-						</DefaultContainer>
+						{/* </DefaultContainer> */}
 					</TrasparentContainer>
 				</div>
 				
