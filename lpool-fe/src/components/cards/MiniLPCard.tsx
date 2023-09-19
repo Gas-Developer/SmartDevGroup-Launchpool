@@ -2,6 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import TrasparentContainer from "../containers/TrasparentContainer";
+import DefaultContainer from "../containers/DefaultContainer";
+import { defaultNoImage } from "../constants";
 const logger = require("pino")();
 
 export default function MiniLPCard(props: any) {
@@ -17,22 +20,20 @@ export default function MiniLPCard(props: any) {
 
 	return (
 		<>
-			<div className="miniLPCard bg-zinc-700 rounded-lg" onClick={() => toLaunchpoolPage()}>
-				<h1>{miniLPCardInfo.name}</h1>
+			<div className="miniLPCard  bg-zinc-700 bg-opacity-25 rounded-lg text-xs text-slate-500 text-center" onClick={() => toLaunchpoolPage()}>
+				{(miniLPCardInfo.name ? miniLPCardInfo.name : " - - - ")}
 				<div className="miniLPCardImgContainer bg-zinc-500">
-				{ (miniLPCardInfo.iconURL != undefined && miniLPCardInfo.iconURL != "") ? (
+				{ 
 					<Image
-						loader={() => miniLPCardInfo.iconURL}
-						src={miniLPCardInfo.iconURL}
+						loader={() => (miniLPCardInfo.iconURL ? miniLPCardInfo.iconURL : defaultNoImage)}
+						src={miniLPCardInfo.iconURL ? miniLPCardInfo.iconURL : defaultNoImage}
 						alt={miniLPCardInfo.name ? miniLPCardInfo.name : ""}
 						width={50}
 						height={50}
 						layout="responsive"
 					/>
-					) : ("")
 				}
 				</div>
-
 			</div>
 		</>
 	);

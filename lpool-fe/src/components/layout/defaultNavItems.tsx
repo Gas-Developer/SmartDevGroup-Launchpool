@@ -11,7 +11,7 @@ export const defaultNavItems: NavItem[] = [
 	{
 		id: 0,
 		label: "Dashboard",
-		href: "/",
+		href: "/dashboard",
 		icon: <HomeIcon className="sidebarIcon" />,
 	},
 	{

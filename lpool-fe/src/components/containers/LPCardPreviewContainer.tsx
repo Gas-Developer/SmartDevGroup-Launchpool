@@ -7,6 +7,8 @@ import { InfoValue } from "../label/InfoValue";
 import Image from 'next/image'
 import { defaultNoImage, toDate } from "../constants";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 export function LPCardPreviewContainer(props: any) {
 
@@ -75,14 +77,12 @@ export function LPCardPreviewContainer(props: any) {
 		},
 	});
 
-
-
 	return (
         <>
             {tokenAddress.length == 42 && tokenAddress.startsWith("0x") ? (
                 <TrasparentContainer className="h-full">
                     <DefaultContainer className="h-full">
-                        <div className="grid grid-rows-6 grid-flow-col gap-1 text-center h-full">
+                        <div className="grid grid-rows-6 grid-flow-col gap-1 text-center h-full" >
                             {/* Token Name */}
                             <div className="row-span-1 m-auto">
                                 {data?.name ? (

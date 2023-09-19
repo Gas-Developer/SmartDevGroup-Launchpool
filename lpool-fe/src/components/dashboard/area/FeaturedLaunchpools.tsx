@@ -6,14 +6,14 @@ import { ipfs_base_URI } from "../../constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { LPCardPreviewContainer } from "../../containers/LPCardPreviewContainer";
+import { useRouter } from "next/navigation";
 const logger = require("pino")();
 
 
 export default function FeaturedLaunchpools(props: any) {
 
-	//const LPs: LaunchpoolReference[] = props.allLaunchpoolReferecence;
+	const router = useRouter();
 	const ipfsData: IPFSLaunchpoolData[] = props.ipfsData;
-	//const launchpoolsReference: LaunchpoolReference[] = props.launchpoolsReference;
 
 	const [previewLPCardData, setPreviewLPCardData] = useState({
         name: "",
@@ -68,10 +68,19 @@ export default function FeaturedLaunchpools(props: any) {
 		logger.info("previewLPCardData: ", previewLPCardData);
 	}, [ipfsData]);
 
+	function toLaunchpoolPage() {
+		const href =
+			"/dashboard/" + previewLPCardData.launchpoolAddress + "/" + previewLPCardData.cid + "/investor";
+		router.push(href);
+	}
+
+
 
 	return (
 		<>
-			<LPCardPreviewContainer {...previewLPCardData} />
+			<div className="featuredLP h-full" onClick={() => toLaunchpoolPage()}>
+				<LPCardPreviewContainer {...previewLPCardData} />
+			</div>
 		</>
 	);
 }
