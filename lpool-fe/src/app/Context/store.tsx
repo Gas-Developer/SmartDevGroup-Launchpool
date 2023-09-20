@@ -22,12 +22,8 @@ const GlobalContext = createContext<ContextProps>({
 });
 
 export const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
-    const [allLaunchpoolReferenceGContext, setAllLaunchpoolReferenceGContext] = useState<
-        [] | LaunchpoolReference[]
-    >([]);
-    const [ipfsDataGContext, setIpfsDataGContext] = useState<
-        [] | IPFSLaunchpoolData[]
-    >([]);
+    const [allLaunchpoolReferenceGContext, setAllLaunchpoolReferenceGContext] = useState<[] | LaunchpoolReference[]>([]);
+    const [ipfsDataGContext, setIpfsDataGContext] = useState<[] | IPFSLaunchpoolData[]>([]);
 
     return (
         <GlobalContext.Provider

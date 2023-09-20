@@ -26,3 +26,7 @@
     border: none;
 }
 
+.stakeBtn:hover{
+	background-color: transparent;
+}
+
