@@ -31,6 +31,7 @@ export default function MiniLPCard(props: any) {
 						width={50}
 						height={50}
 						layout="responsive"
+						unoptimized={true}
 					/>
 				}
 				</div>
