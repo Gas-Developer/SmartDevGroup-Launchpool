@@ -3,7 +3,7 @@
 import { useContractReads } from "wagmi";
 import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
 import { ContractData } from "./interfaces/ContractData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Stake } from "./Stake";
 import { defaultNoImage, ipfs_base_URI } from "./constants";
 import axios from "axios";
@@ -14,10 +14,11 @@ import Tokenomics from "./Tokenomics";
 import TechnicalInfo from "./TechnicalInfo";
 import TrasparentContainer from "./containers/TrasparentContainer";
 import DefaultContainer from "./containers/DefaultContainer";
-import PhaseInvestingImg from "../assets/images/PhaseInvesting.png"
+import PhaseInvestingImg from "../assets/images/PhaseInvesting.png";
+import { ethers } from "ethers";
+import { weiToMatic } from "../utils/weiCasting";
 
 const logger = require("pino")();
-
 
 /* TODO:
 	- [ ] Implemntare calcolo circulatingSupply
@@ -30,7 +31,6 @@ const logger = require("pino")();
 	- [ ] Implementare calcolo dell'Actual Ratio
 */
 
-
 export default function InvestorMainContainer(props: any) {
 	const launchpoolAddress = props.launchpoolAddress as `0x${string}`;
 	const cid = props.cid;
@@ -38,6 +38,7 @@ export default function InvestorMainContainer(props: any) {
 	const [ipfsData, setIpfsData] = useState<IPFSLaunchpoolData | null>(null);
 
 	let dataToSend: ContractData = {} as ContractData;
+	const actualRatioRef = useRef<number | null>(null);
 
 	useEffect(() => {
 		if (cid && cid !== "") {
@@ -110,20 +111,32 @@ export default function InvestorMainContainer(props: any) {
 				endLP: parseInt(data?.[1].result?.toString()),
 				stakingLength: parseInt(data?.[2].result?.toString()),
 				token: data?.[3].result?.toString(),
-				totalTokenToDistribute: parseInt(data?.[4].result?.toString()),
+				totalTokenToDistribute: weiToMatic(
+					data?.[4].result?.toString(),
+					0
+				),
 				totalStaked:
 					data?.[5].result !== undefined
-						? parseInt(data?.[5].result?.toString())
+						? weiToMatic(data?.[5].result?.toString(), 2)
 						: 0,
 			};
 		}
+
+		let actRatio = (
+			dataToSend.totalTokenToDistribute / dataToSend.totalStaked
+		).toFixed();
+		actualRatioRef.current = weiToMatic(actRatio.toString(), 1);
+
 		setContractData(dataToSend);
 	}, [data]);
 
 	const launchpoolDuration = Math.floor(contractData.stakingLength / 86400);
 	let launchpoolPhase = "";
 
-	if (contractData.startLP !== undefined && contractData.endLP !== undefined) {
+	if (
+		contractData.startLP !== undefined &&
+		contractData.endLP !== undefined
+	) {
 		const now = new Date().getTime() / 1000;
 		if (now < contractData.startLP) {
 			launchpoolPhase = "To Starting";
@@ -136,25 +149,35 @@ export default function InvestorMainContainer(props: any) {
 
 	return (
 		<>
-
 			<TrasparentContainer className={""}>
 				<div className="grid grid-cols-4 gap-1 h-fit text-start">
-					 <div className=" col-span-3 text-center"> {/* Colonna #1 da 3 spazi */}
+					<div className=" col-span-3 text-center">
+						{" "}
+						{/* Colonna #1 da 3 spazi */}
 						<div className=" grid-flow-row grid-rows-8">
-
 							{/* Riga #1 */}
 							<div className="row-span-1 grid grid-cols-9">
-								<div id="imgContainer" className="col-span-1 bg-slate-700 bg-opacity-25 p-3 rounded-lg">
+								<div
+									id="imgContainer"
+									className="col-span-1 bg-slate-700 bg-opacity-25 p-3 rounded-lg"
+								>
 									<Image
-										loader={() => ipfsData?.iconURL || defaultNoImage}
-										src={ipfsData?.iconURL || defaultNoImage}
+										loader={() =>
+											ipfsData?.iconURL || defaultNoImage
+										}
+										src={
+											ipfsData?.iconURL || defaultNoImage
+										}
 										alt={ipfsData?.name || ""}
 										width={50}
 										height={50}
 										layout="responsive"
 									/>
 								</div>
-								<div id="launchpoolTitle" className="col-span-4">
+								<div
+									id="launchpoolTitle"
+									className="col-span-4"
+								>
 									<InfoLabel
 										value={ipfsData?.name}
 										name={"investorLaunchpoolTitle"}
@@ -169,49 +192,64 @@ export default function InvestorMainContainer(props: any) {
 										</a>
 									</div>
 								</div>
-								<div id="investorStakeBContainer" className="col-span-4 text-right m-auto">
-									<div className=" bg-orange-400 rounded-lg  "> 
+								<div
+									id="investorStakeBContainer"
+									className="col-span-4 text-right m-auto"
+								>
+									<div className=" bg-orange-400 rounded-lg  ">
 										<Stake
 											className={"rounded-full stakeBtn"}
-											launchpoolAddress={launchpoolAddress}
+											launchpoolAddress={
+												launchpoolAddress
+											}
 										/>
 									</div>
 								</div>
-							</div> 
+							</div>
 							{/* Fine Riga #1 */}
 
 							{/* Riga #2 da 3 spazi */}
-								<div className="row-span-3 border-1 border-slate-200 border-opacity-5 rounded-lg mt-4">
-									<DefaultContainer>
-										<div className="text-slate-200 text-opacity-75 text-sm font-sans text-justify">
-											{ipfsData?.description}
-										</div>
-									</DefaultContainer>
-								</div>
+							<div className="row-span-3 border-1 border-slate-200 border-opacity-5 rounded-lg mt-4">
+								<DefaultContainer>
+									<div className="text-slate-200 text-opacity-75 text-sm font-sans text-justify">
+										{ipfsData?.description}
+									</div>
+								</DefaultContainer>
+							</div>
 							{/* Fine Riga #2 da 3 spazi */}
 							{/* Riga #3 da 1 spazio */}
-								<div className="row-span-1 mt-4">
-									<DefaultContainer>
-										<div className="grid grid-cols-2 gap-3 h-fit text-start pl-5 pr-5 ml-5 mr-5">
-											<div className="col-span-1">
-												<Tokenomics
-													tokenAddress={contractData.token}
-													totalTokenToDistribute={contractData.totalTokenToDistribute}
-													circulatingSupply={undefined}
-													blockchainName={"Polygon"}
-													expectedListing={undefined}
-												/>
-											</div>
-											<div className="col-span-1">
-												<TechnicalInfo tokenAddress={contractData.token} />
-											</div>
+							<div className="row-span-1 mt-4">
+								<DefaultContainer>
+									<div className="grid grid-cols-2 gap-3 h-fit text-start pl-5 pr-5 ml-5 mr-5">
+										<div className="col-span-1">
+											<Tokenomics
+												tokenAddress={
+													contractData.token
+												}
+												totalTokenToDistribute={
+													contractData.totalTokenToDistribute
+												}
+												circulatingSupply={undefined}
+												blockchainName={"Polygon"}
+												expectedListing={undefined}
+											/>
 										</div>
-									</DefaultContainer>
-								</div>
+										<div className="col-span-1">
+											<TechnicalInfo
+												tokenAddress={
+													contractData.token
+												}
+											/>
+										</div>
+									</div>
+								</DefaultContainer>
+							</div>
 						</div>
 					</div>
 					{/* Phase Area */}
-					<div className=" col-span-1 text-center"> {/* Colonna #2 da 1 spazio */}
+					<div className=" col-span-1 text-center">
+						{" "}
+						{/* Colonna #2 da 1 spazio */}
 						<div className="grid grid-rows-20 text-center justify-center items-center">
 							<div className="row-span-3">
 								<Image
@@ -233,19 +271,23 @@ export default function InvestorMainContainer(props: any) {
 							<div className="row-span-3  text-5xl font-semibold pt-4 pb-2">
 								<InfoLabel
 									name={""}
-									value={contractData.totalStaked ? contractData.totalStaked.toString() : "--"}
+									value={
+										contractData.totalStaked
+											? contractData.totalStaked.toString()
+											: "--"
+									}
 									className={""}
 								/>
 							</div>
 							<div className="row-span-1 text-xs font-bold pb-4">
 								<InfoLabel
 									name={""}
-									value={"wei MATIC"}
+									value={"MATIC"}
 									className={""}
 								/>
 							</div>
 							<div className="row-span-1 text-xs font-bold">
-								<hr/>
+								<hr />
 							</div>
 							{/* Block #2 */}
 							<div className="row-span-1 text-xs font-medium pt-4">
@@ -258,7 +300,11 @@ export default function InvestorMainContainer(props: any) {
 							<div className="row-span-3  text-5xl font-semibold pt-4 pb-2">
 								<InfoLabel
 									name={""}
-									value={launchpoolDuration ? launchpoolDuration.toString() : ""}
+									value={
+										launchpoolDuration
+											? launchpoolDuration.toString()
+											: ""
+									}
 									className={""}
 								/>
 							</div>
@@ -270,7 +316,7 @@ export default function InvestorMainContainer(props: any) {
 								/>
 							</div>
 							<div className="row-span-1 text-xs font-bold">
-								<hr/>
+								<hr />
 							</div>
 
 							{/* Block #3 */}
@@ -284,30 +330,27 @@ export default function InvestorMainContainer(props: any) {
 							<div className="row-span-3  text-5xl font-semibold pt-4 pb-2">
 								<InfoLabel
 									name={""}
-									value={"135"}
+									value={actualRatioRef.current?.toString()}
 									className={""}
 								/>
 							</div>
 							<div className="row-span-1 text-xs font-bold pb-4">
 								<InfoLabel
 									name={""}
-									value={props.tokenSymbol ? props.tokenSymbol+" per Matic" : "TOKEN per Matic"}
+									value={
+										props.tokenSymbol
+											? props.tokenSymbol + " per Matic"
+											: "TOKEN per Matic"
+									}
 									className={""}
 								/>
 							</div>
 						</div>
-
-
 					</div>
-
 				</div>
 			</TrasparentContainer>
 
-
-
-
-
-{/* 
+			{/* 
 			<div
 				id="investorMainContainer"
 				className="bg-zinc-700 grid grid-cols-4 overflow-auto opacity-80 text-2xl"

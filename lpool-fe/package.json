@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.1",
     "classnames": "^2.3.2",
     "encoding": "^0.1.13",
+    "ethers": "^6.7.1",
     "framer-motion": "^10.16.4",
     "lokijs": "^1.5.12",
     "moment": "^2.29.4",
@@ -26,7 +27,8 @@
     "react-dom": "^18.2.0",
     "usehooks-ts": "^2.9.1",
     "viem": "~0.3.36",
-    "wagmi": "^1.0.6"
+    "wagmi": "^1.0.6",
+    "web3": "^4.1.2"
   },
   "devDependencies": {
     "@types/node": "^17.0.31",
