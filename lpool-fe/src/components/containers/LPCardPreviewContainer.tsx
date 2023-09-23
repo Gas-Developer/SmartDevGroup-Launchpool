@@ -117,6 +117,7 @@ export function LPCardPreviewContainer(props: any) {
                                         }
                                         width={50}
 										height={50}
+										unoptimized={true}
                                     />
                                 </div>
                             </div>
