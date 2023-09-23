@@ -1,8 +1,7 @@
-import { useContractRead, useContractWrite, useWaitForTransaction } from "wagmi";
-import { ControlButtonData } from "../interfaces/ControlButtonData";
-import { FactoryContractConfig } from "../../abi/factory-abi";
-import { useState } from "react";
+import { useContractWrite, useWaitForTransaction } from "wagmi";
+
 import { LaunchpoolContractConfig } from "../../abi/launchpool-abi";
+import { maticToWei } from "../../utils/weiCasting";
 
 export function DepositButton(props: any) {
 
@@ -34,12 +33,16 @@ export function DepositButton(props: any) {
 		console.log("TODO: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic");
 		//TODO: Eseguire controlli di eccesso quantità e effettuare la conversione in Wei o Matic
 
-		// DEPOSIT
-		write({
-			args: [
-				BigInt(props.depositQty)
-			],
-		})
+		const depositAmount = parseFloat(
+			props.depositQty.replace(",", ".")
+		);
+		if (!isNaN(depositAmount)) {
+			const convertedDepositAmount = maticToWei(depositAmount.toString());
+			// DEPOSIT
+			write({
+				args: [BigInt(convertedDepositAmount)],
+			});
+		}
 	}
 
 	return (
