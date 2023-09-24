@@ -13,6 +13,7 @@ import { connect_wallet, defaultTF } from "./constants";
 import { InfoLabel } from "./label/InfoLabel";
 import TLRModal from "./Modal";
 import { maticToWei } from "../utils/weiCasting";
+import { ControlButton } from "./buttons/ControlButton";
 
 const logger = require("pino")();
 
@@ -128,7 +129,9 @@ export function Stake(props: any) {
 						</div>
 					</TLRModal>
 				</>
-			) : null}
+			) : (
+				<ControlButton {...connect_wallet} />
+			)}
 		</>
 	);
 }

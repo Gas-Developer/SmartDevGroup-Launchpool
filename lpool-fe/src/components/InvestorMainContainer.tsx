@@ -88,12 +88,7 @@ export default function InvestorMainContainer(props: any) {
 				...LaunchpoolContractConfig,
 				address: launchpoolAddress,
 				functionName: "totalStaked",
-			},
-			{
-				...LaunchpoolContractConfig,
-				address: launchpoolAddress,
-				functionName: "getUserTotalStaked",
-			},
+			}
 		],
 	});
 
@@ -122,11 +117,7 @@ export default function InvestorMainContainer(props: any) {
 				totalStaked:
 					data?.[5].result !== undefined
 						? weiToMatic(data?.[5].result?.toString(), 2)
-						: 0,
-				myTotalStaked:
-					data?.[6].result !== undefined
-						? weiToMatic(data?.[6].result?.toString(), 2)
-						: 0,
+						: 0
 			};
 		}
 
@@ -225,9 +216,6 @@ export default function InvestorMainContainer(props: any) {
 												}
 												launchpoolAddress={
 													launchpoolAddress
-												}
-												myTotalStaked={
-													contractData.myTotalStaked
 												}
 											/>
 										)}
