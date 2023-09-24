@@ -9,4 +9,5 @@ export interface ContractData {
 	token: string;
 	totalTokenToDistribute: number;
 	totalStaked: number;
+	myTotalStaked: number;
 }

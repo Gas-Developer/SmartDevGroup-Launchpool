@@ -1,7 +1,7 @@
 "use client";
 
-import { useContractReads } from "wagmi";
-import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
+import { useAccount, useContractReads, useWalletClient } from "wagmi";
+import { LaunchpoolContractConfig } from "../abi/template-abi";
 import { ContractData } from "./interfaces/ContractData";
 import { useState, useEffect, useRef } from "react";
 import { Stake } from "./Stake";
@@ -15,8 +15,8 @@ import TechnicalInfo from "./TechnicalInfo";
 import TrasparentContainer from "./containers/TrasparentContainer";
 import DefaultContainer from "./containers/DefaultContainer";
 import PhaseInvestingImg from "../assets/images/PhaseInvesting.png";
-import { ethers } from "ethers";
 import { weiToMatic } from "../utils/weiCasting";
+import { Claim } from "./Claim";
 
 const logger = require("pino")();
 
@@ -28,7 +28,6 @@ const logger = require("pino")();
 	- [ ] Implementare lettura del tokenSymbol
 	- [ ] Implementare lettura del tokenName
 	- [ ] Implementare lettura del launchpoolCreator
-	- [ ] Implementare calcolo dell'Actual Ratio
 */
 
 export default function InvestorMainContainer(props: any) {
@@ -90,6 +89,11 @@ export default function InvestorMainContainer(props: any) {
 				address: launchpoolAddress,
 				functionName: "totalStaked",
 			},
+			{
+				...LaunchpoolContractConfig,
+				address: launchpoolAddress,
+				functionName: "getUserTotalStaked",
+			},
 		],
 	});
 
@@ -119,13 +123,21 @@ export default function InvestorMainContainer(props: any) {
 					data?.[5].result !== undefined
 						? weiToMatic(data?.[5].result?.toString(), 2)
 						: 0,
+				myTotalStaked:
+					data?.[6].result !== undefined
+						? weiToMatic(data?.[6].result?.toString(), 2)
+						: 0,
 			};
 		}
 
 		let actRatio = (
 			dataToSend.totalTokenToDistribute / dataToSend.totalStaked
 		).toFixed();
-		actualRatioRef.current = weiToMatic(actRatio.toString(), 1);
+		if (actRatio === "NaN" || actRatio === "Infinity") {
+			actualRatioRef.current = 0;
+		} else {
+			actualRatioRef.current = weiToMatic(actRatio.toString(), 1);
+		}
 
 		setContractData(dataToSend);
 	}, [data]);
@@ -197,12 +209,28 @@ export default function InvestorMainContainer(props: any) {
 									className="col-span-4 text-right m-auto"
 								>
 									<div className=" bg-orange-400 rounded-lg  ">
-										<Stake
-											className={"rounded-full stakeBtn"}
-											launchpoolAddress={
-												launchpoolAddress
-											}
-										/>
+										{launchpoolPhase === "Staking Phase" ? (
+											<Stake
+												className={
+													"rounded-full stakeBtn"
+												}
+												launchpoolAddress={
+													launchpoolAddress
+												}
+											/>
+										) : (
+											<Claim
+												className={
+													"rounded-full stakeBtn"
+												}
+												launchpoolAddress={
+													launchpoolAddress
+												}
+												myTotalStaked={
+													contractData.myTotalStaked
+												}
+											/>
+										)}
 									</div>
 								</div>
 							</div>

@@ -3,25 +3,17 @@ const contractAddress = process.env.NEXT_PUBLIC_LAUNCHPOOL_CONTRACT_ADDRESS as `
 export const LaunchpoolContractConfig = {
   abi: [
     {
+      "anonymous": false,
       "inputs": [
         {
-          "internalType": "contract ERC20",
-          "name": "_token",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_startLP",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_endLP",
-          "type": "uint256"
+          "indexed": false,
+          "internalType": "uint8",
+          "name": "version",
+          "type": "uint8"
         }
       ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
+      "name": "Initialized",
+      "type": "event"
     },
     {
       "anonymous": false,
@@ -338,6 +330,29 @@ export const LaunchpoolContractConfig = {
     {
       "inputs": [
         {
+          "internalType": "contract ERC20",
+          "name": "_token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_startLP",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_endLP",
+          "type": "uint256"
+        }
+      ],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "_orderID",
           "type": "uint256"
@@ -605,6 +620,25 @@ export const LaunchpoolContractConfig = {
       "name": "unstake",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "userHasClaimed",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     }
   ],

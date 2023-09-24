@@ -1,6 +1,6 @@
 import { useContractWrite, useWaitForTransaction } from "wagmi";
 
-import { LaunchpoolContractConfig } from "../../abi/launchpool-abi";
+import { LaunchpoolContractConfig } from "../../abi/template-abi";
 import { maticToWei } from "../../utils/weiCasting";
 
 export function DepositButton(props: any) {

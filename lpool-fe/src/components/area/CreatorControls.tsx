@@ -1,16 +1,12 @@
 "use client";
 
 import '../../assets/styles/controls-list.css'
-
 import { ControlButton } from "../buttons/ControlButton";
 import { ControlButtonData } from "../interfaces/ControlButtonData";
-
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { CreateLaunchpool } from '../CreateLaunchpool';
 import { DepositForm } from '../forms/DepositForm';
-
 const logger = require("pino")();
-
 
 // CONNECT WALLET BUTTON
 let connect_wallet: ControlButtonData = {

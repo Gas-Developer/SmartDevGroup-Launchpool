@@ -299,6 +299,18 @@ contract launchpoolTemplate is Initializable, OwnableUpgradeable, ReentrancyGuar
 		return userTotalStaked;
 	}
 
+	function userHasClaimed(address _user) public view returns (bool) {
+		bool hasClaimed = true;
+		for (uint256 i = 0; i < orderIDs[_user].length; i++) {
+
+			uint256 currentOrderId = orderIDs[_user][i];
+
+			hasClaimed = hasClaimed && isClaimed(currentOrderId);
+
+		}
+		return hasClaimed;
+	}
+
 	function setStartLP(uint256 _newStartLP) public onlyOwner launchpoolNotStarted {
 
 		require(_newStartLP > block.timestamp, "New StartLP must be greater than now");

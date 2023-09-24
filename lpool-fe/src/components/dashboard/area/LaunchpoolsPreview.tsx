@@ -6,15 +6,13 @@ import { IPFSLaunchpoolData } from "../../interfaces/IPFSLaunchpoolData";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useContractRead } from "wagmi";
-import { LaunchpoolContractConfig } from "../../../abi/launchpool-abi";
+import { LaunchpoolContractConfig } from "../../../abi/template-abi";
 const logger = require("pino")();
 
 export default function LaunchpoolsPreviewArea(props: any) {
     const launchpoolToShow = props.type;
 	const ipfsData = props.ipfsData;
 	
-	logger.info("dati da ipfs", ipfsData);
-
     const pathname = usePathname();
     const myProfileContainer = pathname.includes("my-profile") ? true : false;
 
