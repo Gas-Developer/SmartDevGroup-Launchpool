@@ -32,6 +32,7 @@ export default function PageContainer() {
 	useEffect(() => {
 		if (isSuccess && !isLoading && data !== undefined && !filled.current) {
 			setLaunchpoolsReference([...data]);
+			setAllLaunchpoolReferenceGContext([...data]);
 			filled.current = true;
 		}
 	}, [data]);
@@ -71,7 +72,6 @@ export default function PageContainer() {
 					const filteredResults = ipfsResults.filter(
 						(result) => result !== null && result !== undefined
 					);
-
 
 					setIpfsData([...filteredResults]);
 					setIpfsDataGContext([...filteredResults]);
