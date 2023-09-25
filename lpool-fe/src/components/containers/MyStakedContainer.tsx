@@ -6,6 +6,12 @@ import { useAccount } from "wagmi";
 import { useEffect, useRef, useState } from "react";
 import { useGlobalContext } from "../../app/Context/store";
 import { weiToMatic } from "../../utils/weiCasting";
+import MiniLPCard from "../cards/MiniLPCard";
+import { LPCardPreviewContainer } from "./LPCardPreviewContainer";
+import { defaultNoImage } from "../constants";
+import Image from 'next/image'
+const logger = require("pino")();
+
 
 export default function MyStakedContainer(props:any) {
 
@@ -52,7 +58,7 @@ export default function MyStakedContainer(props:any) {
 			.then((res) => {
 
 				// console.log(res.data);
-				console.log("**** PolygonScan API Data ****");
+				logger.info("**** PolygonScan API Data ****");
 
 				//console.log(res.data);
 				if (res !== undefined) {
@@ -86,7 +92,8 @@ export default function MyStakedContainer(props:any) {
 
 				}
 
-				console.log("**** END PolygonScan API Data ****");
+				// console.log("**** END PolygonScan API Data ****");
+				logger.info("**** END PolygonScan API Data ****");
 
 			});
 	}, []);
@@ -105,34 +112,8 @@ export default function MyStakedContainer(props:any) {
         // setIpfsDataGContext,
     } = useGlobalContext();
 
-	console.log("allLaunchpoolReferenceGContext: ", allLaunchpoolReferenceGContext);
-	console.log("ipfsDataGContext: ", ipfsDataGContext);
-
-
-	// function getMyStaked() {
-
-	// 	const tmpMyStaked: userTX[] = [];
-
-	// 	// Prendo solo le staked 
-	// 	userTXList.forEach(function (
-	// 		item: userTX, index: any) {
-	// 			if(item.functionName == "stake()" || item.functionName == "unstake()")
-	// 				tmpMyStaked.push(item);
-
-	// 			if(item.functionName == "unstake()") {
-	// 				// TODO: Rimuovere da tmpMyStaked
-	// 				console.log("TODO: Rimuovere da tmpMyStaked tutte le stake() corrispondenti (il value deve corrispondere stakeValue1+stakeValue2+...+stakeValuen = unstakeValue");
-					
-	// 			}
-	// 		}
-	// 	);
-
-	// 	// Sommo le stake sulla stessa LP
-	// 	console.log(tmpMyStaked);
-
-	// 	setMyStaked(tmpMyStaked);
-
-	// }
+	// logger.info("allLaunchpoolReferenceGContext: ", allLaunchpoolReferenceGContext);
+	// logger.info("ipfsDataGContext: ", ipfsDataGContext);
 
 
 
@@ -198,8 +179,11 @@ export default function MyStakedContainer(props:any) {
 			functionName: "stake()", // Puoi impostare "stake()" poiché stiamo solo calcolando stake
 		}));
 
-		// TODO: Scorrere le 
-		
+		// TODO: Scorrere le allLaunchpoolReferenceGContext e confrontarle con le aggregatedMyStaked
+		// usare startLP e endLP per capire se la LP è ancora nella stking phase o nella claiming phase
+		logger.info("allLaunchpoolReferenceGContext: ", allLaunchpoolReferenceGContext);
+		logger.info("ipfsDataGContext: ", ipfsDataGContext);
+
 		setMyStaked(aggregatedMyStaked);
 	}
 
@@ -207,15 +191,35 @@ export default function MyStakedContainer(props:any) {
 
 
     return (
-			<div className=" text-slate-200 text-sm">
+		<ul className=" text-slate-200 text-sm">
+						
+				{/* <div className=" text-slate-200 text-sm"> */}
 				{
 					myStaked?.map((stakeTX: AggregatedTransaction, index: number) => (
-						<div id={`staked${index}`} key={index}>
-							LP: {stakeTX.to}<br/>
-							value: {weiToMatic(stakeTX.value, 18)} MATIC
-						</div>
+						<li key={index} id={`staked${index}`} className=" grid-cols-4 grid-flow-col flex  align-middle">
+							<div className="text-xs text-slate-500 col-span-1  p-4 align-middle">
+								{/* <MiniLPCard launchpoolAddress={stakeTX.to} /> */}
+								{/* <LPCardPreviewContainer launchpoolAddress={stakeTX.to} imageURL={defaultNoImage}/> */}
+									<Image
+										className=""
+										loader={() => defaultNoImage}
+										src={defaultNoImage}
+										alt={"Launchpool Image"}
+										width={50}
+										height={50}
+										unoptimized={true}
+									/>
+
+							</div>
+							<div className="text-xs text-slate-500 col-span-3  align-middle pt-10">
+								LP: {stakeTX.to}<br/>
+								value: {weiToMatic(stakeTX.value, 18)} MATIC
+							</div>
+						</li>
 					))
 				}
-			</div>
+			{/* </div> */}
+		</ul>
+
 	);
 }

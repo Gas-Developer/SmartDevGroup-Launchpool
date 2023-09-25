@@ -78,86 +78,82 @@ export function LPCardPreviewContainer(props: any) {
 	});
 
 	return (
-        <>
-            {tokenAddress.length == 42 && tokenAddress.startsWith("0x") ? (
-                <TrasparentContainer className="h-full">
-                    <DefaultContainer className="h-full">
-                        <div className="grid grid-rows-6 grid-flow-col gap-1 text-center h-full" >
-                            {/* Token Name */}
-                            <div className="row-span-1 m-auto">
-                                {data?.name ? (
-                                    isLoading ? (
-                                        <p>Loading...</p>
-                                    ) : (
-                                        <h3>
-                                            {data?.name} ({data?.symbol})
-                                        </h3>
-                                    )
-                                ) : (
-                                    ""
-                                )}
-                                <InfoLabel
-                                    name={"tokenAddressLabel"}
-                                    value={tokenAddress}
-                                    className="font-['Roboto'] text-xs text-slate-700 text-center inline-block"
-                                />
-                            </div>
+		<>
+			{tokenAddress.length == 42 && tokenAddress.startsWith("0x") ? (
+				<TrasparentContainer className="h-full">
+					<DefaultContainer className="h-full">
+						<div className="grid grid-rows-6 grid-flow-col gap-1 text-center h-full" >
+							{/* Token Name */}
+							<div className="row-span-1 m-auto">
+								{data?.name ? (
+									isLoading ? (
+										<p>Loading...</p>
+									) : (
+										<h3>
+											{data?.name} ({data?.symbol})
+										</h3>
+									)
+								) : (
+									""
+								)}
+								<InfoLabel
+									name={"tokenAddressLabel"}
+									value={tokenAddress}
+									className="font-['Roboto'] text-xs text-slate-700 text-center inline-block"
+								/>
+							</div>
 
-                            {/* Launchpool Image */}
-                            <div className="row-span-2 ml-auto mr-auto">
-                                <div className="h-full w-full">
+							{/* Launchpool Image */}
+							<div className="row-span-2 ml-auto mr-auto">
+								<div className="h-full w-full">
 									<Image
 										className="h-full w-auto"
-                                        loader={() => iconURL}
-                                        src={iconURL}
-                                        alt={
-                                            data?.name
-                                                ? data.name
-                                                : "Launchpool Image"
-                                        }
-                                        width={50}
+										loader={() => iconURL}
+										src={iconURL}
+										alt={data?.name ? data.name : "Launchpool Image"}
+										width={50}
 										height={50}
 										unoptimized={true}
-                                    />
-                                </div>
-                            </div>
+									/>
+								</div>
+							</div>
 
-                            {/* Launchpool Dates */}
-                            <div className="row-span-1 text-center pl-10 pr-10 m-auto">
-                                <div className="grid grid-cols-6 gap-1">
-                                    <div className="col-span-1">
-                                        <InfoLabel
-                                            name={"startLPLabel"}
-                                            value="from: "
-                                            className="font-['Roboto'] text-xs text-slate-600 text-right inline-block"
-                                        />
-                                    </div>
-                                    <div className="col-span-2">
-                                        <InfoLabel
-                                            name={"startLPLabel"}
-                                            value={startLP}
-                                            className="font-['Roboto'] text-xs text-slate-200 text-left inline-block"
-                                        />
-                                    </div>
-                                    <div className="col-span-1">
-                                        <InfoLabel
-                                            name={"endLPLabel"}
-                                            value="to: "
-                                            className="font-['Roboto'] text-xs text-slate-600 text-right inline-block"
-                                        />
-                                    </div>
-                                    <div className="col-span-2">
-                                        <InfoLabel
-                                            name={"endLPLabel"}
-                                            value={endLP}
-                                            className="font-['Roboto'] text-xs text-slate-200 text-left inline-block"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+							{/* Launchpool Dates */}
+							<div className="row-span-1 text-center pl-10 pr-10 m-auto">
+								<div className="grid grid-cols-6 gap-1">
+									<div className="col-span-1">
+										<InfoLabel
+											name={"startLPLabel"}
+											value="from: "
+											className="font-['Roboto'] text-xs text-slate-600 text-right inline-block"
+										/>
+									</div>
+									<div className="col-span-2">
+										<InfoLabel
+											name={"startLPLabel"}
+											value={startLP}
+											className="font-['Roboto'] text-xs text-slate-200 text-left inline-block"
+										/>
+									</div>
+									<div className="col-span-1">
+										<InfoLabel
+											name={"endLPLabel"}
+											value="to: "
+											className="font-['Roboto'] text-xs text-slate-600 text-right inline-block"
+										/>
+									</div>
+									<div className="col-span-2">
+										<InfoLabel
+											name={"endLPLabel"}
+											value={endLP}
+											className="font-['Roboto'] text-xs text-slate-200 text-left inline-block"
+										/>
+									</div>
+								</div>
+							</div>
 
-                            {/* Token to Distribute */}
-                            <div className="row-span-1 m-auto">
+							{/* Token to Distribute */}
+							<div className="row-span-1 m-auto">
 								<div className="grid grid-rows-3 gap-1">
 									{
 										isCreatorPage ? (
@@ -224,14 +220,14 @@ export function LPCardPreviewContainer(props: any) {
 										)
 									}
 								</div>
-                            </div>
-                        </div>
-                    </DefaultContainer>
-                </TrasparentContainer>
-            ) : (
-                <></>
-            )}
-        </>
-    );
+							</div>
+						</div>
+					</DefaultContainer>
+				</TrasparentContainer>
+			) : (
+				<></>
+			)}
+		</>
+	);
 
 }

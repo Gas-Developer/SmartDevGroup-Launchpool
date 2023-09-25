@@ -85,6 +85,7 @@ export function LPCard(props: any) {
 						width={250}
 						height={200}
 						layout="responsive"
+						unoptimized={true}
 					/>
 				</div>
 			) : (

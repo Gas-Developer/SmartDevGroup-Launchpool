@@ -15,6 +15,9 @@ export function maticToWei(valueInEth: string): bigint {
 }
 
 export function weiToMatic(valueInWei: string, decimals: number): number {
+
+	if(!valueInWei || valueInWei == "" || valueInWei == "Infinity" || isNaN(Number(valueInWei))) return 0;
+
 	try {
 		let ethValue = Web3.utils.fromWei(valueInWei, "ether");
 		ethValue = parseFloat(ethValue).toFixed(decimals);

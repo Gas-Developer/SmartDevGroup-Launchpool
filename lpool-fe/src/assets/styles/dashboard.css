@@ -56,7 +56,7 @@
 .miniLPCardImgContainer {
 	border-radius: 20%;
 	margin-top: 2%;
-	height: 88%;
+	/* height: 88%; */
 }
 
 .featuredLP:hover {
