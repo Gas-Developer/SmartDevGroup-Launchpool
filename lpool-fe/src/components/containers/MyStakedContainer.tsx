@@ -105,11 +105,11 @@ export default function MyStakedContainer(props:any) {
 		getMyStaked();																	// Seleziono solo le tx stake e rimuovo le corrispondenti unstake
 	}, [userTXList]);
 
-	const {
+    const {
         allLaunchpoolReferenceGContext,
-        // setAllLaunchpoolReferenceGContext,
+        setAllLaunchpoolReferenceGContext,
         ipfsDataGContext,
-        // setIpfsDataGContext,
+        setIpfsDataGContext,
     } = useGlobalContext();
 
 	// logger.info("allLaunchpoolReferenceGContext: ", allLaunchpoolReferenceGContext);

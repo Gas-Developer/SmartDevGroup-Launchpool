@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { LaunchpoolReference } from "./interfaces/LaunchpoolReference";
 import LaunchpoolsPreviewArea from "./dashboard/area/LaunchpoolsPreview";
 import { useGlobalContext } from "../app/Context/store";
+import MyStakedContainer from "./containers/MyStakedContainer";
 
 
 const logger = require("pino")();
@@ -19,18 +20,18 @@ export default function ProfileContainer(props:any) {
         setIpfsDataGContext,
     } = useGlobalContext();
 
+    const type = props.type;
+
+    logger.info(type);
+
     return (
         <>
             <div
                 id="profileContainer"
                 className="grid grid-cols-2 grid-rows-3 overflow-auto"
             >
-                <div id="launchpoolsPreviewArea">
-                    <LaunchpoolsPreviewArea
-                        type={props.type}
-                        ipfsData={ipfsDataGContext}
-                    />
-                </div>
+                {type === "staked" ? <MyStakedContainer /> : null}
+
             </div>
         </>
     );
