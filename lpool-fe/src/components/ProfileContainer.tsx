@@ -28,7 +28,7 @@ export default function ProfileContainer(props:any) {
         <>
             <div
                 id="profileContainer"
-                className="grid grid-cols-2 grid-rows-3 overflow-auto"
+                // className="grid grid-cols-2 grid-rows-3 overflow-auto"
             >
                 {type === "staked" ? <MyStakedContainer /> : null}
 

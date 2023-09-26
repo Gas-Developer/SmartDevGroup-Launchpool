@@ -8,8 +8,13 @@ import { useGlobalContext } from "../../app/Context/store";
 import { weiToMatic } from "../../utils/weiCasting";
 import MiniLPCard from "../cards/MiniLPCard";
 import { LPCardPreviewContainer } from "./LPCardPreviewContainer";
-import { defaultNoImage } from "../constants";
+import { defaultNoImage, getPhase } from "../constants";
 import Image from 'next/image'
+import { LaunchpoolReference } from "../interfaces/LaunchpoolReference";
+import { IPFSLaunchpoolData } from "../interfaces/IPFSLaunchpoolData";
+import TrasparentContainer from "./TrasparentContainer";
+import DefaultContainer from "./DefaultContainer";
+import { InfoLabel } from "../label/InfoLabel";
 const logger = require("pino")();
 
 
@@ -31,8 +36,30 @@ export default function MyStakedContainer(props:any) {
 		functionName: string;
 	}
 
-	const { address, isConnected } = useAccount()
+	interface MyLPs {
+		name: string;
+		cid: string;
+		description: string;
+		endLP: string;
+		functionName: string;
+		iconURL: string;
+		index: number;
+		launchpoolAddress: string;
+		phase: string;
+		startLP: string;
+		storageURI: string;
+		to: string;
+		tokenAddress: string;
+		tokenWebsite: string;
+		value: string;
+	}
 
+
+	const { address, isConnected } = useAccount()
+	const {
+		allLaunchpoolReferenceGContext,
+		ipfsDataGContext,
+	} = useGlobalContext();
 
 	const PolygonScanBaseURL = process.env.NEXT_PUBLIC_POLYGONSCAN_API_URL;
 	const PolygonScanActionURL = "?module=account&action=txlist&&startblock=0&endblock=99999999&page=1&offset=50&sort=desc";
@@ -43,7 +70,7 @@ export default function MyStakedContainer(props:any) {
 
 	// Conterrà la lista delle transazioni dell'utente, filtrate per le funzioni che ci interessano (stake, claim(), unstake(), depositTokenToDistribute, deployClone)
 	const [userTXList, setUserTXList] = useState<userTX[]>([]);
-	const [myStaked, setMyStaked] = useState<AggregatedTransaction[]>([]);
+	const [myStaked, setMyStaked] = useState<MyLPs[]>([]);
 
 	// TODO: Gestire PolygonScanAPICallURL come uno stato. id isConnected && address !="" PolygonScanAPICallURL = PolygonScanBaseURL+PolygonScanActionURL+PolygonScanAPIKEYURL+PolygonScanAddress+address?.toString();
 
@@ -105,12 +132,7 @@ export default function MyStakedContainer(props:any) {
 		getMyStaked();																	// Seleziono solo le tx stake e rimuovo le corrispondenti unstake
 	}, [userTXList]);
 
-    const {
-        allLaunchpoolReferenceGContext,
-        setAllLaunchpoolReferenceGContext,
-        ipfsDataGContext,
-        setIpfsDataGContext,
-    } = useGlobalContext();
+
 
 	// logger.info("allLaunchpoolReferenceGContext: ", allLaunchpoolReferenceGContext);
 	// logger.info("ipfsDataGContext: ", ipfsDataGContext);
@@ -118,6 +140,8 @@ export default function MyStakedContainer(props:any) {
 
 
 	function getMyStaked() {
+
+		const MyStaked: any[] = [];
 		const tmpMyStaked: userTX[] = [];
 	
 		// Creare una mappa per tenere traccia delle somme dei valori per ogni 'to'
@@ -141,85 +165,121 @@ export default function MyStakedContainer(props:any) {
 			}
 		});
 
-		// Azzero quelle che hanno fatto l'unstake
-		// userTXList.forEach(function (item: userTX) {
-		// 	if (item.functionName === "unstake()") {
-
-		// 		const to = item.to;
-		// 		const value = BigInt(item.value);
-		// 		if (aggregatedValues.has(to)) {
-		// 			aggregatedValues.set(to, BigInt(0));
-		// 		} else {
-		// 			// Inserisci gestione errore se si verifica una transazione "unstake()" senza una corrispondente "stake()"
-		// 			console.log("Error - Unstake senza Stake");
-		// 		}
-		// 	}
-		// });
-
 		// Rimuovo quelle di cui l'utente ha fatto l'unstake
 		userTXList.forEach(function (item) {
 			if (item.functionName === "unstake()") {
 				const to = item.to;
-				const value = BigInt(item.value);
-			
+
 				if (aggregatedValues.has(to)) {
 					aggregatedValues.set(to, BigInt(0));
 					aggregatedValues.delete(to); // Rimuovi l'elemento da aggregatedValues
-				} else {
-					console.log("Error - Unstake senza Stake");
 				}
 			}
 		});
-		
-	
-		// Creare un nuovo array di oggetti AggregatedTransaction con i valori aggregati
+
+		// Creo un nuovo array di oggetti AggregatedTransaction con i valori aggregati
 		const aggregatedMyStaked: AggregatedTransaction[] = Array.from(aggregatedValues.keys()).map((to) => ({
 			to,
 			value: aggregatedValues.get(to)!.toString(),
 			functionName: "stake()", // Puoi impostare "stake()" poiché stiamo solo calcolando stake
 		}));
 
-		// TODO: Scorrere le allLaunchpoolReferenceGContext e confrontarle con le aggregatedMyStaked
-		// usare startLP e endLP per capire se la LP è ancora nella stking phase o nella claiming phase
+
 		logger.info("allLaunchpoolReferenceGContext: ", allLaunchpoolReferenceGContext);
 		logger.info("ipfsDataGContext: ", ipfsDataGContext);
 
-		setMyStaked(aggregatedMyStaked);
+		// Aggiungo la phase e le ipfsInfo a allLaunchpoolsWithPhase
+		const allLaunchpoolsWithPhase = getAllLaunchpoolsWithIPFSDataAndPhase(allLaunchpoolReferenceGContext, ipfsDataGContext);
+
+		// Cerco le LP che corrispondono a quelle stakate dall'utente e le aggiungo a MyStaked
+		aggregatedMyStaked.forEach(stakedItem => {
+
+			const cleanedStakedTo = stakedItem.to.replace(/\s+/g, '').toLowerCase(); // Rimuove tutti gli spazi
+			const matchingLaunchpool = allLaunchpoolsWithPhase.find(lp => lp.launchpoolAddress.toLowerCase() === cleanedStakedTo);
+			
+			if (matchingLaunchpool) {
+				const index = allLaunchpoolsWithPhase.indexOf(matchingLaunchpool);
+
+				const combinedData = {
+					index,
+					...stakedItem,
+					...matchingLaunchpool,
+				};
+
+				MyStaked.push(combinedData);
+			}
+		});
+
+		console.log("MyStaked", MyStaked);
+
+		setMyStaked(MyStaked);
+	}
+
+	// Restituisce un array di oggetti contenenti le informazioni di allLaunchpoolReferenceGContext, ipfsDataGContext e la phase
+	function getAllLaunchpoolsWithIPFSDataAndPhase( allLaunchpoolReferenceGContext: LaunchpoolReference[], ipfsDataGContext: IPFSLaunchpoolData[]) {
+
+		const allLaunchpoolsWithPhase: any[] = [];
+
+		allLaunchpoolReferenceGContext.forEach((launchpool, index) => {
+			const ipfsData = ipfsDataGContext[index];
+			const phase = getPhase(ipfsData);
+
+			const combinedData = {
+				...launchpool,
+				...ipfsData,
+				phase
+			};
+
+			allLaunchpoolsWithPhase.push(combinedData);
+		});
+
+		return allLaunchpoolsWithPhase;
+
 	}
 
 
 
 
-    return (
-		<ul className=" text-slate-200 text-sm">
-						
-				{/* <div className=" text-slate-200 text-sm"> */}
-				{
-					myStaked?.map((stakeTX: AggregatedTransaction, index: number) => (
-						<li key={index} id={`staked${index}`} className=" grid-cols-4 grid-flow-col flex  align-middle">
-							<div className="text-xs text-slate-500 col-span-1  p-4 align-middle">
-								{/* <MiniLPCard launchpoolAddress={stakeTX.to} /> */}
-								{/* <LPCardPreviewContainer launchpoolAddress={stakeTX.to} imageURL={defaultNoImage}/> */}
-									<Image
-										className=""
-										loader={() => defaultNoImage}
-										src={defaultNoImage}
-										alt={"Launchpool Image"}
-										width={50}
-										height={50}
-										unoptimized={true}
-									/>
 
-							</div>
-							<div className="text-xs text-slate-500 col-span-3  align-middle pt-10">
-								LP: {stakeTX.to}<br/>
-								value: {weiToMatic(stakeTX.value, 18)} MATIC
-							</div>
-						</li>
-					))
-				}
-			{/* </div> */}
-		</ul>
+	return (
+		<>
+			<TrasparentContainer className={" "}>
+				<ul className=" text-slate-200 text-sm">
+						{
+							myStaked?.map((stakeTX: MyLPs, index: number) => (
+								<li key={index} id={`staked${index}`} >
+									<DefaultContainer className=" defaultContainer grid-cols-4 flex align-middle m-2">
+										<div className="text-xs text-slate-500 col-span-1 p-4 align-middle">
+
+												<Image
+													className=""
+													loader={() => stakeTX.iconURL}
+													src={stakeTX.iconURL}
+													alt={"Launchpool Image"}
+													width={64}
+													height={64}
+													unoptimized={true}
+												/>
+
+										</div>
+										<div className="text-xs text-slate-500 col-span-2 align-middle">
+											<InfoLabel name={"LPNameValue"} value={stakeTX.name} className={""}  />
+											<InfoLabel name={"LPDescValue"} value={stakeTX.description} className={""}  />
+
+											LP: {stakeTX.to}<br/>
+											value: {weiToMatic(stakeTX.value, 18)} MATIC
+										</div>
+										<div className="text-xs text-slate-500 col-span-1 text-right align-middle p-3">
+											Phase: {stakeTX.phase}
+										</div>
+ 
+									</DefaultContainer>
+								</li>
+							))
+						}
+				</ul>
+			</TrasparentContainer>
+		</>
 
 	);
 }

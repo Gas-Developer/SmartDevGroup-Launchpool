@@ -1,4 +1,5 @@
 import { ControlButtonData } from "./interfaces/ControlButtonData";
+import { IPFSLaunchpoolData } from "./interfaces/IPFSLaunchpoolData";
 
 export const ipfs_base_URI = process.env.NEXT_PUBLIC_PINATA_GATEWAY;
 export const PINATA_APIKEY = process.env.NEXT_PUBLIC_PINATA_APIKEY;
@@ -78,5 +79,18 @@ export function toDate(timestamp: number| string | BigInt) {
 	const date = new Date(Number(timestamp) * 1000);
 
 	return date.toLocaleString();
+
+}
+
+export function getPhase(ipfsData: IPFSLaunchpoolData) {
+
+	const now = Date.now();
+
+	if ((ipfsData.startLP * 1000) < now)
+		return "starting";
+	if ((ipfsData.startLP * 1000) >= now && ipfsData.endLP < now) 
+		return "staking";
+	if ((ipfsData.endLP * 1000) >= now) 
+		return "claiming";
 
 }
