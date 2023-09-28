@@ -9,16 +9,16 @@ section {
     display: grid;
 }
 
-section h1 {
-    font-size: 90px;
-    font-weight: 600;
-    background-image: linear-gradient(to left, #553c9a, #b393d3);
+section  h1{
+    font-size: 120px;
+    font-weight: 700;
+    background-image: linear-gradient(to left, #183de5, #5b91b0);
     color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
 }
 
-section button {
+#homepageButton {
     align-items: center;
     appearance: none;
     background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
@@ -49,16 +49,16 @@ section button {
     font-size: 18px;
 }
 
-section button:focus {
+#homepageButton:focus {
     box-shadow: #3c4fe0 0 0 0 1.5px inset, rgba(45, 35, 66, .4) 0 2px 4px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
 } 
 
-section button:hover {
+#homepageButton:hover {
     box-shadow: rgba(45, 35, 66, .4) 0 4px 8px, rgba(45, 35, 66, .3) 0 7px 13px -3px, #3c4fe0 0 -3px 0 inset;
     transform: translateY(-2px);
 }
 
-section button:active {
+#homepageButton:active {
     box-shadow: #3c4fe0 0 3px 7px inset;
     transform: translateY(2px);
 }

@@ -15,17 +15,17 @@ export default function DashboardMainContainer(props:any) {
         <>
             <div
                 id="dashboardMainContainer"
-                className="grid grid-cols-2 grid-rows-3 overflow-auto"
+                className="grid grid-cols-2 grid-rows-4 overflow-auto"
             >
 				<div id="featuredArea" className="row-span-2 h-full">
 					<FeaturedLaunchpools launchpoolsReference={launchpoolsReference} ipfsData={ipfsData} />
 				</div>
-                <div id="createLaunchpoolArea" className="h-full flex">
+                <div id="createLaunchpoolArea" className="row-span-2h-full flex">
                     <CreateLaunchpool />
                 </div>
-                <div id="tlrEventsArea">
+                {/* <div id="tlrEventsArea">
                     <TLREventsArea />
-                </div>
+                </div> */}
                 <div id="launchpoolsPreviewArea" className="col-span-2">
                     <LaunchpoolsPreviewArea
                         ipfsData={ipfsData}

@@ -8,7 +8,7 @@ export function LaunchAppButton() {
 
 	return (
 		<>
-			<button onClick={() => {router.push("/dashboard");}} type="button">Launch App</button>
+			<button onClick={() => {router.push("/dashboard");}} type="button" id="homepageButton">Launch App</button>
 		</>
 	);
 }

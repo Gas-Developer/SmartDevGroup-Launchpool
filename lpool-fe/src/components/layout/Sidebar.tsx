@@ -45,7 +45,7 @@ export function Sidebar() {
 									<li className="sidebarItem">
 										{item.icon}
 										{hoveredItem === item.id && (
-											<span className="text-yellow-500 absolute sidebarIconLabel">
+											<span className=" text-blue-400 absolute sidebarIconLabel">
 												{item.label}
 											</span>
 										)}

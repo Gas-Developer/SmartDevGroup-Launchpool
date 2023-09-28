@@ -22,10 +22,16 @@ body {
 		'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-	background-color: black;
-	background-image: url('../images/5053309.jpg');
+	background-image: url('../images/Gradient-5.6s-3000px.svg');
 	color: #ffffff;
 	overflow: auto;
+	background-size: 50%;
+
+		/* Percorso relativo a /public */
+	
+		/* Altre proprietà di stile per il tuo sfondo */
+		background-size: cover;
+		background-repeat: no-repeat;
 
 }
 

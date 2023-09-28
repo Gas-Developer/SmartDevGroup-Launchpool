@@ -7,11 +7,12 @@ import TrasparentContainer from "../../containers/TrasparentContainer";
 export default function LaunchpoolPhase(props: any) {
 	const phase = props.phase;
 	const launchpools = props.launchpools;
+	const className = props.className;
 
 	return (
 		<>
 			{launchpools?.length > 0 && (
-				<div id={phase + "Container"}>
+				<div id={phase + "Container"} className={className}>
 					<TrasparentContainer className="" >
 					<p className="phaseTitle">{phase} phase</p>
 					<hr />
