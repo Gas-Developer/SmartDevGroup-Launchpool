@@ -20,7 +20,7 @@ export default function DashboardMainContainer(props:any) {
 				<div id="featuredArea" className="row-span-2 h-full">
 					<FeaturedLaunchpools launchpoolsReference={launchpoolsReference} ipfsData={ipfsData} />
 				</div>
-                <div id="createLaunchpoolArea" className="row-span-2h-full flex">
+                <div id="createLaunchpoolArea" className="row-span-2 h-full flex">
                     <CreateLaunchpool />
                 </div>
                 {/* <div id="tlrEventsArea">
