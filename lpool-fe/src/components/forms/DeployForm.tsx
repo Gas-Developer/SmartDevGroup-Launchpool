@@ -34,6 +34,7 @@ export function DeployForm(props: any) {
 	const now = new Date();
 
 	const [formData, setFormData] = useState({
+		name: "",
 		description: "",
 		tokenAddress: "",
 		imageURL: "",
@@ -149,7 +150,7 @@ export function DeployForm(props: any) {
 
 
 		const LPInfo = {
-			//name: "The Launchpool Ready",
+			name: formData.name,
 			description: formData.description,
 			iconURL: formData.imageURL,
 			//lpWebsite: "",
@@ -271,6 +272,24 @@ export function DeployForm(props: any) {
 	return (
 		<>
 			<div className="grid grid-cols-10 gap-4">
+
+				{/* ROW 0 */}
+				<div className="col-span-1">
+					<InfoLabel name={"LPName"} value={"Launchpool Name"} className={labelStyle} />
+				</div>
+				<div className="col-span-9">
+					<Textfield 
+						{...defaultTF}
+						id="lpName" 
+						name="lpName" 
+						placeholder="Launchpool #1"
+						value={formData.name} 
+						onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFormData( {...formData, name: e.target.value.toString()} )}
+						className={tfStyle}
+					/>
+				</div>
+
+
 				{/* ROW 1 */}
 				<div className="col-span-10 ">
 					<Textarea 
