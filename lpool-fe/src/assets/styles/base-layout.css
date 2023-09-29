@@ -5,7 +5,7 @@
 #headerTitle{
 	font-size: 50px;
 	font-weight: 400;
-	background-image: linear-gradient(to left, #553c9a, #b393d3);
+	background-image: linear-gradient(to left, #183de5, #5b91b0);
 	color: transparent;
 	background-clip: text;
 	-webkit-background-clip: text;
@@ -32,7 +32,7 @@
 }
 
 .sidebarIconLabel{
-	margin-left: 22%;
+	margin-left: 30%;
 	margin-top: 3%;
 	font-size: 20px;
 
@@ -52,7 +52,7 @@
 }
 
 #dropdownMenu{
-	width: 12%;
+	width: 11%;
 	margin-top: 0.5%;
 }
 

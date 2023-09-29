@@ -32,6 +32,7 @@ export default function PageContainer() {
 	useEffect(() => {
 		if (isSuccess && !isLoading && data !== undefined && !filled.current) {
 			setLaunchpoolsReference([...data]);
+			// setAllLaunchpoolReferenceGContext([...data]);
 			filled.current = true;
 		}
 	}, [data]);
@@ -41,8 +42,6 @@ export default function PageContainer() {
 
 			const ipfsPromises: any[] = [];
 			launchpoolsReference.forEach((launchpool: LaunchpoolReference) => {
-
-				logger.info("Launchpool reference", launchpool);
 
 				const storageURI = launchpool.storageURI;
 				const launchpoolAddress = launchpool.launchpoolAddress;

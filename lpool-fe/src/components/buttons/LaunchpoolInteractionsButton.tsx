@@ -1,7 +1,6 @@
-import { useContractRead } from "wagmi";
 import { ControlButtonData } from "../interfaces/ControlButtonData";
 
-export function StakeButton(props: ControlButtonData) {
+export function LaunchpoolInteractionsButton(props: ControlButtonData) {
 
 	const className = "btn btn-primary controlButton "+ props.className;
 

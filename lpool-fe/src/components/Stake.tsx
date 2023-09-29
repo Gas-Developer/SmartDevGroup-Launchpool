@@ -1,13 +1,19 @@
-import { SetStateAction, useState } from "react";
-import { StakeButton } from "./buttons/StakeButton";
+import { SetStateAction, useEffect, useState } from "react";
+import { LaunchpoolInteractionsButton } from "./buttons/LaunchpoolInteractionsButton";
 import { Textfield } from "./input/Textfield";
 import { ControlButtonData } from "./interfaces/ControlButtonData";
-import { useContractWrite, useWaitForTransaction } from "wagmi";
-import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
-import { defaultTF } from "./constants";
+import {
+	useContractWrite,
+	useWaitForTransaction,
+	useConnect,
+	useAccount,
+} from "wagmi";
+import { LaunchpoolContractConfig } from "../abi/template-abi";
+import { connect_wallet, defaultTF } from "./constants";
 import { InfoLabel } from "./label/InfoLabel";
 import TLRModal from "./Modal";
 import { maticToWei } from "../utils/weiCasting";
+import { ControlButton } from "./buttons/ControlButton";
 
 const logger = require("pino")();
 
@@ -27,11 +33,15 @@ export function Stake(props: any) {
 	const [stakeAmount, setStakeAmount] = useState("0");
 	let convertedStakedAmount = "0";
 	const [showModal, setShowModal] = useState(false);
-	const [stakeSuccess, setStakeSuccess] = useState(false); // Stato di successo
+	const [stakeSuccess, setStakeSuccess] = useState(false);
+	const { connect, connectors } = useConnect();
+	const { isConnected } = useAccount();
 
 	const toggleModal = () => {
 		setShowModal(!showModal);
 	};
+
+	connect_wallet.onClick = () => connect({ connector: connectors[0] });
 
 	const launchpoolAddress = props.launchpoolAddress as `0x${string}`;
 
@@ -51,7 +61,7 @@ export function Stake(props: any) {
 		onSuccess(data) {
 			logger.info("TX Success");
 			logger.info("Staked tokens correctly");
-			setStakeSuccess(true); 
+			setStakeSuccess(true);
 			// setShowModal(false);
 		},
 	});
@@ -70,52 +80,58 @@ export function Stake(props: any) {
 
 	return (
 		<>
-			<StakeButton
-				{...stake_button}
-				className={className}
-				onClick={toggleModal}
-			/>
-			<TLRModal
-				isVisible={showModal}
-				className={
-					"fixed inset-0 bg-gray-500 bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
-				}
-				onClose={() => setShowModal(false)}
-			>
-				<div className="grid grid-cols-2 grid-rows-2 gap-6 p-4">
-					<InfoLabel
-						name={""}
-						value={"Amount to stake"}
-						className={"m-auto"}
-					></InfoLabel>
-					<Textfield
-						{...defaultTF}
-						className="h-fit m-auto"
-						id="stakeAmount"
-						name="stakeAmount"
-						placeholder="Stake Amount"
-						value={stakeAmount}
-						onChange={(e: {
-							target: { value: SetStateAction<string> };
-						}) => setStakeAmount(e.target.value)}
+			{isConnected ? (
+				<>
+					<LaunchpoolInteractionsButton
+						{...stake_button}
+						className={className}
+						onClick={toggleModal}
 					/>
-					<div className="flex justify-center col-span-2">
-						{stakeSuccess ? (
+					<TLRModal
+						isVisible={showModal}
+						className={
+							"fixed inset-0 bg-gray-500 bg-opacity-25 backdrop-blur-sm flex justify-center items-center"
+						}
+						onClose={() => setShowModal(false)}
+					>
+						<div className="grid grid-cols-2 grid-rows-2 gap-6 p-4">
 							<InfoLabel
 								name={""}
 								value={"Amount to stake"}
-								className={""}
+								className={"m-auto"}
 							></InfoLabel>
-						) : (
-							<StakeButton
-								{...stake_button}
-								className={className + " "}
-								onClick={stake}
+							<Textfield
+								{...defaultTF}
+								className="h-fit m-auto"
+								id="stakeAmount"
+								name="stakeAmount"
+								placeholder="Stake Amount"
+								value={stakeAmount}
+								onChange={(e: {
+									target: { value: SetStateAction<string> };
+								}) => setStakeAmount(e.target.value)}
 							/>
-						)}
-					</div>
-				</div>
-			</TLRModal>
+							<div className="flex justify-center col-span-2">
+								{stakeSuccess ? (
+									<InfoLabel
+										name={""}
+										value={"Amount to stake"}
+										className={""}
+									></InfoLabel>
+								) : (
+									<LaunchpoolInteractionsButton
+										{...stake_button}
+										className={className + " "}
+										onClick={stake}
+									/>
+								)}
+							</div>
+						</div>
+					</TLRModal>
+				</>
+			) : (
+				<ControlButton {...connect_wallet} />
+			)}
 		</>
 	);
 }

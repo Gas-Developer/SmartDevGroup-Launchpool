@@ -9,44 +9,28 @@ import { LPCardPreviewContainer } from "../../containers/LPCardPreviewContainer"
 import { useRouter } from "next/navigation";
 const logger = require("pino")();
 
-
 export default function FeaturedLaunchpools(props: any) {
 
 	const router = useRouter();
 	const ipfsData: IPFSLaunchpoolData[] = props.ipfsData;
 
 	const [previewLPCardData, setPreviewLPCardData] = useState({
-        name: "",
-        description: "",
-        iconURL: "",
-        lpWebsite: "",
-        tokenWebsite: "",
-        tokenAddress: "",
-        startLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.startLP
-        endLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.endLP
-        launchpoolAddress: "",
-        cid: "",
-        isFeatured: false,
-    });
-
-	//logger.info("ipfsData: ", ipfsData);
-	// logger.info("props: ", props);
-
-	// const previewLPCardData = {
-	// 	imageURL: "",
-	// 	startLPValue: BigInt(0),
-	// 	endLPValue: BigInt(0),
-	// 	checked: false,
-	// 	description: "",
-	// 	tokenAddress: "",
-	// 	webURL: "",
-	// 	isFeatured: false,
-	// };
+		name: "",
+		description: "",
+		iconURL: "",
+		lpWebsite: "",
+		tokenWebsite: "",
+		tokenAddress: "",
+		startLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.startLP
+		endLP: BigInt(0), // If startLP and endLP should be BigInt, else use element.endLP
+		launchpoolAddress: "",
+		cid: "",
+		isFeatured: false,
+	});
 
 	useEffect(() => {
 
 		ipfsData.forEach(element => {
-			// logger.info("element: ", element);
 
 			if(!element.isFeatured){
 				setPreviewLPCardData({
@@ -65,7 +49,6 @@ export default function FeaturedLaunchpools(props: any) {
 			}
 		});
 
-		logger.info("previewLPCardData: ", previewLPCardData);
 	}, [ipfsData]);
 
 	function toLaunchpoolPage() {
@@ -73,8 +56,6 @@ export default function FeaturedLaunchpools(props: any) {
 			"/dashboard/" + previewLPCardData.launchpoolAddress + "/" + previewLPCardData.cid + "/investor";
 		router.push(href);
 	}
-
-
 
 	return (
 		<>

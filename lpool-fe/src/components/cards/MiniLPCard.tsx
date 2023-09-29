@@ -19,23 +19,36 @@ export default function MiniLPCard(props: any) {
 	}
 
 	return (
-		<>
-			<div className="miniLPCard  bg-zinc-700 bg-opacity-25 rounded-lg text-xs text-slate-500 text-center" onClick={() => toLaunchpoolPage()}>
-				{(miniLPCardInfo.name ? miniLPCardInfo.name : " - - - ")}
-				<div className="miniLPCardImgContainer bg-zinc-500">
-				{ 
-					<Image
-						loader={() => (miniLPCardInfo.iconURL ? miniLPCardInfo.iconURL : defaultNoImage)}
-						src={miniLPCardInfo.iconURL ? miniLPCardInfo.iconURL : defaultNoImage}
-						alt={miniLPCardInfo.name ? miniLPCardInfo.name : ""}
-						width={50}
-						height={50}
-						layout="responsive"
-						unoptimized={true}
-					/>
-				}
-				</div>
-			</div>
-		</>
-	);
+        <>
+            <div
+                className="miniLPCard  bg-zinc-700 bg-opacity-25 rounded-lg text-xs text-slate-500 text-center"
+                onClick={() => toLaunchpoolPage()}
+            >
+                <label className="mb-2">
+                    {miniLPCardInfo.name ? miniLPCardInfo.name : " - - - "}
+                </label>
+                <div className="miniLPCardImgContainer bg-zinc-500">
+                    {
+                        <Image
+                            loader={() =>
+                                miniLPCardInfo.iconURL
+                                    ? miniLPCardInfo.iconURL
+                                    : defaultNoImage
+                            }
+                            src={
+                                miniLPCardInfo.iconURL
+                                    ? miniLPCardInfo.iconURL
+                                    : defaultNoImage
+                            }
+                            alt={miniLPCardInfo.name ? miniLPCardInfo.name : ""}
+                            width={50}
+                            height={50}
+                            layout="responsive"
+                            unoptimized={true}
+                        />
+                    }
+                </div>
+            </div>
+        </>
+    );
 }

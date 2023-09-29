@@ -1,4 +1,4 @@
-import InvestorMainContainer from "../../../../../components/InvestorMainContainer";
+import InvestorMainContainer from "../../../../../components/containers/InvestorMainContainer";
 import { BaseLayout } from "../../../../../components/layout/BaseLayout";
 import "../../../../../assets/styles/investor.css";
 

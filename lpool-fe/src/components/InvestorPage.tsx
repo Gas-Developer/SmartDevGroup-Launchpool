@@ -2,7 +2,7 @@
 
 import { useContractReads } from "wagmi";
 import { useEffect, useState } from "react";
-import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
+import { LaunchpoolContractConfig } from "../abi/template-abi";
 import { ContractData } from "./interfaces/ContractData";
 import { AreasContainer } from "./area/AreasContainer";
 import { wagmiTokenConfig } from "../abi/token-abi";

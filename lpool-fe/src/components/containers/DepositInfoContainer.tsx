@@ -4,7 +4,7 @@ import TrasparentContainer from "./TrasparentContainer";
 import { InfoLabel } from "../label/InfoLabel";
 import { Balance } from "../Balance";
 import { useContractReads, useToken } from "wagmi";
-import { LaunchpoolContractConfig } from "../../abi/launchpool-abi";
+import { LaunchpoolContractConfig } from "../../abi/template-abi";
 import { useEffect, useState } from "react";
 import { ContractData } from "../interfaces/ContractData";
 import { wagmiTokenConfig } from "../../abi/token-abi";

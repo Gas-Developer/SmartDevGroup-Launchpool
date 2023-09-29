@@ -1,22 +1,22 @@
 "use client";
 
-import { useContractReads } from "wagmi";
-import { LaunchpoolContractConfig } from "../abi/launchpool-abi";
-import { ContractData } from "./interfaces/ContractData";
+import { useAccount, useContractReads, useWalletClient } from "wagmi";
+import { LaunchpoolContractConfig } from "../../abi/template-abi";
+import { ContractData } from "../interfaces/ContractData";
 import { useState, useEffect, useRef } from "react";
-import { Stake } from "./Stake";
-import { defaultNoImage, ipfs_base_URI } from "./constants";
+import { Stake } from "../Stake";
+import { defaultNoImage, ipfs_base_URI } from "../constants";
 import axios from "axios";
-import { IPFSLaunchpoolData } from "./interfaces/IPFSLaunchpoolData";
+import { IPFSLaunchpoolData } from "../interfaces/IPFSLaunchpoolData";
 import Image from "next/image";
-import { InfoLabel } from "./label/InfoLabel";
-import Tokenomics from "./Tokenomics";
-import TechnicalInfo from "./TechnicalInfo";
-import TrasparentContainer from "./containers/TrasparentContainer";
-import DefaultContainer from "./containers/DefaultContainer";
+import { InfoLabel } from "../label/InfoLabel";
+import Tokenomics from "../Tokenomics";
+import TechnicalInfo from "../TechnicalInfo";
+import TrasparentContainer from "./TrasparentContainer";
+import DefaultContainer from "./DefaultContainer";
 import PhaseInvestingImg from "../assets/images/PhaseInvesting.png";
-import { ethers } from "ethers";
-import { weiToMatic } from "../utils/weiCasting";
+import { weiToMatic } from "../../utils/weiCasting";
+import { Claim } from "../Claim";
 
 const logger = require("pino")();
 
@@ -28,7 +28,6 @@ const logger = require("pino")();
 	- [ ] Implementare lettura del tokenSymbol
 	- [ ] Implementare lettura del tokenName
 	- [ ] Implementare lettura del launchpoolCreator
-	- [ ] Implementare calcolo dell'Actual Ratio
 */
 
 export default function InvestorMainContainer(props: any) {
@@ -89,7 +88,7 @@ export default function InvestorMainContainer(props: any) {
 				...LaunchpoolContractConfig,
 				address: launchpoolAddress,
 				functionName: "totalStaked",
-			},
+			}
 		],
 	});
 
@@ -118,14 +117,18 @@ export default function InvestorMainContainer(props: any) {
 				totalStaked:
 					data?.[5].result !== undefined
 						? weiToMatic(data?.[5].result?.toString(), 2)
-						: 0,
+						: 0
 			};
 		}
 
 		let actRatio = (
 			dataToSend.totalTokenToDistribute / dataToSend.totalStaked
 		).toFixed();
-		actualRatioRef.current = weiToMatic(actRatio.toString(), 1);
+		if (actRatio === "NaN" || actRatio === "Infinity") {
+			actualRatioRef.current = 0;
+		} else {
+			actualRatioRef.current = weiToMatic(actRatio.toString(), 1);
+		}
 
 		setContractData(dataToSend);
 	}, [data]);
@@ -197,12 +200,25 @@ export default function InvestorMainContainer(props: any) {
 									className="col-span-4 text-right m-auto"
 								>
 									<div className=" bg-orange-400 rounded-lg  ">
-										<Stake
-											className={"rounded-full stakeBtn"}
-											launchpoolAddress={
-												launchpoolAddress
-											}
-										/>
+										{launchpoolPhase === "Staking Phase" ? (
+											<Stake
+												className={
+													"rounded-full stakeBtn"
+												}
+												launchpoolAddress={
+													launchpoolAddress
+												}
+											/>
+										) : (
+											<Claim
+												className={
+													"rounded-full stakeBtn"
+												}
+												launchpoolAddress={
+													launchpoolAddress
+												}
+											/>
+										)}
 									</div>
 								</div>
 							</div>
@@ -349,137 +365,6 @@ export default function InvestorMainContainer(props: any) {
 					</div>
 				</div>
 			</TrasparentContainer>
-
-			{/* 
-			<div
-				id="investorMainContainer"
-				className="bg-zinc-700 grid grid-cols-4 overflow-auto opacity-80 text-2xl"
-			>
-				<div
-					id="investorLeftSide"
-					className="col-span-3 grid grid-rows-6"
-				>
-					<div
-						id="investorLeftSideTop"
-						className="row-span-1 grid grid-cols-6"
-					>
-						<div id="imgContainer">
-							<Image
-								loader={() => ipfsData?.iconURL || ""}
-								src={ipfsData?.iconURL || ""}
-								alt={ipfsData?.name || ""}
-								width={50}
-								height={50}
-								layout="responsive"
-							/>
-						</div>
-						<div id="launchpoolTitle" className="col-span-3">
-							<InfoLabel
-								value={ipfsData?.name}
-								name={"investorLaunchpoolTitle"}
-								className={"text-5xl font-bold"}
-							/>
-							<br />
-							<br />
-							<a
-								href={ipfsData?.tokenWebsite}
-								className="cursor-pointer underline"
-							>
-								{ipfsData?.tokenWebsite}
-							</a>
-						</div>
-						<div
-							id="investorStakeBContainer"
-							className="col-span-2 text-center m-auto"
-						>
-							<Stake
-								className={"rounded-full stakeBtn"}
-								launchpoolAddress={launchpoolAddress}
-							/>
-						</div>
-					</div>
-					<div id="investorLeftSideMiddle" className="row-span-3">
-						<InfoLabel
-							value={ipfsData?.description}
-							name={"investorLaunchpoolDescription"}
-							className={"font-sans text-justify"}
-						/>
-					</div>
-					<div
-						id="investorLeftSideBottom"
-						className="row-span-2 grid grid-cols-2"
-					>
-						<div className="grid grid-cols-2 gap-3 h-fit text-start">
-							<Tokenomics
-								tokenAddress={contractData.token}
-								totalTokenToDistribute={
-									contractData.totalTokenToDistribute
-								}
-							/>
-						</div>
-
-						<div className="grid grid-cols-2 gap-3 h-fit text-end">
-							<TechnicalInfo tokenAddress={contractData.token} />
-						</div>
-					</div>
-				</div>
-				<div
-					id="investorRightSide"
-					className="grid grid-rows-4 text-center justify-center items-center"
-				>
-					<div>
-						<InfoLabel
-							name={""}
-							value={launchpoolPhase}
-							className={undefined}
-						/>
-					</div>
-					<div>
-						<InfoLabel
-							name={""}
-							value={"Total value locked"}
-							className={undefined}
-						/>
-						<br />
-						<InfoLabel
-							name={""}
-							value={	contractData.totalStaked ? contractData.totalStaked + "weiMATIC" : "--" }
-							className={undefined}
-						/>
-					</div>
-					<div>
-						<InfoLabel
-							name={""}
-							value={"Ending in"}
-							className={undefined}
-						/>
-						<br />
-						<InfoLabel
-							name={""}
-							value={
-								launchpoolDuration !== undefined
-									? launchpoolDuration + " Days"
-									: ""
-							}
-							className={undefined}
-						/>
-					</div>
-					<div>
-						<InfoLabel
-							name={""}
-							value={"Actual Ratio"}
-							className={undefined}
-						/>
-						<br />
-
-						<InfoLabel
-							name={""}
-							value={"135,7 Token per matic"}
-							className={undefined}
-						/>
-					</div>
-				</div>
-			</div> */}
 		</>
 	);
 }
