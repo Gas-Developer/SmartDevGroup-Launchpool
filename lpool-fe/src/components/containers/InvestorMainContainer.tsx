@@ -14,7 +14,7 @@ import Tokenomics from "../Tokenomics";
 import TechnicalInfo from "../TechnicalInfo";
 import TrasparentContainer from "./TrasparentContainer";
 import DefaultContainer from "./DefaultContainer";
-import PhaseInvestingImg from "../assets/images/PhaseInvesting.png";
+import PhaseInvestingImg from "../../assets/images/PhaseInvesting.png";
 import { weiToMatic } from "../../utils/weiCasting";
 import { Claim } from "../Claim";
 
