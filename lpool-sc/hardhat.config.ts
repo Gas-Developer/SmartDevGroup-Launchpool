@@ -26,15 +26,18 @@ const config: HardhatUserConfig = {
     // localhost: {
     //   url: "http://127.0.0.1:8545"
     // },
-       polygon_mumbai: {
-       url: process.env.URL_ALCHEMY_MUMBAI ?? "",
-       accounts: [process.env.PRIVATE_KEY ?? ""]
+    polygon_mumbai: {
+        url: process.env.URL_ALCHEMY_MUMBAI ?? "",
+        accounts: [process.env.PRIVATE_KEY ?? ""],
      },
-     sepolia: {
-       url: process.env.URL_ALCHEMY_SEPOLIA,
-       accounts: [process.env.PRIVATE_KEY ?? ""],
-       chainId: 11155111,
-     },
+    //  sepolia: {
+    //    url: process.env.URL_ALCHEMY_SEPOLIA,
+    //    accounts: [process.env.PRIVATE_KEY ?? ""],
+    //    chainId: 11155111,
+    //  },
+  },
+  etherscan: {
+    apiKey: process.env.POLYGONSCAN_API_KEY
   },
   // etherscan: {
   //   apiKey: process.env.POLYGONSCAN_API_KEY
@@ -46,7 +49,14 @@ const config: HardhatUserConfig = {
         enabled: true,
         runs: 200
       }
-    }
+    },
+    compilers: [
+        { version: "0.8.9", settings: {} },
+        { version: "0.8.19", settings: {} },
+        { version: "0.8.2", settings: {} },
+        { version: "0.8.1", settings: {} }
+      ],
+
   },
   paths: {
     sources: "./contracts",

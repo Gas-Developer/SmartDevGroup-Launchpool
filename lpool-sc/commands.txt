@@ -3,3 +3,5 @@ npm install --save-dev hardhat
 npx hardhat (typescript project, root, y, y)
 npm install @openzeppelin/contracts
 npm install @openzeppelin/contracts-upgradeable
+
+npx hardhat verify --network polygon_mumbai <cotract_address>
